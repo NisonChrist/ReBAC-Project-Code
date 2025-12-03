@@ -1,0 +1,146 @@
+rule,path_condition
+"can_select(E, T) :- Employee(E), GraduateAdmissionTable(T), (is_professor(E); is_tenured_assistant_professor(E)). can_insert(E, T) :- Employee(E), GraduateAdmissionTable(T), (is_professor(E); is_tenured_assistant_professor(E)). can_delete(E, T) :- Employee(E), GraduateAdmissionTable(T), (is_professor(E); is_tenured_assistant_professor(E)).",No Path Found
+"can_collect_and_use(CSR, C, N, DOB) :- CustomerServiceRep(CSR), Customer(C), has_name(C, N), has_dob(C, DOB). can_collect_and_use(PH, C, N, DOB) :- Pharmacist(PH), Customer(C), has_name(C, N), has_dob(C, DOB). can_collect_and_use(BR, C, N, DOB) :- BillingRep(BR), Customer(C), has_name(C, N), has_dob(C, DOB).",No Path Found
+"can_use(R, CCN, REC) :- CustomerServiceRep(R), CreditCardNumber(CCN), Record(REC), Patient(P), has_requested(P, REC).",No Path Found
+"can_collect_and_use(CSR, C, N, E) :- CustomerServiceRep(CSR), Customer(C), Name(N), Email(E), has_name(C, N), has_email(C, E). can_collect_and_use(PH, C, N, E) :- Pharmacist(PH), Customer(C), Name(N), Email(E), has_name(C, N), has_email(C, E). can_collect_and_use(BR, C, N, E) :- BillingRep(BR), Customer(C), Name(N), Email(E), has_name(C, N), has_email(C, E).",No Path Found
+"can_ship(SR, O) :- ShippingRep(SR), Order(O), Customer(C), has_name(C, Name), has_address(C, Address).",No Path Found
+"can_use_for_order_processing(B, CC, O) :- BillingRep(B), CreditCardNumber(CC), Order(O), has_access_to(B, CC).",No Path Found
+"can_modify(R, O, CC) :- CustomerServiceRep(R), Order(O), CreditCard(CC), has_order(C, O), has_credit_card(O, CC), notified_by_email(C, CC).",No Path Found
+"can_use_for_treatment(CSR, C, CCN, TD) :- CustomerServiceRep(CSR), Customer(C), CreditCardNumber(CCN), TreatmentDecision(TD), has_opted_in(C, CCN).",No Path Found
+"can_use_for_treatment(D, C, CCN, TD) :- Duck(D), Customer(C), CreditCardNumber(CCN), TreatmentDecision(TD), has_opted_in(C, CCN).",No Path Found
+"can_use_for_treatment(L, C, CCN, TD) :- Lawyer(L), Customer(C), CreditCardNumber(CCN), TreatmentDecision(TD), has_opted_in(C, CCN).",No Path Found
+"can_review_eligibility(N, P, S) :- AdmissionNurse(N), Patient(P), SSN(S), is_returning(P).",No Path Found
+"can_collect_and_use(R, P, N, SSN) :- CustomerServiceRep(R), Person(P), Name(N), SocialSecurityNumber(SSN), has_name(P, N), has_ssn(P, SSN). can_collect_and_use(M, P, N, SSN) :- Manager(M), Person(P), Name(N), SocialSecurityNumber(SSN), has_name(P, N), has_ssn(P, SSN).",No Path Found
+"can_use_email(O, E, I) :- Organisation(O), EmailAddress(E), Inquiry(I), has_inquiry(O, I).",has_inquiry
+"can_collect(S, PI) :- Supervisor(S), PersonalInfo(PI), required_by_law(PI).",No Path Found
+"can_collect_and_use(FC, C, Name) :- FinancialConsultant(FC), Customer(C), has_name(C, Name).",No Path Found
+"can_make_loan_decision(FA, CA, LD) :- FinancialAnalyst(FA), CustomerAccount(CA), LoanDecision(LD), has_access_to(FA, CA).",No Path Found
+"can_report(M, C, T) :- Manager(M), Customer(C), Transaction(T), has_transaction(C, T), required_by_law(T).",No Path Found
+"can_give(D, O, E) :- Director(D), Option(O), Employee(E), Package(P), has_option(P, O).",No Path Found
+"can_read(U, DI) :- User(U), DistributionInfo(DI), has_access_to(U, DI).",has_access_to
+"can_promote(D, E) :- Director(D), Employee(E), is_director_of(D, E).",is_director_of
+"can_read(E2, B) :- Employee(E2), BonusInfo(B), has_advocate(E1, E2), owns_bonus_info(E1, B).",has_advocate^{-1}.owns_bonus_info
+"can_invoke(C, UC) :- Clerk(C), CheckUseCase(UC), has_role(C, clerk).",No Path Found
+"can_authorize(I) :- Invoice(I), exceeds_one_million(I), Supervisor(S1), Supervisor(S2), S1 != S2, authorized_by(I, S1), authorized_by(I, S2).",Cannot determine Subject/Object (arity < 2)
+"can_review(P, PR) :- Professor(P), Project(PR), not has_reviewed(P, PR).",No Path Found
+"can_approve(BOM, P) :- BusinessOfficeManager(BOM), Project(P), is_manager(BOM). can_approve(D, P) :- Dean(D), Project(P), is_dean(D).",No Path Found
+"can_appoint(C, M) :- PC_Chair(C), PC_Member(M), appoints(C, M).",appoints
+"can_resign(P, M) :- PC_Member(P), Membership(M), has_membership(P, M).",has_membership
+"can_assign(R, A, P) :- Reviewer(R), Agent(A), Paper(P), not is_author(A, P), not assigned_by(_, A, P).",No Path Found
+"can_assign(F, IG) :- Faculty(F), InternalGrade(IG). can_assign(F, EG) :- Faculty(F), ExternalGrade(EG).",No Path Found
+"assign_external_grade(S, G) :- Student(S), Grade(G), can_assign_external_grade(S, G).",can_assign_external_grade
+"can_receive(F, EG) :- FacultyFamilyMember(F), ExternalGrade(EG), has_role(F, 'Faculty Family').",No Path Found
+"can_assign_grade(S, G) :- Subject(S), Grade(G), faculty_member(S).",No Path Found
+"can_enroll(S, C) :- Subject(S), Course(C), not faculty_member(S).",No Path Found
+"can_access(M, R, I) :- Manager(M), Resident(R), Information(I), is_about(I, R), has_access_to(M, I).",has_access_to
+"can_update_care_plan(S, CP, R, RP) :- Staff(S), CarePlan(CP), Resident(R), ResponsiblePerson(RP), (consulted_with(S, R); consulted_with(S, RP)).",No Path Found
+"can_delete(M, RI) :- Manager(M), ResidentInfo(RI), manages(M, R), associated_with(RI, R).",manages.associated_with^{-1}
+"can_access(H, RD) :- HealthCareWorker(H), ResidentData(RD), has_signed_confidentiality_agreement(H).",No Path Found
+"can_access(S, ED) :- Staff(S), EmergencyDetails(ED).",No Path Found
+"can_access(U, MR) :- User(U), MedicalRecord(MR), is_older(MR), Manager(M), has_permission(M, U, MR).",has_permission^{-1}.has_permission
+"can_examine(D, R) :- Doctor(D), Resident(R), pressing_circumstances(), not is_patient_of(R, D).",No Path Found
+"permitted(A) :- Action(A), (has_consent(R, A) ; has_consent(RP, A)), notified(M, A).",Cannot determine Subject/Object (arity < 2)
+"can_access(P, I) :- Person(P), Information(I), has_information(P, I), not jeopardises_third_party(I).",has_information
+"can_create(U, MO) :- User(U), MedicineOrder(MO), has_diagnosing_right(U).",No Path Found
+"can_load(PS, MD, M) :- PharmacySystem(PS), MedicineDispenser(MD), Medicine(M), not exists U (User(U), U != PS, can_load(U, MD, M)).",No Path Found
+"can_get_report(PS, MD) :- PharmacySystem(PS), MedicineDispenser(MD), has_report(MD). can_get_status(PS, MD) :- PharmacySystem(PS), MedicineDispenser(MD), has_status(MD).",No Path Found
+"can_load(PS, M, D) :- PharmacySystem(PS), Medicine(M), Dispenser(D), current_time(T).",No Path Found
+"can_read(S, PR) :- has_access(S, PR).",has_access
+"can_perform(S, R, Action) :- Subject(S), Resource(R), has_email_domain(S, 'med.example.com').",No Path Found
+"can_read(P, R) :- Person(P), Record(R), designated_patient(P, R).",designated_patient
+"can_read(P, R) :- Person(P), Record(R), Patient(PT), is_parent_or_guardian(P, PT), age_under_16(PT).",No Path Found
+"can_write(P, ME) :- Physician(P), MedicalElement(ME), is_primary_care_physician(P, ME), email_sent_to_patient(ME).",is_primary_care_physician
+"can_access(A, P) :- Administrator(A), Page(P), is_administrative_page(P).",No Path Found
+"can_access(G, PA) :- Guest(G), PublicArea(PA), is_public(PA).",No Path Found
+"can_access(O, A) :- Owner(O), Account(A), owns(O, A). can_move_funds(O, F) :- Owner(O), Funds(F), owns(O, A). can_review_transactions(O, T) :- Owner(O), Transaction(T), owns(O, A).",owns
+"can_access(P, S, F) :- Planner(P), Site(S), Function(F), has_function(S, F).",No Path Found
+"can_use(P, B) :- Payer(P), BillPayingFunction(B), has_access(P, B).",has_access
+"can_transfer(DO, U, I) :- DataOwner(DO), User(U), Information(I), owns(DO, I).",owns
+"can_determine_access(DO, U, D, AT) :- DataOwner(DO), User(U), Data(D), AccessType(AT), owns(DO, D).",No Path Found
+"can_determine_characteristics(U, I) :- User(U), Information(I), has_access(U, I).",has_access
+"can_read(U, D) :- User(U), Document(D), has_classification(U, UC), has_classification(D, DC), lower_classification(DC, UC).",has_classification.lower_classification^{-1}.has_classification^{-1}
+"can_write(U, R) :- User(U), Resource(R), has_classification(U, C1), has_classification(R, C2), classification_level(C1, L1), classification_level(C2, L2), L1 < L2.",No Path Found
+"can_read(U, O) :- User(U), Object(O), has_classification(U, C), has_classification(O, C).",has_classification.has_classification^{-1}
+"can_write(U, O) :- User(U), Object(O), has_classification(U, C), has_classification(O, C).",has_classification.has_classification^{-1}
+"can_print(S, HP_Laserjet_1) :- Staff(S), Printer(HP_Laserjet_1).",No Path Found
+"assign_role(David, Alice, manager) :- can_assign(David, Alice, manager).",can_assign
+"can_assign(John, U, clerk) :- User(John), User(U), Role(clerk), from_department(U, A).",No Path Found
+"can_read(C, DB) :- Clerk(C), Database(DB).",No Path Found
+"can_read(O, N) :- Owner(O), Name(N), owns(O, N).",owns
+"can_add(C, N) :- Clerk(C), Name(N).",No Path Found
+"can_change(C, N) :- Clerk(C), Name(N).",No Path Found
+"can_add(C, DOB) :- Clerk(C), DateOfBirth(DOB).",No Path Found
+"can_change(C, DOB) :- Clerk(C), DateOfBirth(DOB).",No Path Found
+"can_add(C, A) :- Clerk(C), Address(A).",No Path Found
+"can_change(C, A) :- Clerk(C), Address(A).",No Path Found
+"can_add(C, P) :- Clerk(C), Postcode(P).",No Path Found
+"can_change(C, P) :- Clerk(C), Postcode(P).",No Path Found
+"can_assign(F, IG) :- Faculty(F), InternalGrade(IG). can_assign(F, EG) :- Faculty(F), ExternalGrade(EG).",No Path Found
+"can_receive(S, EG) :- Student(S), ExternalGrade(EG), member_of(S, STUDENT).",No Path Found
+"can_submit(A, P) :- Author(A), Paper(P), is_author_of(A, P).",is_author_of
+"can_submit_review(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P).",assigned_to
+"can_read_scores(R, P) :- Reviewer(R), Paper(P), submitted_review(R, P).",submitted_review
+"can_access(R, I) :- Resident(R), Information(I), has_access(R, I).",has_access
+"cannot_execute(S, C) :- Supervisor(S), Check(C).",No Path Found
+"cannot_perform_both(U, I) :- User(U), Invoice(I), recorded_by(U, I), verified_by(U, I).",recorded_by
+"can_review(S, P) :- Subject(S), Project(P), not has_submitted(S, P).",No Path Found
+"can_approve(S, P) :- Subject(S), Project(P), not has_reviewed(S, P), not has_submitted(S, P).",No Path Found
+"can_change_author(A, P, A2) :- Author(A), Paper(P), Author(A2), has_author(P, A), false.",No Path Found
+"can_assign(C, M, P) :- PC_Chair(C), PC_Member(M), Paper(P), not is_author(M, P).",No Path Found
+"can_resign(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P), not appointed_subreviewer(R, P, _).",assigned_to
+"can_resign(S) :- SubReviewer(S), not has_submitted(S, R).",Cannot determine Subject/Object (arity < 2)
+"can_assign(S, EG) :- Student(S), ExternalGrade(EG), false.",No Path Found
+"can_receive(U, EG) :- User(U), ExternalGrades(EG), has_role(U, R). can_assign(U, EG) :- User(U), ExternalGrades(EG), has_role(U, R). not (can_receive(U, EG), can_assign(U, EG)).",No Path Found
+"can_assign_grade(S, G) :- Subject(S), Grade(G), not is_student(S).",No Path Found
+"alert_manager(M, H, I) :- Manager(M), HealthCareWorker(H), Information(I), attempted_access(H, I), not authorized_access(H, I).",No Path Found
+"can_access(D, MR) :- Doctor(D), Resident(R), MedicalRecord(MR), has_medical_record(R, MR).",No Path Found
+"not can_access(D, PN) :- Doctor(D), Resident(R), PrivateNote(PN), has_private_note(R, PN), usual_doctor(R, D).",usual_doctor^{-1}.has_private_note
+"can_view(R, D) :- Resident(R), Data(D), owns(R, D).",owns
+"can_modify(R, D) :- false.",No Path Found
+"can_perform(U, T) :- User(U), Task(T), not is_critical(T).",No Path Found
+"can_perform_operations(S, O) :- System(S), Operator(O), not loading_medicines(S, D).",No Path Found
+"not can_read(A, E) :- Administrator(A), MedicalElement(E), contains(R, E). not can_write(A, E) :- Administrator(A), MedicalElement(E), contains(R, E).",No Path Found
+"can_assign(S, EG) :- Student(S), ExternalGrade(EG), false.",No Path Found
+"can_receive(U, EXTERNALGRADES) :- User(U), Resource(EXTERNALGRADES), has_role(U, R). can_assign(U, EXTERNALGRADES) :- User(U), Resource(EXTERNALGRADES), has_role(U, R). not (can_receive(U, EXTERNALGRADES), can_assign(U, EXTERNALGRADES)) :- User(U), Resource(EXTERNALGRADES).",No Path Found
+"can_set_meeting_flag(S, MF) :- Subject(S), MeetingFlag(MF), (is_pc_chair(S); is_admin(S)).",No Path Found
+"can_see(P, PR) :- Person(P), PaperReviewRC(PR), (is_pc_chair(P) ; is_admin(P)), not is_conflicted(P, PR).",No Path Found
+"can_see(P, PR) :- Person(P), PaperReviewRC(PR), not is_pc_chair(P), not is_admin(P), not is_conflicted(P, PR).",No Path Found
+"cannot_read(A, S) :- Author(A), Score(S).",No Path Found
+"need_not_sign(D, CA) :- Doctor(D), ConfidentialityAgreement(CA), bound_by_code(D).",No Path Found
+"receive_external_grade(S, EG) :- Student(S), ExternalGrade(EG), can_receive_external_grade(S, EG).",can_receive_external_grade
+"can_assign(F, IG) :- Faculty(F), InternalGrade(IG). can_assign(F, EG) :- Faculty(F), ExternalGrade(EG). can_view(F, IG) :- Faculty(F), InternalGrade(IG). can_view(F, EG) :- Faculty(F), ExternalGrade(EG).",No Path Found
+"can_add(M, R) :- Manager(M), Resident(R).",No Path Found
+"can_start_or_update(M, R, CP) :- Manager(M), Resident(R), CarePlan(CP), manages(M, R).",No Path Found
+"can_view(S, R, CP) :- Staff(S), Resident(R), CarePlan(CP), has_care_plan(R, CP).",No Path Found
+"can_add(U, PN) :- User(U), ProgressNote(PN), has_observation(U, PN).",has_observation
+"has_access(D, MI) :- Doctor(D), MedicalInfo(MI), Resident(R), is_patient_of(R, D).",No Path Found
+"can_add_entry(D, P, E) :- Doctor(D), Patient(P), MedicalRecordEntry(E), is_visiting_doctor(D, P).",No Path Found
+"can_read(M, E, B) :- Manager(M), Employee(E), Bonus(B), manages(M, E). can_set(M, E, B) :- Manager(M), Employee(E), Bonus(B), manages(M, E).",No Path Found
+"can_read_and_set_bonus(M, E, B) :- Manager(M), Employee(E), Bonus(B), is_manager_of(M, E), not is_director_of(D, E), not (Manager(OtherM), OtherM != M, is_manager_of(OtherM, E)).",No Path Found
+"can_submit(S, P) :- Subject(S), Project(P), in_hierarchy(S).",No Path Found
+"can_submit(BOM, P) :- BusinessOfficeManager(BOM), Project(P).",No Path Found
+"can_submit(U, P) :- OtherUser(U), Project(P), not is_business_office_manager(U).",No Path Found
+"can_review(P, PR) :- Professor(P), Project(PR).",No Path Found
+"can_review(P, PR) :- Professor(P), Project(PR), not is_assistant_professor(P).",No Path Found
+"knows_reviewer(M, P, R) :- PC_Member(M), Paper(P), Reviewer(R), assigned_reviewer(P, R).",No Path Found
+"cannot_know(A, R, P) :- Author(A), Reviewer(R), Paper(P), authored_by(P, A), assigned_reviewer(P, R).",authored_by^{-1}
+"view_action(T, G) :- can_view(T, G). assign_action(T, G) :- can_assign(T, G).",can_view
+"can_view(T, EG) :- TA(T), ExternalGrade(EG), false. can_assign(T, EG) :- TA(T), ExternalGrade(EG), false.",No Path Found
+"can_enter(N, MR) :- Nurse(N), MedicalRecord(MR), Resident(R), is_admitted(R).",No Path Found
+"can_add(U, ME) :- User(U), MedicalEntry(ME), not has_restriction(U).",No Path Found
+"can_view(U, N) :- User(U), PrivateNote(N), not (Doctor(D), has_note(D, N)).",No Path Found
+"can_sign(S, A, R) :- Person(S), LegalAgreement(A), Resident(R), not is_resident(R).",No Path Found
+"can_view(H, R, M) :- HealthCareWorker(H), Resident(R), MedicalRecord(M), has_record(R, M), recent(M).",No Path Found
+"cannot_view(H, M) :- HealthCareWorker(H), MedicalInfo(M), is_older(M).",No Path Found
+"can_add_private_note(D, R, N) :- Doctor(D), Resident(R), PrivateNote(N), has_confidentiality(D, R).",No Path Found
+"can_view(D, N) :- Doctor(D), PrivateNote(N), has_note(R, N).",No Path Found
+"not can_view(H, N) :- HealthCareStaff(H), PrivateNote(N), has_note(R, N).",No Path Found
+"not can_view(M, N) :- Manager(M), PrivateNote(N), has_note(R, N).",No Path Found
+"cannot_read(PS, PR) :- PharmacySystem(PS), PatientRecord(PR).",No Path Found
+"can_read(PS, MO) :- PharmacySystem(PS), MedicineOrder(MO), Patient(P), has_order(P, MO).",No Path Found
+"can_view(U, A) :- User(U), Account(A), Owner(O), owns(O, A).",No Path Found
+"cannot_change(U, A) :- User(U), Account(A), Owner(O), owns(O, A).",No Path Found
+"can_change_security_label(U, R) :- User(U), Resource(R), is_admin(U).",No Path Found
+"can_change_security_label(U, R, SL) :- User(U), Resource(R), SecurityLabel(SL), not owner_of(U, R).",No Path Found
+"cannot_change(O, D) :- Owner(O), Data(D).",No Path Found
+"can_read(O, D) :- Owner(O), Data(D).",No Path Found

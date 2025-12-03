@@ -1,0 +1,2 @@
+rule,path_condition
+"can_request(S, R) :- VIO(S), VI(R), action(S, 'MLI:Request-VI'). can_instantiate(S, R) :- VIO(S), VI(R), action(S, 'MLI:Instantiate-VI'). can_decommission(S, R) :- VIO(S), VI(R), action(S, 'MLI:Decommission-VI'). can_modify_time(S, R) :- VIO(S), VI(R), action(S, 'MLI:ReplanningVI:Modify-Time').",No Path Found

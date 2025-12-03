@@ -1,0 +1,96 @@
+datalog_actions,cheng_policy
+"can_view(R, W, A) :- Reviewer(R), Webpage(W), Abstract(A), has_access(R, W).",No Path Found
+"can_generate(C, P, PC) :- CyberChair(C), Paper(P), PCC(PC), generates_proposal(C, P, PC).","< can_generate, (u_a, (""[generates_proposal]"", 1)) >"
+"can_assign(P, R) :- Paper(P), Reviewer(R), deadline_passed(D).",No Path Found
+"can_submit(A, P) :- Author(A), Paper(P), has_author(P, A).","< can_submit, (u_a, (""[has_author^{-1}]"", 1)) >"
+"can_watch_progress(PC, S, R) :- ProgramChair(PC), Submission(S), Review(R), has_progress(PC, S, R).","< can_watch_progress, (u_a, (""[has_progress]"", 1)) >"
+"can_submit_paper(A, P) :- Author(A), Paper(P), submitted_abstract(A, AB, TimeAB), submitted_paper(A, P, TimeP), TimeAB <= TimeP - 7 days.","< can_submit_paper, (u_a, (""[submitted_paper]"", 1)) >"
+"can_send(P, S, E) :- Person(P), Submission(S), Email(E), has_submission(P, S).",No Path Found
+"can_indicate(R, T, X) :- Reviewer(R), Topic(T), is_expert_on(R, T).
+can_indicate(R, T, Y) :- Reviewer(R), Topic(T), knowledgable_in(R, T).
+can_indicate(R, T, Z) :- Reviewer(R), Topic(T), informed_outsider_on(R, T).","No Path Found
+No Path Found
+No Path Found"
+"can_download(R, P) :- Reviewer(R), Paper(P), submitted(P).",No Path Found
+"can_fill_form(A, P) :- Author(A), Paper(P), submits(A, P).","< can_fill_form, (u_a, (""[submits]"", 1)) >"
+"can_receive_comment(A, P, C) :- Author(A), Paper(P), Comment(C), has_comment(P, C).",No Path Found
+"can_update_webpage(U, W) :- User(U), Webpage(W), has_webpage(U, W).","< can_update_webpage, (u_a, (""[has_webpage]"", 1)) >"
+"can_submit(A, P) :- Author(A), Paper(P), forced_to_submit(A, P).","< can_submit, (u_a, (""[forced_to_submit]"", 1)) >"
+"can_view(U, PO) :- User(U), Poster(PO), has_access(U, PO).","< can_view, (u_a, (""[has_access]"", 1)) >"
+"can_select_best(PC, P) :- ProgramCommittee(PC), Paper(P), supports_selection(PC, P).","< can_select_best, (u_a, (""[supports_selection]"", 1)) >"
+"can_view(U, O) :- User(U), Overview(O), updated_at(O, T).",No Path Found
+"can_inform(PCC, M, PA) :- PCC(PCC), Maintainer(M), Paper(PA), Meeting(MT), has_accepted_paper(MT, PA).",No Path Found
+"can_submit(A, AB, P) :- Author(A), Abstract(AB), Paper(P), has_abstract(A, AB), has_paper(A, P).","< can_submit, (u_a, (""[has_paper]"", 1)) >"
+"can_send_comment(PC, A, C) :- ProgramCommittee(PC), Author(A), Comment(C), Paper(P), selected_paper(P), has_comment(P, C), authored_by(P, A).",No Path Found
+"can_learn_opinion(R1, R2, O) :- Reviewer(R1), Reviewer(R2), Opinion(O), has_opinion(R2, O).",No Path Found
+"can_submit_review(U, R) :- User(U), Review(R), (submitted_via_webpage(U, R); submitted_via_email(U, R)).",No Path Found
+"can_access(R, REV) :- Reviewer(R), Review(REV), has_directory(R, D), associated(REV, D).","< can_access, (u_a, (""[has_directory.associated^{-1}]"", 2)) >"
+"can_classify(R, P, F) :- Reviewer(R), Paper(P), ReviewForm(F), assigned_to(R, P).",No Path Found
+"can_be_in_preference_list(R, L) :- Reviewer(R), PreferenceList(L), not max_reviews_reached(R). max_reviews_reached(R) :- Reviewer(R), count(assigned_reviews(R, _)) >= MAX_REVIEWS.",No Path Found
+"can_assign_review(R, P) :- Reviewer(R), Paper(P), has_priority(R, P, Priority).","< can_assign_review, (u_a, (""[has_priority]"", 1)) >"
+"can_assign_paper(R1, P) :- Reviewer(R1), Paper(P), has_expertise(R1, EV1), has_expertise(R2, EV2), EV1 = EV2, papers_assigned(R1, Count1), papers_assigned(R2, Count2), Count1 < Count2, not exists(R3) (Reviewer(R3), has_expertise(R3, EV3), EV3 = EV1, papers_assigned(R3, Count3), Count3 < Count1).",No Path Found
+"can_print(R, O) :- Reviewer(R), Overview(O), wants_to_read_offline(R, O).","< can_print, (u_a, (""[wants_to_read_offline]"", 1)) >"
+"can_access(R, F) :- Reviewer(R), ReviewFile(F), has_directory(R, D), contains_file(D, F).","< can_access, (u_a, (""[has_directory.contains_file]"", 2)) >"
+"can_generate(S, P, T) :- System(S), Proceedings(P), TableOfContents(T), has_input(A, P). can_generate(S, P, I) :- System(S), Proceedings(P), AuthorIndex(I), has_input(A, P).",No Path Found
+"can_submit_step1(A, P) :- Author(A), Paper(P), has_paper(A, P). can_submit_step2(A, P) :- Author(A), Paper(P), has_paper(A, P), can_submit_step1(A, P).","< can_submit_step1, (u_a, (""[has_paper]"", 1) ∧ (""[can_submit_step1]"", 1)) >"
+"can_prepare_proceedings(M, S, P, T) :- Maintainer(M), Paper(P), Session(S), TemplateFile(T), submitted(P), part_of(P, S), has_template(S, T).",No Path Found
+"can_generate(M, PA, R) :- Maintainer(M), Page(PA), Reviewer(R), distributed(P, R), not generated_page(PA, R).",No Path Found
+"can_view_other_reviews(R, P) :- Reviewer(R), Paper(P), has_submitted(R, P, REV), not (Reviewer(R2), has_submitted(R2, P, REV2), R2 != R).","< can_view_other_reviews, (u_a, (""[has_submitted]"", 1)) >"
+"can_view_reviews(R1, Rev) :- Reviewer(R1), Review(Rev), submitted_review(R2, Rev), Reviewer(R2), R1 != R2, not interfered_by_maintainer(Rev). interfered_by_maintainer(Rev) :- Maintainer(M), Review(Rev).",No Path Found
+"can_send_copy(S, M, P) :- Sender(S), Message(M), PCC(P).",No Path Found
+"can_display_default(R, P, Rev) :- Reviewer(R), Paper(P), Review(Rev), submitted_review(R, P, Rev).","< can_display_default, (u_a, (""[submitted_review]"", 1)) >"
+"can_access_review_form(R, F) :- Reviewer(R), ReviewForm(F), assigned_to(R, P), not page_regenerated(R, P).",No Path Found
+"can_match_paper_to_expert(PC, P, E) :- PC_Member(PC), Paper(P), Expert(E), is_domain_expert(E, P).",No Path Found
+"can_select(PM, P, C) :- PC_Member(PM), Paper(P), Conference(C), is_member_of(PM, C).","< can_select, (u_a, (""[is_member_of]"", 1)) >"
+"can_upload(U, F) :- User(U), File(F), not is_demo_data(F).",No Path Found
+"can_review(R, P) :- Reviewer(R), Paper(P), Topic(T), has_expertise(R, T), willing_to_review(R, T).",No Path Found
+"can_view(C, O) :- Chair(C), Overview(O), available_to(C, O).","< can_view, (u_a, (""[available_to]"", 1)) >"
+"can_submit_camera_ready(A, P, CRV) :- Author(A), Paper(P), CameraReadyVersion(CRV), submitted(A, P).",No Path Found
+"can_access_paper(R, P) :- Reviewer(R), Paper(P), CyberChair(C), not has_submitted_review(R, P).","< can_access_paper, (u_a, ¬ (""[has_submitted_review]"", 1)) >"
+"can_use(A, W) :- Author(A), Webform(W). can_use(R, W) :- Reviewer(R), Webform(W).",No Path Found
+"can_display_review(U, R) :- User(U), Review(R), has_last_update(R, DateTime).",No Path Found
+"can_modify(A, I) :- Author(A), Information(I), submitted_in_step1(A, I).","< can_modify, (u_a, (""[submitted_in_step1]"", 1)) >"
+"can_access_workspace(U, S) :- User(U), System(S), has_access(U, A), has_access(U, P), has_access(U, R).",No Path Found
+"can_update(U, R) :- User(U), Review(R), has_review(U, R).","< can_update, (u_a, (""[has_review]"", 1)) >"
+"can_enter_review_process(A, P) :- Author(A), Paper(P), is_author_of(A, P), sent_to_pcc(A, P).","< can_enter_review_process, (u_a, (""[is_author_of]"", 1) ∧ (""[sent_to_pcc]"", 1)) >"
+"can_view(R, Rev) :- Reviewer(R), Review(Rev), has_access(R, Rev).","< can_view, (u_a, (""[has_access]"", 1)) >"
+"can_copy_reviews(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P), has_directory(R, Dir), has_review(P, OtherR, Rev), Reviewer(OtherR), OtherR != R, not has_review_in_directory(R, Rev, Dir). has_review_in_directory(R, Rev, Dir) :- Reviewer(R), Review(Rev), Directory(Dir).","< can_copy_reviews, (u_a, (""[assigned_to]"", 1) ∧ ¬ (""[has_review_in_directory.has_review^{-1}]"", 2) ∧ ¬ (""[has_review_in_directory.has_review^{-1}]"", 2)) >"
+"can_browse(R, P, T) :- Reviewer(R), Paper(P), ConferenceTopic(T), has_interest(R, T), has_expertise(R, T), matches_topic(P, T).","< can_browse, (u_a, (""[has_interest]"", 1) ∧ (""[has_expertise]"", 1)) >"
+"can_assess(R, P) :- Reviewer(R), Paper(P), has_classification(P, C), highest_classification(P, C), lowest_classification(P, C).",No Path Found
+"can_generate_hyperlink(U, P, H) :- User(U), Paper(P), Hyperlink(H), has_access(U, P).",No Path Found
+"can_access(R, W) :- Reviewer(R), Webpage(W), has_webpage(R, W). can_download(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P), contains_link(W, P), has_webpage(R, W).","< can_access, (u_a, (""[assigned_to.contains_link^{-1}]"", 2) ∧ (""[has_webpage]"", 1)) >"
+"can_send_or_upload(M, Pub, Proc) :- Maintainer(M), Publisher(Pub), Proceedings(Proc), allows_electronic(Pub).",No Path Found
+"can_generate(CyberChair, R, W) :- System(CyberChair), Reviewer(R), Webpage(W).",No Path Found
+"can_indicate_preference(R, P) :- Reviewer(R), Paper(P).",No Path Found
+"can_store(M, D, P) :- Maintainer(M), Disk(D), Paper(P), has_disk_space(D, P).",No Path Found
+"can_use_hyperlink(R1, HL) :- Reviewer(R1), HyperLink(HL), has_conflict(REV), Review(REV).",No Path Found
+"can_give_special_attention(R, C, S) :- Reviewer(R), Chair(C), Submission(S), has_agreement_level(S, L1), has_agreement_level(S, L2), L1 != L2, threshold_exceeded(L1, L2).",No Path Found
+"can_use_pattern(C, P, PT) :- CyberChair(C), PC(P), Pattern(PT), supports(C, P).",No Path Found
+"can_access(U, CV, RPP) :- User(U), CyberChairVersion(CV), ReviewProcessPhase(RPP), supports(CV, RPP). can_access(U, CV, Proc) :- User(U), CyberChairVersion(CV), Proceedings(Proc), supports(CV, Proc), prescribed_format(Pub, EF).",No Path Found
+"can_fill_online(R, F) :- Reviewer(R), ReviewForm(F), likes_to_fill(R, F).","< can_fill_online, (u_a, (""[likes_to_fill]"", 1)) >"
+"can_use(C, P) :- CyberChair(C), PC(P), reduces_workload(C, P).","< can_use, (u_a, (""[reduces_workload]"", 1)) >"
+"can_share(P, I, PR) :- Person(P), Information(I), Problem(PR), has_access(P, I).",No Path Found
+"can_access(R, L, PW) :- Reviewer(R), Login(L), Password(PW), has_login(R, L), has_password(R, PW).","< can_access, (u_a, (""[has_password]"", 1)) >"
+"can_communicate(R, C) :- Reviewer(R), Conflict(C), has_conflict(R, C).","< can_communicate, (u_a, (""[has_conflict]"", 1)) >"
+"can_send(C, P, LP, E) :- CyberChair(C), ContactPerson(P), LoginPassword(LP), EmailAddress(E), has_email(P, E).",No Path Found
+"can_start(M, S) :- Maintainer(M), Script(S), administrative_script(S), started_by(S, M).","< can_start, (u_a, (""[started_by^{-1}]"", 1)) >"
+"can_start_automatically(S, SC, I) :- System(S), Script(SC), Interval(I), is_administrative(SC), started_at_interval(S, SC, I).","< can_start_automatically, (u_a, (""[started_at_interval]"", 1)) >"
+"can_read(R, REV) :- Reviewer(R), Review(REV), submitted_review(R, _), not same_reviewer(R, REV). same_reviewer(R, REV) :- Reviewer(R), Review(REV), submitted_review(R, REV).","< can_read, (u_a, (""[submitted_review]"", 1)) >"
+"can_prepare_for_meeting(R, M) :- Reviewer(R), Meeting(M), Review(REV), submitted(REV).",No Path Found
+"can_find_out(U, E) :- User(U), Event(E), can_access(U, E).","< can_find_out, (u_a, (""[can_access]"", 1)) >"
+"can_select(R, P) :- Reviewer(R), Paper(P), has_submitted_all_reviews(R), has_time_to_review_more(R), has_conflicting_reviews(P).",No Path Found
+"can_deliver(C, P, TOC, AI) :- CyberChair(C), Publisher(P), TableOfContents(TOC), AuthorIndex(AI), generates(C, TOC), generates(C, AI).","< can_deliver, (u_a, (""[generates]"", 1)) >"
+"can_deliver(A, PUB, PA) :- Author(A), Publisher(PUB), Paper(PA), has_paper(A, PA).","< can_deliver, (u_a, (""[has_paper]"", 1)) >"
+"can_handle(C, P) :- CyberChair(C), Paper(P), handles_distribution(C, P).","< can_handle, (u_a, (""[handles_distribution]"", 1)) >"
+"can_collect(C, R) :- CyberChair(C), Review(R). can_categorize(C, R) :- CyberChair(C), Review(R).",No Path Found
+"can_prepare_overview(C, O) :- CyberChair(C), Overview(O). can_access_overview(P, O) :- PC_Member(P), Overview(O), prepares_overview(C, O).","< can_prepare_overview, (u_a, (""[prepares_overview]"", 1)) >"
+"can_check(C, R) :- CyberChair(C), ReviewForm(R), is_correct(R).",No Path Found
+"can_convert(M, P) :- Maintainer(M), Paper(P), submitted_paper(P).",No Path Found
+"can_ask_to_submit(M, A, P) :- Maintainer(M), Author(A), Paper(P), submitted_by(P, A).",No Path Found
+"can_send(PCC, PA, RF, R) :- PCC(PCC), Paper(PA), ReviewForm(RF), Reviewer(R).",No Path Found
+"can_fill(R, F) :- Reviewer(R), ReviewForm(F), assigned_to(R, F).","< can_fill, (u_a, (""[assigned_to]"", 1)) >"
+"can_send(R, F, P) :- Reviewer(R), ReviewForm(F), PCC(P), has_form(R, F).",No Path Found
+"can_access(S, A) :- System(S), Author(A), stores(S, A). can_access(S, AB) :- System(S), Abstract(AB), stores(S, AB). can_access(S, P) :- System(S), Paper(P), stores(S, P). can_access(S, RE) :- System(S), Review(RE), stores(S, RE).",No Path Found
+"can_submit(A, P, PCC) :- Author(A), Paper(P), is_author_of(A, P), is_accepted(P).",No Path Found
+"can_send(PCC, PUB, CRF, PF, TOC) :- PCC(PCC), Publisher(PUB), CameraReadyFormat(CRF), Preface(PF), TableOfContents(TOC), has_camera_ready_format(PCC, CRF), has_preface(PCC, PF), has_table_of_contents(PCC, TOC).","< can_send, (u_a, (""[has_table_of_contents]"", 1)) >"
+"can_display(C, RF, BF) :- CyberChair(C), ReviewForm(RF), BrowserFormat(BF), transforms(C, RF, BF).","< can_display, (u_a, (""[transforms]"", 1)) >"

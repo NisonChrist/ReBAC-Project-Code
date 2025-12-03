@@ -1,0 +1,2 @@
+rule,path_condition
+"can_perform(S, R, add) :- VIO(S), VR_IT_Resource(R). can_perform(S, R, modify) :- VIO(S), VR_IT_Resource(R). can_perform(S, R, delete) :- VIO(S), VR_IT_Resource(R).",No Path Found

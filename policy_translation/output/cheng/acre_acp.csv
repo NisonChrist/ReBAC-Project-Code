@@ -1,0 +1,488 @@
+datalog_actions,cheng_policy
+"can_prescribe(D, P, DR) :- Prescriber(D), Patient(P), Drug(DR), not has_allergy(P, DR).",No Path Found
+"can_modify(U, F, C) :- User(U), Filter(F), Criteria(C), has_filter(U, F), has_criteria(F, C), is_empty(F, C).","< can_modify, (u_a, (""[has_filter.has_criteria]"", 2) ∧ (""[has_filter.is_empty]"", 2)) >"
+"can_select(H, PC, P, L) :- HCP(H), ProcedureCode(PC), Priority(P), LabTechnician(L), has_specialty(L, S), pending_procedures(L, P, Count).",No Path Found
+"can_confirm(H, R) :- HCP(H), Reassignment(R), is_assigned_to(H, R). can_cancel(H, R) :- HCP(H), Reassignment(R), is_assigned_to(H, R).","< can_confirm, (u_a, (""[is_assigned_to]"", 1)) >"
+"can_read(U, OV) :- User(U), OfficeVisit(OV), has_access_to(U, OV).","< can_read, (u_a, (""[has_access_to]"", 1)) >"
+"can_send_fake_email(H, P, M) :- HCP(H), Patient(P), Medication(M), (has_allergy(P, M) ; (is_taking(P, D), has_interaction(M, D))).",No Path Found
+"can_remove(A, R) :- PublicHealthAgent(A), AdverseEventReport(R), (reported_by(R, A) or appears_bogus(R)).",No Path Found
+"can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A). can_edit_appointment(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A). can_remove_appointment(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).","< can_view_appointments, (u_a, (""[has_appointment]"", 1)) >"
+"can_create(L, U) :- LHCP(L), UAP(U), creates(L, U).","< can_create, (u_a, (""[creates]"", 1)) >"
+"can_add_commentary(H, L) :- HCP(H), LabProcedure(L), pending(L).",No Path Found
+"can_use(L, D) :- LHCP(L), Diagnosis(D), maintains_listing(A, D).",No Path Found
+"can_access(P, S) :- Patient(P), System(S), authenticated(P, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_display_message(P, RF) :- Patient(P), RiskFactor(RF), exhibits(P, RF).","< can_display_message, (u_a, (""[exhibits]"", 1)) >"
+"can_edit(E, P) :- Editor(E), Personnel(P), has_format(P, '6.2'), mandatory_field('6.2', F), not optional_field('6.2', 'associated MID'), not optional_field('6.2', 'Street Address 2').",No Path Found
+"can_confirm(H, S) :- HCP(H), Selection(S), not has_confirmed(H, S).","< can_confirm, (u_a, ¬ (""[has_confirmed]"", 1)) >"
+"can_prescribe(D, P, M) :- Prescriber(D), Patient(P), Medication(M), not has_current_prescription(P, M), not has_future_prescription(P, M).",No Path Found
+"can_graph(H, P, G) :- HCP(H), Patient(P), GraphType(G), is_patient_of(P, H), (G = 'height' ; G = 'weight').",No Path Found
+"can_view_sorted(P, L) :- Patient(P), AccessLog(L), has_access_log(L, A, P, Date), has_role(A, Role), sorted_by_role_and_date(L, Role, Date). sorted_by_role_and_date(L, Role, Date) :- AccessLog(L), has_role(A, Role), has_access_log(L, A, P, Date), order_by(Role, Date desc).","< can_view_sorted, (u_a, (""[has_access_log^{-1}]"", 1) ∧ (""[has_access_log^{-1}]"", 1)) >"
+"can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A).
+can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).","< can_view, (u_a, (""[has_appointment]"", 1)) >
+< can_view, (u_a, (""[has_appointment]"", 1)) >"
+"can_view(P, LP) :- Patient(P), LabProcedure(LP), has_lab_procedure(P, LP).","< can_view, (u_a, (""[has_lab_procedure]"", 1)) >"
+"can_access(A, S) :- Administrator(A), System(S), authenticated_in(A, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_access(P, PR) :- Patient(P), Provider(PR), (optional has_zip_code(P, Z1), has_zip_code(PR, Z2), zip_code_prefix_match(Z1, Z2)) or (optional has_provider_name(PR, N)) or (optional has_provider_specialty(PR, S)).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_update_status(LT, LP, received) :- LabTechnician(LT), LabProcedure(LP), in_transit(LP), has_sample(LP, S), received_in_lab(LT, S).",No Path Found
+"can_view_conflicts(L, A) :- LHCP(L), Appointment(A), conflicts_with(A, OtherA).",No Path Found
+"can_sort(H, R) :- HCP(H), Referral(R), has_patient(R, P), has_receiving_hcp(R, ReceivingHCP), has_time_generated(R, T). can_sort_by_priority(H, R) :- HCP(H), Referral(R), has_priority(R, Priority).",No Path Found
+"can_add_lhcp(P, L) :- Patient(P), LHCP(L), not has_provider(P, L).","< can_add_lhcp, (u_a, ¬ (""[has_provider]"", 1)) >"
+"can_see_health_history(P, H, F) :- Patient(P), AbbreviatedHealthHistory(H), Person(F), (is_sibling(P, F); is_parent(P, F); is_grandparent(P, F)), has_mid(F).
+can_see_health_history(R, H, F) :- PersonalHealthRepresentative(R), AbbreviatedHealthHistory(H), Person(F), (is_sibling(P, F); is_parent(P, F); is_grandparent(P, F)), has_mid(F), Patient(P), represents(R, P).","No Path Found
+No Path Found"
+"can_read_details(U, PR) :- User(U), Prescription(PR), has_prescription(U, PR).","< can_read_details, (u_a, (""[has_prescription]"", 1)) >"
+"can_view_bar_chart(L, T, D) :- LHCP(L), TimePeriod(T), Diagnosis(D), has_diagnosis_count(T, D, C), has_bar_chart(L, B).
+can_receive_answer(L, T) :- LHCP(L), TimePeriod(T), epidemic_occurring(T, ConsecutiveWeeks), has_answer(L, A).","No Path Found
+No Path Found"
+"can_delete(L, P) :- LHCP(L), Patient(P), monitors(L, P).","< can_delete, (u_a, (""[monitors]"", 1)) >"
+"can_examine(L, P, C) :- LHCP(L), Patient(P), Condition(C), not has_condition(P, C).",No Path Found
+"can_view(H, P, LP, T) :- HCP(H), Patient(P), LabProcedure(LP), LabTechnician(T), has_lab_procedure(P, LP), assigned_to(LP, T).",No Path Found
+"can_request_report(L, P, R) :- LHCP(L), Patient(P), Report(R), has_gender(P, G), has_age(P, A), has_diagnosis(P, D).",No Path Found
+"can_select(H, P) :- HCP(H), Patient(P), has_mid(P, MID).",No Path Found
+"can_enter_edit(H, DI) :- HCP(H), DemographicInfo(DI), owns(H, DI).","< can_enter_edit, (u_a, (""[owns]"", 1)) >"
+"can_report(R, P, HD) :- PatientRepresentative(R), Patient(P), HealthData(HD), is_representative_for(R, P).",No Path Found
+"can_view(U, S) :- User(U), Survey(S), has_access_to(U, S).","< can_view, (u_a, (""[has_access_to]"", 1)) >"
+"can_view(L, AR) :- LHCP(L), AppointmentRequest(AR), has_upcoming_request(L, AR).","< can_view, (u_a, (""[has_upcoming_request]"", 1)) >"
+"can_view(P, LP) :- Patient(P), LabProcedure(LP), has_lab_procedure(P, LP).","< can_view, (u_a, (""[has_lab_procedure]"", 1)) >"
+"can_report(P, BP) :- Patient(P), BloodPressure(BP), has_blood_pressure(P, BP). can_report(P, GL) :- Patient(P), GlucoseLevel(GL), has_glucose_level(P, GL).",No Path Found
+"can_view(L, P, PD) :- LHCP(L), Patient(P), PhysiologicData(PD), has_patient(L, P), has_data(P, PD, current_date).","< can_view, (u_a, (""[has_patient.has_data]"", 2)) >"
+"can_change_password(U, PW) :- User(U), Password(PW), has_security_question(U, SQ), correct_answer(U, SQ).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated(U, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_analyze(U, R) :- User(U), Region(R), epidemic_heuristic(R) = true.
+epidemic_heuristic(R) :- Region(R), count(D) where has_zip_code(D, Z) and matches_region(Z, R) > threshold.",No Path Found
+"can_view(L, M) :- LHCP(L), Message(M). can_view(P, M) :- Patient(P), Message(M). can_view(R, M) :- Representative(R), Message(M).",No Path Found
+"can_display(U, A, C) :- User(U), Appointment(A), Calendar(C), has_appointment(U, A).",No Path Found
+"can_update_status(U, LP) :- User(U), LabProcedure(LP).",No Path Found
+"can_record_interaction(A, D1, D2, I) :- Administrator(A), Drug(D1), Drug(D2), Interaction(I), chosen_from_list(A, D1, List1), chosen_from_list(A, D2, List2), D1 != D2.",No Path Found
+"can_document(H, OV, D, HL, N) :- HCP(H), OfficeVisit(OV), Date(D), HospitalLocation(HL), Note(N), has_office_visit(H, OV), has_date(OV, D), (has_location(OV, HL) ; (not has_location(OV, _), has_home_location(H, HL))), has_note(OV, N).","< can_document, (u_a, (""[has_office_visit.has_note]"", 2)) >"
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_receive_message(P, R) :- Patient(P), Referral(R), patient_referral(P, R). can_receive_message(SendingHCP, R) :- HCP(SendingHCP), Referral(R), sends_referral(SendingHCP, R). can_receive_message(ReceivingHCP, R) :- HCP(ReceivingHCP), Referral(R), receives_referral(ReceivingHCP, R).",No Path Found
+"can_report(P, PR, PM) :- Patient(P), PatientRepresentative(PR), PhysiologicMeasurement(PM), under_monitoring(PR, PDT), is_patient_representative(P, PR).",No Path Found
+"can_document(H, M) :- HCP(H), Medication(M), prescribed(H, M).
+can_document(H, L) :- HCP(H), LabProcedure(L), ordered(H, L).
+can_document(H, D) :- HCP(H), Diagnosis(D), diagnosed(H, D).
+can_document(H, MP) :- HCP(H), MedicalProcedure(MP), performed(H, MP).
+can_document(H, I) :- HCP(H), Immunization(I), given(H, I).","< can_document, (u_a, (""[prescribed]"", 1)) >
+< can_document, (u_a, (""[ordered]"", 1)) >
+< can_document, (u_a, (""[diagnosed]"", 1)) >
+< can_document, (u_a, (""[performed]"", 1)) >
+< can_document, (u_a, (""[given]"", 1)) >"
+"can_choose(L, P, CD) :- LHCP(L), Patient(P), ChronicDisease(CD), has_chronic_disease(P, CD).",No Path Found
+"can_display_calendar(P, C) :- Patient(P), Calendar(C), has_appointment(P, A), has_office_visit(P, OV), has_prescription(P, PR), has_lab_procedure(P, LP), in_current_month(A), in_current_month(OV), in_current_month(PR), in_current_month(LP).",No Path Found
+"can_maintain(A, H) :- Administrator(A), Hospital(H), has_maintain_access(A, H).","< can_maintain, (u_a, (""[has_maintain_access]"", 1)) >"
+"can_view_report_count(L, current_date) :- LHCP(L), has_patient(L, P), submitted_report(P, R, current_date).","< can_view_report_count, (u_a, (""[has_patient.submitted_report]"", 2)) >"
+"can_report(R, P, H) :- Reporter(R), Patient(P), Height(H), is_patient_of(P, R). can_report(R, P, W) :- Reporter(R), Patient(P), Weight(W), is_patient_of(P, R). can_report(R, P, PR) :- Reporter(R), Patient(P), PedometerReading(PR), is_patient_of(P, R).",No Path Found
+"can_report(P, DP, D) :- Patient(P), PhysiologicDataPoint(DP), Day(D), count(has_data_point(P, _, D)) < 10.
+can_report(U, DP, D) :- UAP(U), PhysiologicDataPoint(DP), Day(D), Patient(P), has_data_point(P, DP, D), count(has_data_point(P, _, D)) < 10.
+can_report(PR, DP, D) :- PersonalRepresentative(PR), PhysiologicDataPoint(DP), Day(D), Patient(P), has_data_point(P, DP, D), count(has_data_point(P, _, D)) < 10.","No Path Found
+No Path Found
+No Path Found"
+"can_view_referral_details(H, R) :- HCP(H), Referral(R), has_referral(H, R).","< can_view_referral_details, (u_a, (""[has_referral]"", 1)) >"
+"can_view_appointments(U, A) :- User(U), Appointment(A), has_appointment(U, A), upcoming_appointment(A).","< can_view_appointments, (u_a, (""[has_appointment]"", 1)) >"
+"can_sort_by_last_name(U, M, LN, SO) :- User(U), Message(M), Recipient(R), LastName(LN), SortOrder(SO), has_outbox(U, M), has_recipient(M, R), has_last_name(R, LN), not can_sort_by_timestamp(U, M, TS, SO).
+can_sort_by_timestamp(U, M, TS, SO) :- User(U), Message(M), Timestamp(TS), SortOrder(SO), has_outbox(U, M), has_timestamp(M, TS), not can_sort_by_last_name(U, M, LN, SO).","< can_sort_by_last_name, (u_a, ¬ (""[can_sort_by_timestamp]"", 1)) >
+< can_sort_by_timestamp, (u_a, ¬ (""[can_sort_by_last_name]"", 1)) >"
+"can_view(U, E) :- UAP(U), InputEntry(E), Patient(P), DataType(DT), has_data_type(E, DT), under_monitoring(P, DT).",No Path Found
+"can_restrict_viewing(P, D) :- LicensedHealthCareProfessional(LHCP), Patient(P), Diagnosis(D), makes_diagnosis(LHCP, P, D).","< can_restrict_viewing, (u_a, (""[makes_diagnosis^{-1}.makes_diagnosis]"", 2)) >"
+"can_view(H, LP) :- HCP(H), LabProcedure(LP), OfficeVisit(OV), created_for(LP, OV).",No Path Found
+"can_monitor_remotely(L, P) :- LHCP(L), Patient(P), has_mid(P, M). can_monitor_remotely(U, P) :- UAP(U), Patient(P), has_mid(P, M).",No Path Found
+"can_view(L, P, PR) :- LHCP(L), Patient(P), Prescription(PR), has_prescription(P, PR).",No Path Found
+"can_add_prescription(H, PR) :- HCP(H), Prescription(PR), has_instructions(H, I).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view(P, AF) :- Patient(P), ActivityFeed(AF), has_access(P, AF).","< can_view, (u_a, (""[has_access]"", 1)) >"
+"can_graph(H, P, M) :- HCP(H), Patient(P), Measurement(M), has_measurement(P, M).",No Path Found
+"can_execute_notification(S, N, F) :- System(S), EmailNotification(N), FakeEmailUtility(F), has_access_to(S, F).","< can_execute_notification, (u_a, (""[has_access_to]"", 1)) >"
+"can_use(H, S) :- HCP(H), Service(S), allowable_service(S), has_loinc_data(S, L).",No Path Found
+"can_store(A, H, ID, Name) :- Administrator(A), Hospital(H), HospitalId(ID), HospitalName(Name), length(Name, L), L <= 30, alphanumeric(Name).",No Path Found
+"can_maintain(A, I) :- Administrator(A), Immunization(I). can_maintain(A, DG) :- Administrator(A), Diagnosis(DG). can_maintain(A, DR) :- Administrator(A), Drug(DR). can_maintain(A, PS) :- Administrator(A), PhysicalService(PS).",No Path Found
+"can_add_allergy(H, P, M) :- HCP(H), Patient(P), Medication(M).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_reassign(H, L) :- HCP(H), LabProcedure(L), created_by(L, H).","< can_reassign, (u_a, (""[created_by^{-1}]"", 1)) >"
+"can_view_contact_info(P, L, CI) :- Patient(P), LHCP(L), ContactInfo(CI), has_expired_prescription(P, L).",No Path Found
+"can_retry(H, M) :- HCP(H), MedicalID(M), not is_valid(M).",No Path Found
+"can_enter_data(S, DP, D) :- (Subject(S), PhysiologicDataPoint(DP), Day(D)), count_entered(S, D, Count), Count < 10. count_entered(S, D, Count) :- Subject(S), Day(D), Count = #count{DP : entered_data(S, DP, D)}.","< can_enter_data, (u_a, (""[count_entered]"", 1)) >"
+"can_choose(L, S, DR) :- LHCP(L), Screen(S), DateRange(DR), can_access(L, S).",No Path Found
+"can_store(A, L) :- Administrator(A), LOINC_Code(L), has_access_to(A, L).","< can_store, (u_a, (""[has_access_to]"", 1)) >"
+"can_reassign(H, LP, LT) :- HCP(H), LabProcedure(LP), LabTechnician(LT), created_by(LP, H), not in_testing_state(LP), not assigned_to(LP, LT).","< can_reassign, (u_a, ¬ (""[created_by^{-1}.assigned_to]"", 2)) >"
+"can_retry(U, P) :- User(U), Prompt(P), prompted_to_try_again(U, P).","< can_retry, (u_a, (""[prompted_to_try_again]"", 1)) >"
+"can_create(A, L) :- Admin(A), LHCP(L).
+can_create(A, E) :- Admin(A), ER(E).
+can_create(A, LT) :- Admin(A), LaboratoryTechnician(LT).
+can_create(A, PHA) :- Admin(A), PublicHealthAgent(PHA).","No Path Found
+No Path Found
+No Path Found
+No Path Found"
+"can_view(L, I) :- LHCP(L), MessageInbox(I), has_inbox(L, I).","< can_view, (u_a, (""[has_inbox]"", 1)) >"
+"can_view_calendar(U, C, A) :- User(U), Calendar(C), Appointment(A), has_appointment(U, A).","< can_view_calendar, (u_a, (""[has_appointment]"", 1)) >"
+"can_access(L, S) :- LHCP(L), System(S), authenticated_in(L, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view(LT, LP) :- LabTechnician(LT), LabProcedure(LP), assigned_to(LT, LP).","< can_view, (u_a, (""[assigned_to]"", 1)) >"
+"can_report(R, P, BP) :- Reporter(R), Patient(P), BloodPressure(BP), has_blood_pressure(P, BP). can_report(R, P, GL) :- Reporter(R), Patient(P), GlucoseLevel(GL), has_glucose_level(P, GL).",No Path Found
+"can_enter_user(A, U) :- Administrator(A), User(U), has_role(U, 'LHCP') or has_role(U, 'ER') or has_role(U, 'public_health_agent'), has_attribute(U, 'name'), has_attribute(U, 'email').",No Path Found
+"can_view(P, L) :- Patient(P), AccessLog(L), (owns_log(P, L) ; (PersonalHealthRepresentative(R), is_personal_health_representative(R, P2), owns_log(P2, L), R = P)).",No Path Found
+"can_specialize(LT, S) :- LabTechnician(LT), Specialization(S), specializes_in(LT, S).","< can_specialize, (u_a, (""[specializes_in]"", 1)) >"
+"can_read(U, M) :- User(U), Message(M), (in_inbox(U, M); in_outbox(U, M)).",No Path Found
+"can_view(L, P, M) :- LHCP(L), Patient(P), MonitoringDetails(M), has_patient(L, P), current_date(M).",No Path Found
+"can_read_details(U, LP) :- User(U), LaboratoryProcedure(LP), has_access_to(U, LP), displays_on_calendar(LP, C), has_loinc_code(LP, LC).","< can_read_details, (u_a, (""[has_access_to]"", 1)) >"
+"can_select(H, B) :- HCP(H), Button(B), has_access_to(H, B).","< can_select, (u_a, (""[has_access_to]"", 1)) >"
+"can_view(L, H) :- LHCP(L), iTrustHomepage(H), has_homepage(L, H).","< can_view, (u_a, (""[has_homepage]"", 1)) >"
+"can_update_status(LT, LP) :- LabTechnician(LT), LabProcedure(LP).",No Path Found
+"can_view_contact_info(P, L, FirstName, LastName, LHCPType, StreetAddress1, StreetAddress2, City, State, ZipCode, Phone, ContactEmail) :- Patient(P), LHCP(L), has_expired_prescription(P, EP), has_lhcp(EP, L), has_contact_info(L, FirstName, LastName, LHCPType, StreetAddress1, StreetAddress2, City, State, ZipCode, Phone, ContactEmail).","< can_view_contact_info, (u_a, (""[has_expired_prescription.has_lhcp.has_contact_info]"", 3)) >"
+"can_edit_priority(Sender, R, P) :- HCP(Sender), Referral(R), Priority(P), sent_by(R, Sender). can_edit_notes(Sender, R, N) :- HCP(Sender), Referral(R), Note(N), sent_by(R, Sender).",No Path Found
+"can_use(H, S) :- HCP(H), PhysicalService(S), maintains_listing(A, S).",No Path Found
+"can_view(U, M) :- User(U), MessageInbox(M), has_access_to(U, M).","< can_view, (u_a, (""[has_access_to]"", 1)) >"
+"can_view(V, P, DI) :- Viewer(V), Patient(P), DiagnosticInfo(DI), has_diagnosis(P, DI), not (restricted_category(DI), patient_restricted(P, DI)).
+patient_restricted(P, DI) :- Patient(P), DiagnosticInfo(DI), restricted_category(DI), patient_choice(P, DI).",No Path Found
+"can_edit(S, PR) :- SendingHCP(S), PatientReferral(PR), created_by(PR, S), not viewed_by(PR, R).","< can_edit, (u_a, (""[created_by^{-1}]"", 1)) >"
+"can_view_patient_listing(H, P) :- HCP(H), Patient(P), is_dlhcp(H, P), needs_care(P).","< can_view_patient_listing, (u_a, (""[is_dlhcp]"", 1)) >"
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view_details(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).","< can_view_details, (u_a, (""[has_appointment]"", 1)) >"
+"can_view(L, AC) :- LHCP(L), AppointmentCalendar(AC), has_appointment(L, AC). can_view(P, AC) :- Patient(P), AppointmentCalendar(AC), has_appointment(P, AC).",No Path Found
+"can_use(H, I) :- HCP(H), Immunization(I), allowable_immunization(A, I).",No Path Found
+"can_upload(H, F) :- HCP(H), CSVFile(F).",No Path Found
+"can_view_appointments(U, A) :- User(U), Appointment(A), (is_patient(U, P), has_appointment(P, A), is_upcoming(A)) or (PersonalHealthRepresentative(U), represents(U, P), has_appointment(P, A), is_upcoming(A)).",No Path Found
+"can_send_fake_email(L, E, U, M) :- LHCP(L), Email(E), User(U), Message(M), is_fake_email(E), receives_alert(L, U, M).","< can_send_fake_email, (u_a, (""[receives_alert]"", 1)) >"
+"can_view(P, NC) :- Patient(P), NotificationCenter(NC), has_access_to(P, NC).","< can_view, (u_a, (""[has_access_to]"", 1)) >"
+"can_access(U, I) :- User(U), Information(I), Patient(P), has_information(P, I), allows_access(P, U).","< can_access, (u_a, (""[allows_access^{-1}.has_information]"", 2)) >"
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view_detail(A, R) :- PublicHealthAgent(A), Report(R), has_access_to(A, R).","< can_view_detail, (u_a, (""[has_access_to]"", 1)) >"
+"can_remove(H, L, V) :- HCP(H), LabProcedure(L), OfficeVisit(V), created_for(H, L, V).","< can_remove, (u_a, (""[created_for]"", 1)) >"
+"can_access(H, S) :- HCP(H), System(S), authenticated_in(H, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view_listing(PHA, T, AE) :- PublicHealthAgent(PHA), TimePeriod(T), AdverseEvent(AE), selected_time_period(PHA, T), (related_to(AE, PD); related_to(AE, I)).
+can_view_trends(PHA, T, AE) :- PublicHealthAgent(PHA), TimePeriod(T), AdverseEvent(AE), selected_time_period(PHA, T), (related_to(AE, PD); related_to(AE, I)).","No Path Found
+No Path Found"
+"can_view(P, MR) :- Patient(P), MedicalRecord(MR), has_access(P, MR). can_view(R, MR) :- PersonalHealthRepresentative(R), MedicalRecord(MR), has_access(R, MR). can_view(P, FH) :- Patient(P), FamilyHistory(FH), MedicalRecord(MR), includes_family_history(MR, FH), has_access(P, MR). can_view(R, FH) :- PersonalHealthRepresentative(R), FamilyHistory(FH), MedicalRecord(MR), includes_family_history(MR, FH), has_access(R, MR).",No Path Found
+"can_find_hospitals(P, H) :- Patient(P), Hospital(H), Service(S), has_experience(H, S), top_5_experienced(H, S).",No Path Found
+"can_schedule(L, P, A) :- LHCP(L), Patient(P), Appointment(A).",No Path Found
+"can_access(P, S) :- Patient(P), System(S), authenticated_in(P, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_upload(A, F) :- Administrator(A), File(F), contains(F, L).",No Path Found
+"can_view(H, L) :- HCP(H), ReferralList(L), has_received_referral(H, L).","< can_view, (u_a, (""[has_received_referral]"", 1)) >"
+"can_examine(U, DT) :- User(U), DiagnosisTrend(DT), has_access_to(U, DT).","< can_examine, (u_a, (""[has_access_to]"", 1)) >"
+"can_read_message(U, M) :- User(U), Message(M), has_permission_to_read(U, M).","< can_read_message, (u_a, (""[has_permission_to_read]"", 1)) >"
+"can_remove(H, L) :- HCP(H), LabProcedure(L), has_status(L, Status).",No Path Found
+"can_view(T, LP) :- LabTechnician(T), LabProcedure(LP), has_priority_queue(T, LP).","< can_view, (u_a, (""[has_priority_queue]"", 1)) >"
+"can_refer(SendingHCP, P, ReceivingHCP) :- HCP(SendingHCP), Patient(P), HCP(ReceivingHCP), not refers_to(SendingHCP, P, ReceivingHCP).","< can_refer, (u_a, ¬ (""[refers_to]"", 1)) >"
+"can_direct(U, C) :- User(U), Choice(C), directs_to_change(U, C).","< can_direct, (u_a, (""[directs_to_change]"", 1)) >"
+"can_add_tester(A, ST, DB) :- Administrator(A), SoftwareTester(ST), Database(DB), has_access(A, DB).","< can_add_tester, (u_a, (""[has_access]"", 1)) >"
+"can_send_fake_email(A, R, FEM, REP) :- PublicHealthAgent(A), AdverseEventReporter(R), FakeEmailMessage(FEM), Report(REP), has_read(A, REP).","< can_send_fake_email, (u_a, (""[has_read]"", 1)) >"
+"can_view_calendar(P, C) :- Patient(P), Calendar(C), has_appointment(P, A), has_office_visit(P, OV), has_prescription(P, PR), has_lab_procedure(P, LP), is_current_month_date(A.date), is_current_month_date(OV.date), is_current_month_date(PR.date), is_current_month_date(LP.date).",No Path Found
+"can_edit(H, P, DF) :- HCP(H), Patient(P), DataFormat(DF), has_data_format(P, DF), DF = '6.4'.",No Path Found
+"can_see(L, P, PD) :- LHCP(L), Patient(P), PhysiologicData(PD), monitors(L, P). can_see(L, P, HWPD) :- LHCP(L), Patient(P), HeightWeightPedometerData(HWPD), monitors(L, P).",No Path Found
+"can_record(LT, LP) :- LabTechnician(LT), LabProcedure(LP).",No Path Found
+"can_add_remove_representative(H, U, P) :- HCP(H), RegisteredUser(U), Patient(P).",No Path Found
+"can_create(H, V, L) :- HCP(H), OfficeVisit(V), LabProcedure(L), has_visit(H, V).",No Path Found
+"can_find(P, L, C, A) :- Patient(P), LHCP(L), Condition(C), Area(A), diagnosed_with(P, C), located_in(L, A), handled_condition(L, C).","< can_find, (u_a, (""[diagnosed_with.handled_condition^{-1}.located_in]"", 3)) >"
+"can_identify(H, P) :- HCP(H), Patient(P), (is_chronic(P), needs_office_visit(P); is_older(P), needs_flu_shot(P); is_overdue_for_immunization(P)).",No Path Found
+"can_view_referral_details(P, R) :- Patient(P), Referral(R), has_referral(P, R).","< can_view_referral_details, (u_a, (""[has_referral]"", 1)) >"
+"can_send_message(L, P, M) :- LHCP(L), Patient(P), Message(M). can_send_message(L, R, M) :- LHCP(L), PersonalRepresentative(R), Message(M), represents(R, P). can_send_message(P, D, M) :- Patient(P), DLHCP(D), Message(M), has_dlhcp(P, D). can_send_message(R, D, M) :- PersonalRepresentative(R), DLHCP(D), Message(M), has_dlhcp(R, D).",No Path Found
+"can_toggle_designation(P, L) :- Patient(P), LHCP(L).",No Path Found
+"can_read_appointment(U, A) :- User(U), Appointment(A), has_appointment(U, A).","< can_read_appointment, (u_a, (""[has_appointment]"", 1)) >"
+"can_view(P, I) :- Patient(P), MessageInbox(I), has_inbox(P, I). can_view(R, I) :- Representative(R), MessageInbox(I), has_inbox(R, I).",No Path Found
+"can_view(P, L) :- Patient(P), LHCP(L), (has_office_visit_with(P, L) ; designated_by(P, L)).",No Path Found
+"can_view(L, R) :- LHCP(L), ComprehensivePatientReport(R), Patient(P), Group(G), belongs_to(P, G), report_of(R, P).",No Path Found
+"can_cancel_referral(Sender, P, R) :- HCP(Sender), Patient(P), Referral(R), sent_referral(Sender, P, R).","< can_cancel_referral, (u_a, (""[sent_referral]"", 1)) >"
+"can_show_errors(S, U, F) :- System(S), User(U), Form(F), not (has_field(F, FLD), not has_error(FLD)).",No Path Found
+"can_store(A, NDC) :- Administrator(A), NationalDrugCode(NDC).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated(U, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_answer(P, V, Q) :- Patient(P), OfficeVisit(V), Question(Q), belongs_to(P, V), is_previous_visit(V), has_question(V, Q).
+can_answer(R, V, Q) :- PersonalHealthRepresentative(R), OfficeVisit(V), Question(Q), represents(R, P), belongs_to(P, V), is_previous_visit(V), has_question(V, Q).","< can_answer, (u_a, (""[belongs_to.has_question]"", 2)) >
+< can_answer, (u_a, (""[represents.belongs_to.has_question]"", 3)) >"
+"can_access(H, S) :- HCP(H), System(S), authenticated_in(H, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view_details(RHCP, REF) :- ReceivingHCP(RHCP), Referral(REF), has_referral(RHCP, REF).","< can_view_details, (u_a, (""[has_referral]"", 1)) >"
+"can_approve(E, I) :- Enterer(E), Input(I), entered_by(I, E). can_approve(Ed, I) :- Editor(Ed), Input(I).",No Path Found
+"can_add_referral(H, P, R) :- HCP(H), Patient(P), Referral(R).",No Path Found
+"can_view_ordered(U, M) :- User(U), Message(M), has_timestamp(M, T), not (has_timestamp(M2, T2), T2 > T).",No Path Found
+"can_read(U, M) :- User(U), Message(M), has_access_to(U, M).","< can_read, (u_a, (""[has_access_to]"", 1)) >"
+"can_view(LHCP, DI) :- LicensedHealthCareProfessional(LHCP), DiagnosticInfo(DI), Patient(P), owns(P, DI), designated(P, LHCP).","< can_view, (u_a, (""[designated^{-1}.owns]"", 2)) >"
+"can_report(P, H, D) :- Patient(P), HeightData(H), Day(D), not (reports(P, H2, D), H2 != H). can_report(P, W, D) :- Patient(P), WeightData(W), Day(D), not (reports(P, W2, D), W2 != W). can_report(P, PD, D) :- Patient(P), PedometerData(PD), Day(D), not (reports(P, PD2, D), PD2 != PD). can_report(U, H, D) :- UAP(U), HeightData(H), Day(D), not (reports(U, H2, D), H2 != H). can_report(U, W, D) :- UAP(U), WeightData(W), Day(D), not (reports(U, W2, D), W2 != W). can_report(U, PD, D) :- UAP(U), PedometerData(PD), Day(D), not (reports(U, PD2, D), PD2 != PD). can_report(PR, H, D) :- PersonalRepresentative(PR), HeightData(H), Day(D), not (reports(PR, H2, D), H2 != H). can_report(PR, W, D) :- PersonalRepresentative(PR), WeightData(W), Day(D), not (reports(PR, W2, D), W2 != W). can_report(PR, PD, D) :- PersonalRepresentative(PR), PedometerData(PD), Day(D), not (reports(PR, PD2, D), PD2 != PD).",No Path Found
+"can_view(L, R) :- LHCP(L), ComprehensiveGroupReport(R).",No Path Found
+"can_view(P, R) :- Patient(P), Referral(R), has_referral(P, R).","< can_view, (u_a, (""[has_referral]"", 1)) >"
+"can_cancel_referral(H, P, R) :- HCP(H), Patient(P), Referral(R), sent_referral(H, P, R).","< can_cancel_referral, (u_a, (""[sent_referral]"", 1)) >"
+"can_remove(H, LP) :- HCP(H), LabProcedure(LP), created_by(LP, H).","< can_remove, (u_a, (""[created_by^{-1}]"", 1)) >"
+"can_view(P, I) :- Patient(P), PatientSpecificInstructions(I), has_access(P, I).","< can_view, (u_a, (""[has_access]"", 1)) >"
+"can_change_password(U, PW) :- User(U), Password(PW), has_password(U, PW).","< can_change_password, (u_a, (""[has_password]"", 1)) >"
+"can_confirm(L, S) :- LHCP(L), Selection(S), not prompted_to_try_again(L, S).","< can_confirm, (u_a, ¬ (""[prompted_to_try_again]"", 1)) >"
+"can_proceed(H, S) :- HealthCareProfessional(H), Selection(S), confirmed_selection(H, S).","< can_proceed, (u_a, (""[confirmed_selection]"", 1)) >"
+"can_view(L, HD) :- LHCP(L), HeightData(HD), has_access_to(L, HD). can_view(L, WD) :- LHCP(L), WeightData(WD), has_access_to(L, WD). can_view(L, PD) :- LHCP(L), PedometerData(PD), has_access_to(L, PD).",No Path Found
+"can_enter_or_edit(H, PHI) :- HCP(H), PersonalHealthInfo(PHI), has_access(H, PHI).","< can_enter_or_edit, (u_a, (""[has_access]"", 1)) >"
+"can_edit_submission_types(L, P, MIT) :- LHCP(L), Patient(P), MonitoringInfoType(MIT), on_monitoring_list(P), has_type(MIT).",No Path Found
+"can_assign(A, L, MID, PW) :- Administrator(A), LHCP(L), MedicalID(MID), Password(PW).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated(U, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_view_referrals(S, R) :- HCP(S), Referral(R), sent_referral(S, _, R).","< can_view_referrals, (u_a, (""[sent_referral]"", 1)) >"
+"can_reply(L, M) :- LHCP(L), Message(M), has_message(L, M).","< can_reply, (u_a, (""[has_message]"", 1)) >"
+"can_read_details(U, LP) :- User(U), LaboratoryProcedure(LP), Calendar(C), has_procedure(C, LP).",No Path Found
+"can_select(H, R) :- HCP(H), OverridingReason(R), maintains(A, R).",No Path Found
+"can_remove(H, L) :- HCP(H), LabProcedure(L), has_authority(H, L).","< can_remove, (u_a, (""[has_authority]"", 1)) >"
+"can_access(L, N, S, A) :- LHCP(L), Name(N), Specialty(S), Address(A), has_name(L, N), has_specialty(L, S), has_address(L, A).","< can_access, (u_a, (""[has_address]"", 1)) >"
+"can_reset_password(U, P) :- User(U), Patient(P), assigned_to(U, P), has_mid(P, M), has_secret_key(P, SK).","< can_reset_password, (u_a, (""[assigned_to]"", 1)) >"
+"can_enter_glucose_level(S, G) :- (Patient(S) ; UAP(S) ; PersonalRepresentative(S)), GlucoseLevel(G), (G < 0 ; G > 250).",No Path Found
+"can_append(S, U, P, A) :- System(S), User(U), Page(P), Activity(A), has_access(U, P).",No Path Found
+"can_add(L, P) :- LHCP(L), Patient(P), not has_monitoring_list(L, P). can_add(U, P) :- UAP(U), Patient(P), not has_monitoring_list(U, P). can_delete(L, P) :- LHCP(L), Patient(P), has_monitoring_list(L, P). can_delete(U, P) :- UAP(U), Patient(P), has_monitoring_list(U, P).",No Path Found
+"can_view_diagnoses(P, DI) :- Patient(P), Diagnosis(DI), has_diagnosis(P, DI).","< can_view_diagnoses, (u_a, (""[has_diagnosis]"", 1)) >"
+"can_open(U, I) :- User(U), Inbox(I), has_inbox(U, I). can_open(U, O) :- User(U), Outbox(O), has_outbox(U, O).",No Path Found
+"can_deactivate(H, P) :- HCP(H), Patient(P), selected_to_deactivate(H, P).","< can_deactivate, (u_a, (""[selected_to_deactivate]"", 1)) >"
+"can_view(L, PR) :- LHCP(L), PatientReport(PR), has_request(L, PR).","< can_view, (u_a, (""[has_request]"", 1)) >"
+"can_select(H, LT) :- HCP(H), LabTechnician(LT), not selected_before(H, LT). selected_before(H, LT) :- HCP(H), LabTechnician(LT).",No Path Found
+"can_view_details(P, A) :- Patient(P), Appointment(A), has_appointment(P, A). can_view_details(R, A) :- PersonalHealthRepresentative(R), Appointment(A), has_appointment(R, A).",No Path Found
+"can_view_unread_count(U, I) :- User(U), Inbox(I), has_inbox(U, I).","< can_view_unread_count, (u_a, (""[has_inbox]"", 1)) >"
+"can_upload(H, P, Ph) :- HCP(H), Patient(P), Photo(Ph), has_demographic_record(P, Ph).",No Path Found
+"can_reply(L, M) :- LHCP(L), Message(M). can_reply(P, M) :- Patient(P), Message(M). can_reply(R, M) :- Representative(R), Message(M), is_representative_of(R, P).",No Path Found
+"can_access_system(P, ER) :- Person(P), ElectronicRecord(ER), has_record(P, ER).","< can_access_system, (u_a, (""[has_record]"", 1)) >"
+"can_click(P, L) :- Patient(P), Link(L), has_choice(P, L).","< can_click, (u_a, (""[has_choice]"", 1)) >"
+"can_reset_password(U, PW) :- User(U), Password(PW), has_secret_key(U, SK).",No Path Found
+"can_receive_cancel_message(P, H, M, R) :- Patient(P), HCP(H), Message(M), Referral(R), receives_message(P, M), receives_message(H, M), message_content(M, R), referral_canceled(R).","< can_receive_cancel_message, (u_a, (""[receives_message.message_content]"", 2)) >"
+"can_view(L, P, R) :- LHCP(L), Patient(P), ComprehensiveReport(R), has_report(P, R).",No Path Found
+"can_view(U, L, basic_info) :- User(U), LHCP(L), is_designated(L, U).",No Path Found
+"can_view(L, P) :- LHCP(L), Patient(P), has_office_visit(L, P).","< can_view, (u_a, (""[has_office_visit]"", 1)) >"
+"can_access_outbox(P, O) :- Patient(P), Outbox(O), has_outbox(P, O). can_access_outbox(PR, O) :- PersonalRepresentative(PR), Outbox(O), has_outbox(PR, O).",No Path Found
+"can_retry(U, A) :- User(U), Action(A), asked_to_try_again(U, A).","< can_retry, (u_a, (""[asked_to_try_again]"", 1)) >"
+"can_provide_prescription_details(H, PR, DOS, SD, ED, SI) :- HCP(H), Prescription(PR), Dosage(DOS), StartDate(SD), EndDate(ED), SpecialInstructions(SI), provides_dosage(H, PR, DOS), provides_start_date(H, PR, SD), provides_end_date(H, PR, ED), provides_instructions(H, PR, SI).","< can_provide_prescription_details, (u_a, (""[provides_instructions]"", 1)) >"
+"can_select(P, L) :- Patient(P), LHCP(L), has_provider(P, L).","< can_select, (u_a, (""[has_provider]"", 1)) >"
+"can_select_medication(H, M) :- HCP(H), Medication(M), selected_medication(H, M).","< can_select_medication, (u_a, (""[selected_medication]"", 1)) >"
+"can_view(P, H) :- Patient(P), iTrustHomepage(H), has_homepage(P, H). can_view(R, H) :- PersonalHealthRepresentative(R), iTrustHomepage(H), has_homepage(R, H).",No Path Found
+"can_confirm(H, S) :- HealthCarePersonnel(H), Selection(S), not prompted_to_try_again(H, S).","< can_confirm, (u_a, ¬ (""[prompted_to_try_again]"", 1)) >"
+"can_enter_and_confirm(L, P, M) :- LHCP(L), Patient(P), MID(M), has_mid(P, M). can_enter_and_confirm(L, R, M) :- LHCP(L), Representative(R), MID(M), has_mid(R, M).",No Path Found
+"can_prescribe(H, P, DR) :- HCP(H), Patient(P), Drug(DR), has_ndc(DR, N), has_name(DR, NM).",No Path Found
+"can_access(H, S) :- HCP(H), System(S), authenticated_in(H, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_enter(L, U, S) :- LHCP(L), UAP(U), System(S), data_format_compliant(U, '6.2'), all_fields_mandatory(U).",No Path Found
+"can_approve_or_reject(L, AR) :- LHCP(L), AppointmentRequest(AR), pending(AR).",No Path Found
+"can_view_request_list(L, RR) :- LHCP(L), ReportRequest(RR), has_made_request(L, RR).","< can_view_request_list, (u_a, (""[has_made_request]"", 1)) >"
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_specify_specialty(A, L, Specialty) :- Admin(A), LHCP(L), Specialty in {general_physician, heart_surgeon, ob_gyn, pediatrician, surgeon}. can_specify_specialty(A, T, Type) :- Admin(A), LT(T), Type in {blood, tissue, general}.",No Path Found
+"can_reply(P, M) :- Patient(P), Message(M), has_message(P, M).
+can_reply(R, M) :- PatientRepresentative(R), Message(M), has_message(R, M).","< can_reply, (u_a, (""[has_message]"", 1)) >
+< can_reply, (u_a, (""[has_message]"", 1)) >"
+"can_read_prescription_details(U, P) :- User(U), Prescription(P), Calendar(C), has_prescription_in_calendar(C, P).",No Path Found
+"can_send_message(L, Recipient) :- LHCP(L), (Patient(Recipient) ; (Representative(Recipient), is_representative_of(Recipient, P))), not (exists Recipient2 such that (Patient(Recipient2) ; Representative(Recipient2)) and Recipient2 != Recipient).",No Path Found
+"can_search(U, D) :- User(U), Doctor(D), matches_last_name(D, L) or matches_partial_last_name(D, L) or has_specialty(D, S).",No Path Found
+"can_report(U, M) :- UAP(U), Measurement(M), (is_type(M, 'height'); is_type(M, 'weight'); is_type(M, 'pedometer')).",No Path Found
+"can_select_different_procedure(H, PC) :- HCP(H), ProcedureCode(PC), not selected_procedure(H, PC).","< can_select_different_procedure, (u_a, ¬ (""[selected_procedure]"", 1)) >"
+"can_input(U, P, V) :- UAP(U), Patient(P), VitalSign(V), is_associated(U, P). can_input(R, P, V) :- PatientRepresentative(R), Patient(P), VitalSign(V), is_associated(R, P).",No Path Found
+"can_enter_or_edit(P, DI) :- Patient(P), DemographicInfo(DI), has_demographic_info(P, DI). can_enter_or_edit(R, DI) :- PersonalHealthRepresentative(R), DemographicInfo(DI), has_demographic_info(R, DI). can_enter_or_edit(P, SQ) :- Patient(P), SecurityQuestion(SQ), has_security_question(P, SQ). can_enter_or_edit(R, SQ) :- PersonalHealthRepresentative(R), SecurityQuestion(SQ), has_security_question(R, SQ). can_enter_or_edit(P, SA) :- Patient(P), SecurityAnswer(SA), has_security_answer(P, SA). can_enter_or_edit(R, SA) :- PersonalHealthRepresentative(R), SecurityAnswer(SA), has_security_answer(R, SA).",No Path Found
+"can_view(P, R) :- Person(P), Record(R), owns(P, R). can_view(PR, R) :- PersonalRepresentative(PR), Record(R), represents(PR, P), owns(P, R).","< can_view, (u_a, (""[owns]"", 1)) >"
+"can_document_or_edit(H, V) :- HCP(H), OfficeVisit(V), has_access(H, V).","< can_document_or_edit, (u_a, (""[has_access]"", 1)) >"
+"can_record_interaction(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2). can_delete_interaction(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2), has_interaction(D1, D2).",No Path Found
+"can_enter_weight(S, W, D) :- (Patient(S) ; UAP(S) ; PersonalRepresentative(S)), WeightDataPoint(W), Day(D), not has_entered_weight(S, _, D). can_enter_pedometer(S, PD, D) :- (Patient(S) ; UAP(S) ; PersonalRepresentative(S)), PedometerDataPoint(PD), Day(D), not has_entered_pedometer(S, _, D).","< can_enter_weight, (u_a, ¬ (""[has_entered_pedometer]"", 1)) >"
+"can_display_notifications(NC, P) :- NotificationCenter(NC), Patient(P), upcoming_appointment(P, _), designated_hcp(P, _), unread_message(P, _), new_referral(P, _), unviewed_lab_procedure(P, _).
+can_display_notifications(NC, R) :- NotificationCenter(NC), PatientRepresentee(R), upcoming_appointment(R, _), designated_hcp(R, _), unread_message(R, _), new_referral(R, _), unviewed_lab_procedure(R, _).","No Path Found
+No Path Found"
+"can_manage(A, AT) :- Administrator(A), AppointmentType(AT), has_authority(A, AT).","< can_manage, (u_a, (""[has_authority]"", 1)) >"
+"can_view_log(P, L, D_start, D_end) :- Patient(P), AccessLog(L), Date(D_start), Date(D_end), has_log(P, L), D_start <= D_end.",No Path Found
+"can_read_details(U, V) :- User(U), OfficeVisit(V), has_visit(U, V).","< can_read_details, (u_a, (""[has_visit]"", 1)) >"
+"can_view_notification_center(L, NC) :- LHCP(L), NotificationCenter(NC), has_upcoming_appointment(L, _), has_physiologic_report(L, _), has_weight_pedometer_report(L, _), has_unread_message(L, _), has_new_referral(L, _), has_pending_lab_procedure(L, _), has_pending_appointment_request(L, _).",No Path Found
+"can_select(L, P) :- LHCP(L), Patient(P).",No Path Found
+"can_view(P, L) :- Patient(P), ReferralList(L), has_referral(P, L).","< can_view, (u_a, (""[has_referral]"", 1)) >"
+"can_use(H, DR) :- HCP(H), Drug(DR), allowable_drug(A, DR).",No Path Found
+"can_edit(H, R) :- HCP(H), Referral(R), sent_referral(H, R).","< can_edit, (u_a, (""[sent_referral]"", 1)) >"
+"can_view(P, PR) :- Patient(P), PrescriptionReport(PR), has_access_to(P, PR). can_view(R, PR) :- PersonalHealthRepresentative(R), PrescriptionReport(PR), has_access_to(R, PR). can_view(L, PR) :- LHCP(L), PrescriptionReport(PR), has_access_to(L, PR).",No Path Found
+"can_view_expired_prescriptions(P, PR) :- Patient(P), Prescription(PR), has_prescription(P, PR), expired(PR).","< can_view_expired_prescriptions, (u_a, (""[has_prescription]"", 1)) >"
+"can_confirm(L, P, Action) :- LHCP(L), Patient(P), presented(L, P), Action in {add, delete}.",No Path Found
+"can_report_event(P, DR) :- Patient(P), Drug(DR), has_prescription(P, DR). can_report_event(P, I) :- Patient(P), Immunization(I), has_immunization(P, I).",No Path Found
+"can_enter_comment(H, L) :- HCP(H), LabProcedure(L), has_status(L, pending).",No Path Found
+"can_report(P, PDT) :- Patient(P), PhysiologicDataType(PDT), under_monitoring(P, PDT).","< can_report, (u_a, (""[under_monitoring]"", 1)) >"
+"can_view_referral(H, R) :- HCP(H), Referral(R), received_referral(H, R).","< can_view_referral, (u_a, (""[received_referral]"", 1)) >"
+"can_prescribe(D, P, DR) :- Prescriber(D), Patient(P), Drug(DR), not (takes(P, OD), interacts(DR, OD)).",No Path Found
+"can_report(U, PM) :- UAP(U), PhysiologicMeasurement(PM).",No Path Found
+"can_report_adverse_event(P, I) :- Patient(P), Immunization(I), has_immunization(P, I).","< can_report_adverse_event, (u_a, (""[has_immunization]"", 1)) >"
+"can_access_info(U, N, E) :- User(U), Name(N), Email(E), has_name(U, N), has_email(U, E).","< can_access_info, (u_a, (""[has_email]"", 1)) >"
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_analyze_epidemic(A, Prefix) :- Analyst(A), ZipCode(Z), matches_zip_prefix(Z, Prefix), not epidemic_occurring(Prefix).",No Path Found
+"can_choose_priority(Sender, R, P) :- HCP(Sender), Referral(R), Priority(P), P >= 1, P <= 3.",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated(U, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_view_prescriptions(U, P, PR) :- User(U), Patient(P), Prescription(PR), (is_patient(U, P) ; is_representative(U, P)), has_prescription(P, PR). has_prescription(P, PR) :- Patient(P), Prescription(PR).",No Path Found
+"can_view_interactions(A, D1) :- Administrator(A), Drug(D1), interacts_with(D1, D2).",No Path Found
+"can_save(U, D, T, S) :- User(U), Data(D), Timestamp(T), Status(S), has_input(U, D), has_timestamp(U, T), has_status(U, S).","< can_save, (u_a, (""[has_status]"", 1)) >"
+"can_send_message(L, P, M, AR) :- LHCP(L), Patient(P), Message(M), AppointmentRequest(AR), has_request(P, AR), (approves(L, AR); rejects(L, AR)).",No Path Found
+"can_select_patient(LHCP, P, R) :- User(LHCP), Patient(P), Report(R), requested_report(LHCP, R).","< can_select_patient, (u_a, (""[requested_report]"", 1)) >"
+"can_notify(H, P, DR) :- HCP(H), Patient(P), Drug(DR), has_allergy(P, DR).",No Path Found
+"can_send_fake_email(L, E, M) :- LHCP(L), Email(E), Message(M), is_fake_email(E), has_new_reply(M).",No Path Found
+"can_request(P, H) :- Patient(P), Hospital(H), is_nearby(P, H).","< can_request, (u_a, (""[is_nearby]"", 1)) >"
+"can_sort(L, MI) :- LHCP(L), MessageInbox(MI), has_inbox(L, MI). can_sort(P, MI) :- Patient(P), MessageInbox(MI), has_inbox(P, MI). can_sort(R, MI) :- Representative(R), MessageInbox(MI), has_inbox(R, MI). can_sort(L, MO) :- LHCP(L), MessageOutbox(MO), has_outbox(L, MO). can_sort(P, MO) :- Patient(P), MessageOutbox(MO), has_outbox(P, MO). can_sort(R, MO) :- Representative(R), MessageOutbox(MO), has_outbox(R, MO).",No Path Found
+"can_view_report(L, R) :- LHCP(L), Report(R), Patient(P), has_gender(P, G), has_age(P, A), has_diagnosis(P, D).",No Path Found
+"can_view(L, P, DR, HD) :- LHCP(L), Patient(P), DateRange(DR), HealthData(HD), has_patient(L, P), in_date_range(HD, DR), (reported_by(HD, P); reported_by(HD, U); reported_by(HD, PR)).",No Path Found
+"can_access_outbox(L, M) :- LHCP(L), Message(M), sent_message(L, M).","< can_access_outbox, (u_a, (""[sent_message]"", 1)) >"
+"can_access(P, S) :- Patient(P), System(S), authenticated(P, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_view_received(LT, LP) :- LabTechnician(LT), LabProcedure(LP), assigned_to(LP, LT), status(LP, 'received').
+can_view_in_transit(LT, LP) :- LabTechnician(LT), LabProcedure(LP), assigned_to(LP, LT), status(LP, 'in_transit').","< can_view_received, (u_a, (""[assigned_to^{-1}]"", 1)) >
+< can_view_in_transit, (u_a, (""[assigned_to^{-1}]"", 1)) >"
+"can_enter_new_user(H, P, S) :- HCP(H), Patient(P), System(S), not exists_user(P, S).",No Path Found
+"can_create(H, OV, LP) :- HCP(H), OfficeVisit(OV), LabProcedure(LP), associated_with(OV, LP).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated(U, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_add_prescription(H, PR, ML) :- HCP(H), Prescription(PR), MedicationList(ML), has_access(H, ML).","< can_add_prescription, (u_a, (""[has_access]"", 1)) >"
+"can_request(L, P, R) :- LHCP(L), Patient(P), Report(R), has_report(P, R).",No Path Found
+"can_report_adverse_event(P, DR) :- Patient(P), Drug(DR), chooses_drug(P, DR).","< can_report_adverse_event, (u_a, (""[chooses_drug]"", 1)) >"
+"can_sort(P, R) :- Patient(P), Referral(R), has_referral(P, R).","< can_sort, (u_a, (""[has_referral]"", 1)) >"
+"can_enter(LT, LP) :- LabTechnician(LT), LabProcedure(LP), has_status(LP, testing).",No Path Found
+"can_request_appointment(P, L) :- Patient(P), LHCP(L), requests_appointment(P, L).","< can_request_appointment, (u_a, (""[requests_appointment]"", 1)) >"
+"can_enter_or_edit(H, I) :- HealthCarePersonnel(H), PersonalHealthInfo(I), has_access_to(H, I), includes_data(I, F), includes_immunization(I, Im), includes_office_visit(I, O), includes_family_history(I, FH), includes_bmi(I, B), includes_drug_allergy(I, DA), not includes_notes(I), not includes_lab_procedures(I).","< can_enter_or_edit, (u_a, (""[has_access_to]"", 1)) >"
+"can_access_physician_info(U, Z, H, T) :- User(U), (provides_zip_code(U, Z) ; provides_hospital_code(U, H)), (provides_physician_type(U, T) ; true).",No Path Found
+"can_read_details(U, A) :- User(U), Appointment(A), (is_lhcp(U, L), involves_patient(A, P)) or (is_patient(U, P), involves_lhcp(A, L)).",No Path Found
+"can_edit(L, A) :- LHCP(L), Appointment(A), is_future(A). can_delete(L, A) :- LHCP(L), Appointment(A), is_future(A).",No Path Found
+"can_retry(H, DC) :- HCP(H), DiagnosisCode(DC), invalid_code(DC).",No Path Found
+"can_confirm_cancel(H, R) :- HCP(H), Referral(R), has_referral(R).",No Path Found
+"can_enter_text(H, T) :- HCP(H), FreeStyleText(T), selects_reason(H, R), R = 'Other'.",No Path Found
+"can_view(L, P, AI) :- LHCP(L), Patient(P), AdditionalInfo(AI), has_access(L, P).",No Path Found
+"can_view_ordered(U, M) :- User(U), Message(M), (in_inbox(U, M) ; in_outbox(U, M)), has_timestamp(M, T), order_by_desc(T).",No Path Found
+"can_add_or_edit_instruction(H, P, I) :- HCP(H), Patient(P), Instruction(I).",No Path Found
+"can_see(P, OVP, LP, S, H, T) :- Patient(P), OfficeVisitPage(OVP), LabProcedure(LP), HCP(H), Timestamp(T), associated_with(OVP, LP), has_status(LP, S), performed_by(LP, H), has_timestamp(LP, T).",No Path Found
+"can_report(R, P, H) :- Reporter(R), Patient(P), Height(H), is_patient_of(R, P). can_report(R, P, W) :- Reporter(R), Patient(P), Weight(W), is_patient_of(R, P). can_report(R, P, PR) :- Reporter(R), Patient(P), PedometerReading(PR), is_patient_of(R, P).",No Path Found
+"can_upload(A, F) :- Administrator(A), File(F), contains(F, L).",No Path Found
+"can_access(A, S) :- Administrator(A), System(S), authenticated_in(A, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_report(U, R) :- User(U), Report(R).",No Path Found
+"can_enter_or_edit(U, DI) :- User(U), DemographicInfo(DI), has_access(U, DI).","< can_enter_or_edit, (u_a, (""[has_access]"", 1)) >"
+"can_refer(ReferringHCP, P, ReceivingHCP, V) :- HCP(ReferringHCP), Patient(P), HCP(ReceivingHCP), OfficeVisit(V), has_visit(P, V).",No Path Found
+"can_update_status(T, LP, pending) :- LabTechnician(T), LabProcedure(LP), Status(pending), not has_status(LP, pending).",No Path Found
+"can_sort_by_last_name(U, I, LN, Order) :- User(U), Inbox(I), has_inbox(U, I), contains_message(I, M), has_sender(M, S), has_last_name(S, LN), (Order = 'ascending' ; Order = 'descending').
+can_sort_by_timestamp(U, I, TS, Order) :- User(U), Inbox(I), has_inbox(U, I), contains_message(I, M), has_timestamp(M, TS), (Order = 'ascending' ; Order = 'descending').","No Path Found
+No Path Found"
+"can_view_potential_renewals(H, P) :- HCP(H), Patient(P), is_dlhcp(H, P), has_special_diagnosis(P), prescription_expires_soon(P, PR).","< can_view_potential_renewals, (u_a, (""[is_dlhcp]"", 1)) >"
+"can_view_referrals(S, R, P) :- HCP(S), Referral(R), Patient(P), sent_referral(S, R, P).","< can_view_referrals, (u_a, (""[sent_referral]"", 1)) >"
+"can_send_message(P, H, A) :- Patient(P), HCP(H), Appointment(A), receiving_hcp(H).",No Path Found
+"can_access(L, S) :- LHCP(L), System(S), authenticated_in(L, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view_lhcps(P, L, D) :- Patient(P), LHCP(L), Diagnosis(D), lives_in_area(P, Area), same_area(L, Area), handled_diagnosis(L, D).","< can_view_lhcps, (u_a, (""[lives_in_area.same_area^{-1}.handled_diagnosis]"", 3)) >"
+"can_access(P, S) :- Patient(P), System(S), authenticated(P, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_view_report_count(L, P, current_date) :- LHCP(L), Patient(P), has_patient(L, P), submitted_report(P, R, current_date).","< can_view_report_count, (u_a, (""[has_patient.submitted_report]"", 2)) >"
+"can_view(L, PD) :- LHCP(L), PhysiologicData(PD), has_access_to(L, PD).","< can_view, (u_a, (""[has_access_to]"", 1)) >"
+"can_download(L, X) :- LHCP(L), XMLDocument(X), GroupReport(R), contains(R, X).",No Path Found
+"can_access(L, S) :- LHCP(L), System(S), authenticated_in(L, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_access(H, S) :- HCP(H), System(S), authenticated_in(H, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_save_request(R, L, T) :- Requester(R), LHCP(L), AppointmentTime(T), not conflicts(T, A).",No Path Found
+"can_select_different(H, L1, L2) :- HCP(H), LabTech(L1), LabTech(L2), L1 != L2, not selected(H, L2).","< can_select_different, (u_a, ¬ (""[selected]"", 1)) >"
+"can_list_instructions(P, I) :- Patient(P), Instruction(I), has_instruction(P, I).","< can_list_instructions, (u_a, (""[has_instruction]"", 1)) >"
+"can_see(P, R) :- Patient(P), LabProcedure(LP), Results(R), has_status(LP, completed). can_see(P, C) :- Patient(P), LabProcedure(LP), Comments(C), has_status(LP, completed).",No Path Found
+"can_view_status(U, AR) :- User(U), AppointmentRequest(AR), status(AR, _).",No Path Found
+"can_view(U, I) :- User(U), Information(I), has_access(U, I). can_edit(U, I) :- User(U), Information(I), has_access(U, I).","< can_view, (u_a, (""[has_access]"", 1)) >"
+"can_access(U, S) :- User(U), System(S), authenticated_in(U, S).","< can_access, (u_a, (""[authenticated_in]"", 1)) >"
+"can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).","< can_view_appointments, (u_a, (""[has_appointment]"", 1)) >"
+"can_view(L, AR) :- LHCP(L), AppointmentRequest(AR), pending(AR).",No Path Found
+"can_analyze(A, P, D) :- Analyst(A), Patient(P), Disease(D), has_risk_factor(P, R).",No Path Found
+"can_view(LHCP, P, MR) :- LicensedHealthCareProfessional(LHCP), Patient(P), MedicalRecord(MR), designated_lhcp(P, LHCP), approved_medical_record(P, MR).","< can_view, (u_a, (""[designated_lhcp^{-1}.approved_medical_record]"", 2)) >"
+"can_see(U, PHI) :- User(U), PersonalHealthInfo(PHI), (is_patient(U, P), has_personal_health_info(P, PHI); is_personal_representative(U, P), has_personal_health_info(P, PHI)).
+can_see(U, I) :- User(U), Immunization(I), (is_patient(U, P), has_immunization(P, I); is_personal_representative(U, P), has_immunization(P, I)).
+can_see(U, OV) :- User(U), OfficeVisit(OV), (is_patient(U, P), has_office_visit(P, OV); is_personal_representative(U, P), has_office_visit(P, OV)).","No Path Found
+No Path Found
+No Path Found"
+"can_view(H, L, O) :- HCP(H), LabProcedure(L), OfficeVisit(O), created_for(L, O).",No Path Found
+"can_follow_template(P, PP, T) :- PolicyMaker(P), PrivacyPolicy(PP), Template(T), has_template(PP, T).",No Path Found
+"can_access(U, S) :- User(U), System(S), authenticated(U, S).","< can_access, (u_a, (""[authenticated]"", 1)) >"
+"can_implement(D, I) :- Developer(D), Implementation(I), adheres_to(I, java_standards).",No Path Found
+"can_access(P, I) :- Person(P), Information(I), stored_about(P, I), not jeopardises_third_party(I).","< can_access, (u_a, (""[stored_about]"", 1)) >"
+"can_cancel_modifications(U, F) :- User(U), Filter(F), has_saved_filter(U, F), not modified_criteria(U, C) where has_criteria(F, C).","< can_cancel_modifications, (u_a, (""[has_saved_filter]"", 1)) >"
+"can_search_messages(U, FC) :- User(U), FilterCriteria(FC), has_criteria(U, FC).
+can_view_message(U, M) :- User(U), Message(M), FilterCriteria(FC), has_criteria(U, FC), satisfies_criteria(M, FC).","< can_search_messages, (u_a, (""[has_criteria]"", 1)) >
+< can_view_message, (u_a, (""[has_criteria.satisfies_criteria^{-1}]"", 2)) >"
+"can_save(U, F) :- User(U), Filter(F), has_modification(U, F).","< can_save, (u_a, (""[has_modification]"", 1)) >"
+"can_obtain(D, P, I) :- Doctor(D), Patient(P), Information(I), has_access(D, P, I). can_share(D1, D2, P, I) :- Doctor(D1), Doctor(D2), Patient(P), Information(I), has_access(D1, P, I), has_access(D2, P, I).","< can_obtain, (u_a, (""[has_access.has_access^{-1}.has_access]"", 3) ∧ (""[has_access.has_access^{-1}.has_access]"", 3) ∧ (""[has_access.has_access.has_access^{-1}.has_access]"", 4) ∧ (""[has_access.has_access]"", 2) ∧ (""[has_access.has_access^{-1}.has_access]"", 3) ∧ (""[has_access.has_access^{-1}.has_access]"", 3)) >"
+"can_view(D, A) :- Doctor(D), AggregatePatientData(A), has_access(D, A).","< can_view, (u_a, (""[has_access]"", 1)) >"
+"can_access(H, I) :- HealthCareWorker(H), PatientInformation(I), has_information(P, I).",No Path Found
+"can_access(U, R) :- User(U), Resource(R), not emergency_access(U, R).","< can_access, (u_a, ¬ (""[emergency_access]"", 1)) >"
+"can_modify(P, S) :- Patient(P), System(S), not deactivated(P). can_login(P, S) :- Patient(P), System(S), not deactivated(P).",No Path Found
+"can_reactivate(A, P) :- Administrator(A), Patient(P), is_deactivated(P).",No Path Found
+"can_add_commentary(H, L) :- HCP(H), LabProcedure(L), pending(L).",No Path Found
+"can_update(H, LP, completed) :- HCP(H), LabProcedure(LP), not has_status(LP, completed).",No Path Found
+"can_examine_trends(S, D) :- (LHCP(S) ; PHA(S)), Diagnosis(D), recent(D), has_access_to_trends(S, D).","< can_examine_trends, (u_a, (""[has_access_to_trends]"", 1)) >"
+"can_determine_epidemic(S, A, R) :- (LHCP(S) ; PHA(S)), Ailment(A), Area(R), is_epidemic(A, R).",No Path Found
+"can_send_message(P, D, S, T) :- Patient(P), DLHCP(D), MessageSubject(S), MessageText(T), length(S, L1), L1 <= 100, length(T, L2), L2 <= 1000. can_send_message(R, D, S, T) :- Representative(R), DLHCP(D), MessageSubject(S), MessageText(T), is_representative_of(R, P), Patient(P), length(S, L1), L1 <= 100, length(T, L2), L2 <= 1000.",No Path Found
+"can_click(S, B) :- (Patient(S) ; Representative(S)), SendButton(B), has_access(S, B).","< can_click, (u_a, (""[has_access]"", 1)) >"
+"can_view(L, R) :- LHCP(L), EmergencyReport(R). can_view(E, R) :- ER(E), EmergencyReport(R).",No Path Found
+"can_access(L, M) :- LHCP(L), MID(M), provides(L, M). can_access(E, M) :- ER(E), MID(M), provides(E, M).",No Path Found
+"can_enter(L, M) :- LHCP(L), MID(M). can_enter(E, M) :- ER(E), MID(M).",No Path Found
+"can_enter(L, RM) :- LHCP(L), ResponseMessage(RM), length(RM, Len), Len <= 1000.",No Path Found
+"can_select(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2), D1 != D2.",No Path Found
+"can_delete(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2), has_interaction(D1, D2).",No Path Found
+"can_add(A, R) :- Administrator(A), Reason(R).",No Path Found
+"can_modify(A, E, RN) :- Administrator(A), Entry(E), ReasonName(RN), has_entry(A, E).",No Path Found
+"can_send(H, R) :- HCP(H), Referral(R). can_cancel(H, R) :- HCP(H), Referral(R). can_edit(H, R) :- HCP(H), Referral(R).",No Path Found
+"can_present_security_question(U, SQ) :- User(U), SecurityQuestion(SQ), has_security_question(U, SQ), not null(SQ). can_present_security_question(U, SQ) :- User(U), SecurityQuestion(SQ), has_security_answer(U, SA), not null(SA).","< can_present_security_question, (u_a, (""[has_security_question]"", 1)) >"
+"can_obtain_answer(U, SQ, SA) :- User(U), SecurityQuestion(SQ), SecurityAnswer(SA), has_security_question(U, SQ), has_security_answer(U, SA), not null(SQ), not null(SA).","< can_obtain_answer, (u_a, (""[has_security_answer]"", 1)) >"
+"can_confirm(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).","< can_confirm, (u_a, (""[has_appointment]"", 1)) >"
+"can_cancel_and_return(L, P) :- LHCP(L), Page(P), refers_to(P).",No Path Found
+"can_write_and_save(P, AE, TD) :- Patient(P), AdverseEvent(AE), TextualDescription(TD), has_symptom(AE, TD).",No Path Found
+"can_save(H, LP) :- HCP(H), LabProcedure(LP), is_new(LP).",No Path Found
+"can_cancel(H, L) :- HCP(H), LabProcedure(L), created_by(L, H).","< can_cancel, (u_a, (""[created_by^{-1}]"", 1)) >"
+"can_enter(H, X) :- HCP(H), (Patient(X); MID(X); Name(X)).",No Path Found
+"can_confirm(H, S) :- HCP(H), Selection(S), has_selection(H, S).","< can_confirm, (u_a, (""[has_selection]"", 1)) >"
+"can_access(U, S) :- User(U), System(S), has_credential(U, MID, Password), has_role(U, R).",No Path Found
+"can_request_password_change(U, PW) :- User(U), Password(PW), has_password(U, PW).","< can_request_password_change, (u_a, (""[has_password]"", 1)) >"
+"can_select(P, A) :- Patient(P), Appointment(A), has_appointment(P, A).","< can_select, (u_a, (""[has_appointment]"", 1)) >"
+"can_return(H, V) :- HCP(H), OfficeVisit(V), has_visited(H, V).","< can_return, (u_a, (""[has_visited]"", 1)) >"
+"can_modify(H, OV) :- HCP(H), OfficeVisit(OV), has_access_to(H, OV). can_delete(H, OV) :- HCP(H), OfficeVisit(OV), has_access_to(H, OV).","< can_modify, (u_a, (""[has_access_to]"", 1)) >"
+"can_take_survey(P, S, V) :- Patient(P), Survey(S), OfficeVisit(V), has_visit(P, V), has_survey(S, V), not taken_survey(P, S, V).
+can_take_survey(R, S, V) :- PersonalHealthRepresentative(R), Survey(S), OfficeVisit(V), has_visit(R, V), has_survey(S, V), not taken_survey(R, S, V).","< can_take_survey, (u_a, (""[has_visit]"", 1) ∧ ¬ (""[taken_survey.has_survey]"", 2) ∧ ¬ (""[taken_survey]"", 1)) >
+< can_take_survey, (u_a, (""[has_visit]"", 1) ∧ ¬ (""[taken_survey.has_survey]"", 2) ∧ ¬ (""[taken_survey]"", 1)) >"
+"can_take(P, S) :- Patient(P), Survey(S), not has_taken(P, S). can_take(R, S) :- PersonalHealthRepresentative(R), Survey(S), not has_taken(R, S).",No Path Found
+"can_view(P, S) :- Patient(P), Survey(S), not has_taken(P, S). can_view(R, S) :- PersonalHealthRepresentative(R), Survey(S), not has_taken(R, S).",No Path Found
+"can_enter(U, DI) :- UnlicensedPersonnel(U), DemographicInfo(DI), has_access_to(U, DI). can_edit(U, DI) :- UnlicensedPersonnel(U), DemographicInfo(DI), has_access_to(U, DI). can_enter(U, DG) :- UnlicensedPersonnel(U), Diagnosis(DG), has_access_to(U, DG). can_edit(U, DG) :- UnlicensedPersonnel(U), Diagnosis(DG), has_access_to(U, DG). can_enter(U, OVN) :- UnlicensedPersonnel(U), OfficeVisitNotes(OVN), has_access_to(U, OVN). can_edit(U, OVN) :- UnlicensedPersonnel(U), OfficeVisitNotes(OVN), has_access_to(U, OVN). can_enter(U, MI) :- UnlicensedPersonnel(U), MedicalInfo(MI), has_access_to(U, MI). can_edit(U, MI) :- UnlicensedPersonnel(U), MedicalInfo(MI), has_access_to(U, MI).",No Path Found
+"can_view(P, R) :- Personnel(P), Record(R), unlicensed(P).",No Path Found
+"can_create(H, P) :- HCP(H), Patient(P).",No Path Found
+"can_disable(H, P) :- HCP(H), Patient(P), selected_patient(H, P).","< can_disable, (u_a, (""[selected_patient]"", 1)) >"
+"can_select(U, P) :- User(U), Patient(P).",No Path Found
+"can_enter(U, D) :- User(U), Data(D).",No Path Found
+"can_open(L, M) :- LHCP(L), Message(M), wishes_to_reply(L, M).","< can_open, (u_a, (""[wishes_to_reply]"", 1)) >"
+"can_click(L, R) :- LHCP(L), ReplyLink(R), above(R, M).",No Path Found
+"can_enter(H, P, M) :- HealthCarePersonnel(H), Patient(P), MID(M), has_mid(P, M).",No Path Found
+"can_confirm(H, S) :- HealthCarePersonnel(H), Selection(S), has_selection(H, S).","< can_confirm, (u_a, (""[has_selection]"", 1)) >"
+"can_enter(L, P, M) :- LHCP(L), Patient(P), MID(M), has_mid(P, M).",No Path Found
+"can_confirm(L, I) :- LHCP(L), Input(I), has_input(L, I).","< can_confirm, (u_a, (""[has_input]"", 1)) >"
+"can_assign(A, LT, H) :- Administrator(A), LT(LT), Hospital(H), not assigned_to(LT, H).",No Path Found
+"can_choose(A, H) :- Administrator(A), Hospital(H), in_hospital_list(H).",No Path Found
+"can_deactivate(H, P) :- HCP(H), Patient(P), intends_to_deactivate(H, P).","< can_deactivate, (u_a, (""[intends_to_deactivate]"", 1)) >"
+"can_choose(U, D) :- User(U), Diagnosis(D), has_malaria_diagnosis(D).",No Path Found
+"can_access_data(U, Z, W) :- User(U), ZipCode(Z), Week(W), can_input_zipcode(U, Z), can_input_week(U, W).","< can_access_data, (u_a, (""[can_input_week]"", 1)) >"
+"can_view(H, M, TP) :- displayed_to(H, M, TP).","< can_view, (u_a, (""[displayed_to]"", 1)) >"
+"can_choose(U, D) :- User(U), Diagnosis(D), has_diagnosis(U, D).","< can_choose, (u_a, (""[has_diagnosis]"", 1)) >"
+"can_input(U, Z, W) :- User(U), ZipCode(Z), Week(W), within_last_year(W).",No Path Found
+"can_assign(A, L, H) :- Administrator(A), LHCP(L), Hospital(H).",No Path Found
+"can_choose(A, H) :- Administrator(A), Hospital(H), in_hospital_list(H).",No Path Found
+"can_enter(L, P, M) :- LHCP(L), Patient(P), MID(M), has_mid(P, M).",No Path Found
+"can_select(L, AT) :- LHCP(L), AppointmentType(AT), has_access_to(L, AT).","< can_select, (u_a, (""[has_access_to]"", 1)) >"
+"can_enter_comment(L, C) :- LHCP(L), Comment(C).",No Path Found
+"can_access_patient_info(H, P) :- HCP(H), Patient(P), enters(H, P).","< can_access_patient_info, (u_a, (""[enters]"", 1)) >"
+"can_confirm(H, S) :- HCP(H), Selection(S), has_selection(H, S).","< can_confirm, (u_a, (""[has_selection]"", 1)) >"
+"can_renew(P, PR) :- Patient(P), Prescription(PR), has_prescription(P, PR), expired_prescription(PR).","< can_renew, (u_a, (""[has_prescription]"", 1)) >"
+"can_delete(A, E) :- Administrator(A), Entry(E), false.",No Path Found
+"can_modify_reason_id(A, E, R) :- Administrator(A), Entry(E), ReasonID(R), not has_reason_id(E, R).",No Path Found
+"can_add_or_edit_instruction(H, P, I) :- HCP(H), Patient(P), Instruction(I).",No Path Found
+"can_document(H, V) :- HCP(H), OfficeVisit(V), has_access(H, V).","< can_document, (u_a, (""[has_access]"", 1)) >"
+"can_modify(H, V) :- HCP(H), OfficeVisit(V), has_documented(H, V).","< can_modify, (u_a, (""[has_documented]"", 1)) >"
+"can_save(H, E) :- HCP(H), Edits(E), has_edits(H, E). can_cancel(H, E) :- HCP(H), Edits(E), has_edits(H, E).","< can_save, (u_a, (""[has_edits]"", 1)) >"
+"can_reenter(H, D) :- HCP(H), Data(D), sends(H, D).","< can_reenter, (u_a, (""[sends]"", 1)) >"
+"can_access_input_data(P, D, T, S) :- Patient(P), InputData(D), Timestamp(T), Status(S), reported_by(R, S).",No Path Found
+"can_save_medicalID(R, P, MID) :- Representative(R), Patient(P), MedicalID(MID), has_representative(P, R), has_medicalID(P, MID).","< can_save_medicalID, (u_a, (""[has_representative^{-1}.has_medicalID]"", 2)) >"
+"can_add_appointment_type(A, AT) :- Administrator(A), AppointmentType(AT), has_permission(A, 'add_appointment_type').",No Path Found
+"can_modify_duration(A, E) :- Administrator(A), Entry(E), has_entry(E).",No Path Found
+"can_access_status(CM, ID, T) :- CaseManager(CM), InputData(ID), Timestamp(T), reported_status(CM, ID, T).","< can_access_status, (u_a, (""[reported_status]"", 1)) >"
+"can_save(M, ID) :- Manager(M), MID(ID), has_mid(M, ID).","< can_save, (u_a, (""[has_mid]"", 1)) >"
+"can_read_comment(U, A, C) :- User(U), Appointment(A), Comment(C), has_appointment(U, A), has_comment(A, C).","< can_read_comment, (u_a, (""[has_appointment.has_comment]"", 2)) >"
+"can_display_in_new_page(U, A, C, P) :- User(U), Appointment(A), Comment(C), Page(P), has_comment(A, C), is_new_page(P).",No Path Found
+"can_type_message(L, M) :- LHCP(L), Message(M), types_subject(L, M), types_text(L, M).","< can_type_message, (u_a, (""[types_subject]"", 1) ∧ (""[types_text]"", 1)) >"
+"can_select(P, AT) :- Patient(P), AppointmentType(AT), has_access_to(P, AT).","< can_select, (u_a, (""[has_access_to]"", 1)) >"
+"can_enter_appointment(P, A) :- Patient(P), Appointment(A), appointment_date_time(A, DateTime), current_date_time(CurrentDateTime), DateTime >= CurrentDateTime.",No Path Found
+"can_return(H, V) :- HCP(H), OfficeVisit(V), has_visited(H, V).","< can_return, (u_a, (""[has_visited]"", 1)) >"
+"can_modify(H, P, I) :- HCP(H), Patient(P), Instruction(I), has_instruction(P, I).",No Path Found
+"can_delete(H, P, I) :- HCP(H), Patient(P), Instruction(I), has_instruction(P, I).",No Path Found
+"can_prescribe(H, P, DR) :- HCP(H), Patient(P), Drug(DR), not has_allergy(P, DR), not has_interaction(DR, OtherDR).
+proceed_with_prescription(H, P, DR) :- HCP(H), Patient(P), Drug(DR), (not has_allergy(P, DR) or not has_interaction(DR, OtherDR)).",No Path Found
+"can_choose(U, DC) :- User(U), DiagnosisCode(DC).",No Path Found
+"can_input_data(U, P, Z, S, E) :- User(U), Patient(P), ZipCode(Z), Date(S), Date(E), has_zipcode(P, Z).",No Path Found
+"can_reply(P, M) :- Patient(P), Message(M), can_open(P, M). can_reply(R, M) :- Representative(R), Message(M), can_open(R, M).",No Path Found
+"can_click_reply_link(P, M, L) :- Patient(P), Message(M), ReplyLink(L), is_above(L, M). can_click_reply_link(R, M, L) :- Representative(R), Message(M), ReplyLink(L), is_above(L, M), is_representative_of(R, P).",No Path Found
+"can_delete(A, E) :- Administrator(A), Entry(E), false.",No Path Found
+"can_modify_hospital_id(A, E) :- false.",No Path Found
+"can_delete(A, E) :- Administrator(A), Entry(E), not is_existing(E).",No Path Found
+"can_modify_appointment_type_name(A, E, N) :- false. // Administrator is not allowed to modify",No Path Found
+"can_enter_message(P, M) :- Patient(P), Message(M), length(M) <= 1000.
+can_enter_message(R, M) :- Representative(R), Message(M), length(M) <= 1000, is_representative_of(R, P).","No Path Found
+No Path Found"
+"can_click(P, B) :- Patient(P), SendButton(B). can_click(R, B) :- Representative(R), SendButton(B), is_representative_of(R, P).",No Path Found
+"can_modify(L, F) :- LHCP(L), MessageFilter(F), has_message_filter(L, F). can_modify(P, F) :- Patient(P), MessageFilter(F), has_message_filter(P, F). can_modify(R, F) :- Representative(R), MessageFilter(F), has_message_filter(R, F). can_save(L, F) :- LHCP(L), MessageFilter(F), has_message_filter(L, F). can_save(P, F) :- Patient(P), MessageFilter(F), has_message_filter(P, F). can_save(R, F) :- Representative(R), MessageFilter(F), has_message_filter(R, F).",No Path Found
+"can_view_inbox(L, M, F) :- LHCP(L), Message(M), Filter(F), has_inbox(L, M), satisfies_filter(M, F).
+can_view_inbox(P, M, F) :- Patient(P), Message(M), Filter(F), has_inbox(P, M), satisfies_filter(M, F).
+can_view_inbox(R, M, F) :- Representative(R), Message(M), Filter(F), has_inbox(R, M), satisfies_filter(M, F).","< can_view_inbox, (u_a, (""[has_inbox.satisfies_filter]"", 2)) >
+< can_view_inbox, (u_a, (""[has_inbox.satisfies_filter]"", 2)) >
+< can_view_inbox, (u_a, (""[has_inbox.satisfies_filter]"", 2)) >"
+"can_enter_MID(H, P, MID) :- HCP(H), Patient(P), has_MID(P, MID).",No Path Found
+"can_enter_or_edit(H, P, DI) :- HCP(H), Patient(P), DemographicInfo(DI), has_demographic_info(P, DI), not (DI = security_question), not (DI = password), format(DI, '6.1').",No Path Found
+"can_modify_hospital_name(A, H, E) :- Administrator(A), Hospital(H), Entry(E), has_entry(H, E).",No Path Found
+"can_access_status(P, D, T) :- Patient(P), Data(D), Timestamp(T), reported_by(D, R).",No Path Found
+"can_save_mid(R, M) :- Representative(R), MID(M), has_representative(P, R).",No Path Found

@@ -1,0 +1,2 @@
+rule,path_condition
+"has_role(S, 'PIP') :- Subject(S).",No Path Found
