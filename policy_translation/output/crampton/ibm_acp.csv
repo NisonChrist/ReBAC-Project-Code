@@ -1,129 +1,61 @@
-rule,path_condition
-"can_retrieve_and_display(Sys, S, SC) :- System(Sys), Student(S), Schedule(SC), has_current_schedule(S, SC).",No Path Found
-"can_cancel(S, SCH, CO) :- System(S), Schedule(SCH), CourseOffering(CO), contains(SCH, CO).",No Path Found
-"specify_function(R, Function) :- Registrar(R), can_perform(R, Function).",can_perform
-"can_view_students(I, CO) :- Instructor(I), CourseOffering(CO), teaches(I, CO).",teaches
-"can_view_signed_up(I, S, CO) :- Instructor(I), Student(S), CourseOffering(CO), teaches(I, CO), signed_up(S, CO).",teaches
-"can_substitute(A, I, ALT) :- Agent(A), Item(I), AlternateItem(ALT), has_alternate(I, ALT).",No Path Found
-"can_delete(S, CO) :- Student(S), CourseOffering(CO), has_scheduled(S, CO).",has_scheduled
-"must_notify(S, CO) :- Student(S), CourseOffering(CO), building_schedule(S, CO), is_full(CO).",building_schedule
-"can_enter_grade(P, S, G) :- Professor(P), Student(S), Grade(G), teaches(P, S).",No Path Found
-"can_select(P, C) :- Professor(P), CourseOffering(C), wishes_to_teach(P, C). can_deselect(P, C) :- Professor(P), CourseOffering(C), wishes_to_teach(P, C).",wishes_to_teach
-"can_access(P, S) :- Professor(P), System(S), added_to(P, S).",added_to
-"can_select(S) :- Student(S), count(selects_primary(S, CO)) = 4, count(selects_alternate(S, CO)) = 2.",Cannot determine Subject/Object (arity < 2)
-"can_maintain(R, S, RS) :- Registrar(R), Student(S), RegistrationSystem(RS), has_access_to(R, RS).",has_access_to
-"verify(S, DEL) :- Student(S), Deletion(DEL), can_verify(S, DEL).",can_verify
-"can_update_or_delete(U, P) :- User(U), Professor(P), has_id(P, ID). display_error(U) :- User(U), not exists Professor(P) with has_id(P, ID).",No Path Found
-"can_access_system(P) :- Professor(P). can_sign_up_to_teach(P, C) :- Professor(P), Course(C). can_record_grade(P, G) :- Professor(P), Grade(G).",Cannot determine Subject/Object (arity < 2)
-"can_update_or_delete(U, S) :- User(U), Student(S), has_id(S, ID). display_error(U, S) :- User(U), Student(S), not has_id(S, ID).",No Path Found
-"can_enroll(S, CO) :- Student(S), CourseOffering(CO), selected(S, CO), not enrolled_in(S, CO), has_prerequisite(S, CO), open(CO), not conflict(S, CO).",selected
-"display_error(S, ST, EM) :- System(S), Student(ST), ErrorMessage(EM), not has_schedule(ST, SCH).",No Path Found
-"can_enter(R, P) :- Registrar(R), Professor(P).",No Path Found
-"can_view(S, RC) :- Student(S), ReportCard(RC), has_report_card(S, RC).",has_report_card
-"can_request_entry(R, S) :- Registrar(R), Student(S).",No Path Found
-"can_delete(S, ST) :- System(S), Student(ST), enrolled_in(ST, S).",enrolled_in^{-1}
-"can_assign_alternative(S, C) :- Student(S), Choice(C), has_alternative_choice(S, C), not has_primary_choice(S, C).",has_alternative_choice
-"can_view_course_list(P, C) :- Professor(P), CourseOffering(C), taught_in_previous_semester(P, C).",taught_in_previous_semester
-"can_update_offering(P, CO) :- Professor(P), CourseOffering(CO), not has_conflict(P, CO).",No Path Found
-"display_error(P) :- Professor(P), not eligible_to_teach(P, _).",Cannot determine Subject/Object (arity < 2)
-"can_enter(R, PI) :- Registrar(R), ProfessorInfo(PI), has_access(R, PI).",has_access
-"can_submit_grade(P, S, C) :- Professor(P), Student(S), Class(C), teaches(P, C), completed(S, C).",teaches
-"can_skip_grade(P, S) :- Professor(P), Student(S), teaches(P, S).",teaches
-"can_bill(BS, S, SEM) :- BillingSystem(BS), Student(S), Semester(SEM), registered_for(S, SEM).",No Path Found
-"selects(P, CO) :- can_select(P, CO).",can_select
-"can_view_courses(P, C) :- Professor(P), Course(C), teaches(P, C).",teaches
-"can_submit_schedule(S, CO) :- Student(S), CourseOffering(CO), has_prerequisite(S, CO), not full_course(CO), not schedule_conflict(S, CO).",has_prerequisite
-"display_error(S, CO) :- Student(S), CourseOffering(CO), not can_submit_schedule(S, CO).",No Path Found
-"can_retrieve_display(U, SI) :- User(U), StudentInfo(SI), has_access(U, SI).",has_access
-"cancel_delete(R, S) :- Registrar(R), Student(S), in_subflow(R, S, 'Delete A Student'), not decides_to_delete(R, S). restart_basic_flow(R, F) :- Registrar(R), Flow(F), cancel_delete(R, S).",in_subflow
-"can_view_grade(U, S, O, G) :- User(U), Student(S), Offering(O), Grade(G), enrolled_in(S, O), assigned_grade(S, O, G).",No Path Found
-"can_update_grade(I, S, CO, G) :- Instructor(I), Student(S), CourseOffering(CO), Grade(G), enrolled_in(S, CO), use_case_successful().",No Path Found
-"remove_teaching(S, P, CO) :- System(S), Professor(P), CourseOffering(CO), teaches(P, CO).",No Path Found
-"can_delete(R, P) :- Registrar(R), Professor(P), is_prompted_to_confirm_deletion(R, P).",is_prompted_to_confirm_deletion
-"can_modify_schedule(A, S, SC) :- Administrator(A), Student(S), Schedule(SC), use_case_successful().",No Path Found
-"can_provide(S, R, PID) :- System(S), Registrar(R), ProfessorID(PID), provides(S, R, PID).",provides
-"can_access(R, ID) :- Registrar(R), StudentID(ID), provides(S, R, ID).",provides^{-1}.provides
-"can_change_grade(P, S, G) :- Professor(P), Student(S), Grade(G).",No Path Found
-"can_update(S, CO) :- Student(S), CourseOffering(CO), has_selection(S, CO).",has_selection
-"can_register(S, CO) :- Student(S), CourseOffering(CO), is_current_semester(CO).",No Path Found
-"can_update(S, ST, I) :- System(S), Student(ST), Information(I), has_updated(R, I).",No Path Found
-"can_change(R, S, I) :- Registrar(R), Student(S), StudentInfo(I), has_info(S, I).",No Path Found
-"can_verify(R, D) :- Registrar(R), Deletion(D).",No Path Found
-"delete_professor(S, P) :- System(S), Professor(P), is_deleted(P).",No Path Found
-"can_change_schedule(S, SM, SC) :- Student(S), Semester(SM), Schedule(SC), enrolled_in(S, SM).",No Path Found
-"can_update_schedule(S, CO) :- Student(S), CourseOffering(CO), has_selection(S, CO).",has_selection
-"can_view(S, R) :- Student(S), ReportCard(R), completed_semester(S, Sem).",No Path Found
-"add_student(A, S) :- SystemAdmin(A), Student(S), not enrolled(S).",No Path Found
-"can_maintain(R, P, S) :- Registrar(R), Professor(P), RegistrationSystem(S), maintains(R, P, S).",maintains
-"can_enter(R, SI) :- Registrar(R), StudentInfo(SI), has_access(R, SI).",has_access
-"commits(S, CO) :- System(S), CourseOffering(CO), Schedule(SCH), contains(SCH, CO).",No Path Found
-"can_update(S, PR) :- System(S), ProfessorRecord(PR), has_updated(R, PR).",No Path Found
-"can_update(S, C) :- Student(S), Course(C), enrolled_in(S, C), within_add_drop_period(). can_delete(S, C) :- Student(S), Course(C), enrolled_in(S, C), within_add_drop_period().",enrolled_in
-"cannot_change_course(P, C, S) :- Professor(P), Course(C), Semester(S), teaches(P, C, S), registration_closed(S).",teaches
-"can_request(S, CC) :- Student(S), CourseCatalogue(CC).",No Path Found
-"display_message(S, M) :- Student(S), Message(M), not has_previous_grade(S).",No Path Found
-"display_error(S, ST, EM) :- System(S), Student(ST), ErrorMessage(EM), cannot_communicate(S, CC).",No Path Found
-"can_enter(R, P) :- Registrar(R), Professor(P).",No Path Found
-"can_record_grade(P, S, C, G) :- Professor(P), Student(S), Class(C), Grade(G), teaches(P, C), enrolled_in(S, C).",No Path Found
-"can_retrieve(S, ST, CO) :- System(S), Student(ST), CourseOffering(CO), registered_for(ST, CO).",No Path Found
-"can_modify(R, SI) :- Registrar(R), StudentInfo(SI), has_permission(R, SI).",has_permission
-"can_enter_id(R, P) :- Registrar(R), Professor(P), enters_id(R, P).",enters_id
-"close_registration(R, P) :- Registrar(R), RegistrationProcess(P), can_close(R, P).",can_close
-"add_professor_info(U, P) :- User(U), Professor(P), successful_use_case(U, P). update_professor_info(U, P) :- User(U), Professor(P), successful_use_case(U, P). delete_professor_info(U, P) :- User(U), Professor(P), successful_use_case(U, P).",successful_use_case
-"can_retrieve_display(P, CO) :- Professor(P), CourseOffering(CO), eligible_to_teach(P, CO).",eligible_to_teach
-"can_enter_student_id(R, S, ID) :- Registrar(R), Student(S), has_student_id(S, ID).",No Path Found
-"can_retrieve_grade(S, C, G) :- Student(S), CourseOffering(C), GradeInfo(G), completed_course(S, C).",No Path Found
-"can_select(P, S) :- Professor(P), SelectedOffering(S), CourseOffering(O), not conflict(S, O), not signed_up(P, O).",No Path Found
-"can_select(S, CO) :- Student(S), CourseOffering(CO), available(CO).",No Path Found
-"indicate_conflicts(U, C1, C2) :- User(U), Course(C1), Course(C2), conflicts_with(C1, C2).",No Path Found
-"can_select(P, O) :- Professor(P), CourseOffering(O), Course(C), eligible_for(P, C), wishes_to_teach(P, C), part_of_catalog(C), upcoming_semester(O).",No Path Found
-"can_add(S, ST, CO) :- System(S), Student(ST), CourseOffering(CO).",No Path Found
-"remove_from_course(S, CO) :- Student(S), CourseOffering(CO), enrolled_in(S, CO).",enrolled_in
-"can_add(A, P) :- Administrator(A), Professor(P). can_modify(A, P) :- Administrator(A), Professor(P). can_delete(A, P) :- Administrator(A), Professor(P).",No Path Found
-"can_modify(R, PI) :- Registrar(R), ProfessorInfo(PI).",No Path Found
-"can_access(P, S) :- Professor(P), System(S). can_indicate(P, C) :- Professor(P), Course(C), teaches(P, C).",No Path Found
-"must_notify(S, C) :- Student(S), Course(C), fills_up(C).",No Path Found
-"can_register(S, CO) :- Student(S), CourseOffering(CO), not registration_closed(CO).",No Path Found
-"prompt_to_confirm_deletion(S, R, ST) :- System(S), Registrar(R), Student(ST), is_registrar_for(R, ST).",No Path Found
-"can_retrieve_display(U, P) :- User(U), Professor(P), has_access(U, P).",has_access
-"can_access(S, SY) :- Student(S), System(SY), during_time(T). can_add_course(S, C) :- Student(S), Course(C), can_access(S, SY). can_drop_course(S, C) :- Student(S), Course(C), can_access(S, SY), enrolled_in(S, C).",can_access
-"can_delete(S, SC) :- System(S), Schedule(SC).",No Path Found
-"can_close(S, CO) :- System(S), CourseOffering(CO).",No Path Found
-"can_close_registration(U, R) :- User(U), Registration(R), not in_progress(R).",No Path Found
-"can_change(R, S, I) :- Registrar(R), Student(S), Information(I), has_information(S, I).",No Path Found
-"can_enter(R, S, ID) :- Registrar(R), Student(S), has_student_id(S, ID).",No Path Found
-"can_send_bill(BS, S, B, FS) :- BillingSystem(BS), Student(S), Bill(B), FinalSchedule(FS), has_final_schedule(S, FS).",No Path Found
-"can_create_schedule(S, CO) :- Student(S), CourseOffering(CO), has_selection(S, CO).",has_selection
-"can_cancel(S, CO) :- System(S), CourseOffering(CO), count_students(CO, Count), Count < 3.",No Path Found
-"display_error(P) :- Professor(P), Course(C), has_schedule_conflict(P, C).",Cannot determine Subject/Object (arity < 2)
-"can_modify(U, SI) :- User(U), StudentInfo(SI), has_access(U, SI), use_case_successful(U, SI).",has_access
-"display_error(P) :- Professor(P), previous_semester(S), not taught(P, _, S).",Cannot determine Subject/Object (arity < 2)
-"displays_error_message(S, A, E) :- System(S), Actor(A), ErrorMessage(E), enters_invalid_name(A), enters_invalid_password(A).",No Path Found
-"can_authenticate(A) :- Actor(A), enters_name(A, N), enters_password(A, PW).",Cannot determine Subject/Object (arity < 2)
-"resend_request(S, R) :- System(S), Request(R), BillingSystem(B), unable_to_communicate(S, B).",No Path Found
-"can_resolve_conflict(P) :- Professor(P), teaches(P, C1), teaches(P, C2), C1 != C2, not (conflict_resolved(P)).",Cannot determine Subject/Object (arity < 2)
-"can_cancel(P, O) :- Professor(P), Operation(O).",No Path Found
-"lose_selection(U, S) :- User(U), Selection(S), has_selection(U, S).",has_selection
-"can_enter_grade(P, S, G) :- Professor(P), Student(S), Grade(G), on_list(S).",No Path Found
-"can_record_grade(S, ST, CO, G) :- System(S), Student(ST), CourseOffering(CO), Grade(G), enrolled_in(ST, CO).",No Path Found
-"can_enter(R, ID) :- Registrar(R), IDNumber(ID).",No Path Found
-"can_cancel(R, O) :- Registrar(R), Operation(O).",No Path Found
-"can_select(S, CO) :- Student(S), CourseOffering(CO), not enrolled_in(S, CO).",No Path Found
-"can_save(S, SC) :- Student(S), Schedule(SC), owns_schedule(S, SC).",owns_schedule
-"can_cancel(S, O) :- Student(S), Operation(O).",No Path Found
-"can_delete(R, S) :- Registrar(R), Student(S), not decides_not_to_delete(R, S).",No Path Found
-"can_cancel_delete(U, R) :- User(U), Resource(R), has_permission(U, R, delete).",has_permission
-"restart_flow(U, F) :- User(U), Flow(F), can_restart(U, F).",can_restart
-"can_acknowledge(S, E) :- Student(S), Error(E).",No Path Found
-"can_change_schedule(S, SC) :- Student(S), Schedule(SC), owns_schedule(S, SC).",owns_schedule
-"can_modify(P1, CO) :- Professor(P1), CourseOffering(CO), assigned_to(P1, CO), not (Professor(P2), P2 != P1, assigned_to(P2, CO)).",assigned_to
-"display_message(S, M) :- Student(S), Message(M), registration_closed(S).",No Path Found
-"display_message(R, M) :- Registrar(R), Message(M), is_condition_met(C).",No Path Found
-"calculate_tuition(S, T, SE) :- Student(S), Tuition(T), Semester(SE), enrolled_in(S, _, SE).",enrolled_in
-"can_send_transaction(S, B) :- System(S), BillingSystem(B), sends_transaction(S, B).",sends_transaction
-"display_message(P, M) :- Professor(P), Message(M), registration_closed(S), current_semester(S).",No Path Found
-"can_retrieve(S, CO) :- System(S), CourseOffering(CO), available(CO).",No Path Found
-"can_display(S, ST, L) :- System(S), Student(ST), List(L), has_access(ST, L).",No Path Found
-"can_access_course_info(S, C, DB) :- System(S), Course(C), Database(DB), has_access(S, DB).",has_access
-"can_update(NewSystem, CI) :- System(NewSystem), CourseInfo(CI), not from_legacy_database(CI).",No Path Found
-"can_acknowledge(S, EM) :- Student(S), ErrorMessage(EM), acknowledges(S, EM).",acknowledges
+natural_language_statements,datalog_subjects,datalog_objects,datalog_relationships,datalog_actions,crampton
+"""The system requests that the Registrar specify the function he or she would like to perform (either Add a Student, Update a Student, or Delete a Student)""",Registrar(R).,Student(S).,"can_perform(R, Function) :- Registrar(R), Function in {add_student, update_student, delete_student}.","specify_function(R, Function) :- Registrar(R), can_perform(R, Function).",can_perform
+They will also need to see which students signed up for their course offerings.,"Instructor(I), Student(S).",CourseOffering(CO).,"teaches(I, CO) :- Instructor(I), CourseOffering(CO).
+signed_up(S, CO) :- Student(S), CourseOffering(CO).","can_view_students(I, CO) :- Instructor(I), CourseOffering(CO), teaches(I, CO).",teaches
+They will also need to see which students signed up for their course offerings.,"Instructor(I), Student(S).",CourseOffering(CO).,"teaches(I, CO) :- Instructor(I), CourseOffering(CO).
+signed_up(S, CO) :- Student(S), CourseOffering(CO).","can_view_signed_up(I, S, CO) :- Instructor(I), Student(S), CourseOffering(CO), teaches(I, CO), signed_up(S, CO).",teaches
+The Student also selects any course offerings to delete from the existing schedule.,Student(S).,CourseOffering(CO).,"has_scheduled(S, CO) :- Student(S), CourseOffering(CO).","can_delete(S, CO) :- Student(S), CourseOffering(CO), has_scheduled(S, CO).",has_scheduled
+"""If a course offering becomes full while a student is building a schedule including that offering, the student must be notified.""",Student(S).,CourseOffering(CO).,"building_schedule(S, CO) :- Student(S), CourseOffering(CO).","must_notify(S, CO) :- Student(S), CourseOffering(CO), building_schedule(S, CO), is_full(CO).",building_schedule
+The professor selects possibly and possibly de-selects the course offerings that he or she wishes to teach for the upcoming semester.,Professor(P).,CourseOffering(C).,"wishes_to_teach(P, C) :- Professor(P), CourseOffering(C).","can_select(P, C) :- Professor(P), CourseOffering(C), wishes_to_teach(P, C). can_deselect(P, C) :- Professor(P), CourseOffering(C), wishes_to_teach(P, C).",wishes_to_teach
+The professor is added to the system.,Professor(P).,System(S).,"added_to(P, S) :- Professor(P), System(S).","can_access(P, S) :- Professor(P), System(S), added_to(P, S).",added_to
+This use case allows the Registrar to maintain student information in the registration system.,Registrar(R).,"Student(S), RegistrationSystem(RS).","has_access_to(R, RS) :- Registrar(R), RegistrationSystem(RS).","can_maintain(R, S, RS) :- Registrar(R), Student(S), RegistrationSystem(RS), has_access_to(R, RS).",has_access_to
+The Student verifies the deletion.,Student(S).,Deletion(DEL).,"can_verify(S, DEL) :- Student(S), Deletion(DEL).","verify(S, DEL) :- Student(S), Deletion(DEL), can_verify(S, DEL).",can_verify
+"""For each selected course offering on the schedule not already marked as “enrolled in”, the system verifies that the Student has the necessary prerequisites, that the course offering is open, and that there are no schedule conflicts.""",Student(S).,CourseOffering(CO).,"selected(S, CO) :- Student(S), CourseOffering(CO).
+enrolled_in(S, CO) :- Student(S), CourseOffering(CO).
+has_prerequisite(S, CO) :- Student(S), CourseOffering(CO).
+open(CO) :- CourseOffering(CO).
+conflict(S, CO) :- Student(S), CourseOffering(CO).","can_enroll(S, CO) :- Student(S), CourseOffering(CO), selected(S, CO), not enrolled_in(S, CO), has_prerequisite(S, CO), open(CO), not conflict(S, CO).",selected
+"""At the end of the semester, the student will be able to access the system to view an electronic report card.""",Student(S).,ReportCard(RC).,"has_report_card(S, RC) :- Student(S), ReportCard(RC).","can_view(S, RC) :- Student(S), ReportCard(RC), has_report_card(S, RC).",has_report_card
+The system deletes the student from the system.,System(S).,Student(ST).,"enrolled_in(ST, S) :- Student(ST), System(S).","can_delete(S, ST) :- System(S), Student(ST), enrolled_in(ST, S).",enrolled_in^{-1}
+"""In addition, each student will indicate two alternative choices in case the student cannot be assigned to a primary selection.""",Student(S).,Choice(C).,"has_primary_choice(S, C) :- Student(S), Choice(C). has_alternative_choice(S, C) :- Student(S), Choice(C).","can_assign_alternative(S, C) :- Student(S), Choice(C), has_alternative_choice(S, C), not has_primary_choice(S, C).",has_alternative_choice
+The system displays a list of course offerings the Professor taught in the previous semester.,Professor(P).,CourseOffering(C).,"taught_in_previous_semester(P, C) :- Professor(P), CourseOffering(C).","can_view_course_list(P, C) :- Professor(P), CourseOffering(C), taught_in_previous_semester(P, C).",taught_in_previous_semester
+The system requests that the Registrar enter the professor information.,Registrar(R).,ProfessorInfo(PI).,"has_access(R, PI) :- Registrar(R), ProfessorInfo(PI).","can_enter(R, PI) :- Registrar(R), ProfessorInfo(PI), has_access(R, PI).",has_access
+This use case allows a Professor to submit student grades for one or more classes completed in the previous semester.,Professor(P).,"Student(S), Class(C).","teaches(P, C) :- Professor(P), Class(C).
+completed(S, C) :- Student(S), Class(C).","can_submit_grade(P, S, C) :- Professor(P), Student(S), Class(C), teaches(P, C), completed(S, C).",teaches
+"""If the Professor wishes to skip a particular student, the grade information can be left blank and filled in at a later time.""",Professor(P).,"Student(S), Grade(G).","teaches(P, S) :- Professor(P), Student(S).","can_skip_grade(P, S) :- Professor(P), Student(S), teaches(P, S).",teaches
+The Professor selects a course offering.,Professor(P).,CourseOffering(CO).,"can_select(P, CO) :- Professor(P), CourseOffering(CO).","selects(P, CO) :- can_select(P, CO).",can_select
+The system also retrieves and displays the list of courses the professor has previously selected to teach.,Professor(P).,Course(C).,"teaches(P, C) :- Professor(P), Course(C).","can_view_courses(P, C) :- Professor(P), Course(C), teaches(P, C).",teaches
+"""If, in the Submit Schedule sub-flow, the system determines that the Student has not satisfied the necessary prerequisites, or that the selected course offering is full, or that there are schedule conflicts, an error message is displayed.""",Student(S).,CourseOffering(CO).,"has_prerequisite(S, CO) :- Student(S), CourseOffering(CO).
+full_course(CO) :- CourseOffering(CO).
+schedule_conflict(S, CO) :- Student(S), CourseOffering(CO).","can_submit_schedule(S, CO) :- Student(S), CourseOffering(CO), has_prerequisite(S, CO), not full_course(CO), not schedule_conflict(S, CO).",has_prerequisite
+The system retrieves and displays the student information.,User(U).,StudentInfo(SI).,"has_access(U, SI) :- User(U), StudentInfo(SI).","can_retrieve_display(U, SI) :- User(U), StudentInfo(SI), has_access(U, SI).",has_access
+"""If, in the Delete A Student  sub-flow, the Registrar decides not to delete the student, the delete is cancelled and the Basic Flow is re-started at the beginning.""",Registrar(R).,"Student(S), Flow(F).","in_subflow(R, S, 'Delete A Student') :- Registrar(R), Student(S).","cancel_delete(R, S) :- Registrar(R), Student(S), in_subflow(R, S, 'Delete A Student'), not decides_to_delete(R, S). restart_basic_flow(R, F) :- Registrar(R), Flow(F), cancel_delete(R, S).",in_subflow
+The system prompts the Registrar to confirm the deletion of the professor.,"Registrar(R), System(S).",Professor(P).,"is_prompted_to_confirm_deletion(R, P) :- Registrar(R), Professor(P).","can_delete(R, P) :- Registrar(R), Professor(P), is_prompted_to_confirm_deletion(R, P).",is_prompted_to_confirm_deletion
+The system provides the Registrar with the new professor id.,"Registrar(R), System(S).",ProfessorID(PID).,"provides(S, R, PID) :- System(S), Registrar(R), ProfessorID(PID).","can_provide(S, R, PID) :- System(S), Registrar(R), ProfessorID(PID), provides(S, R, PID).",provides
+The system provides the Registrar with the new student id.,"Registrar(R), System(S).",StudentID(ID).,"provides(S, R, ID) :- System(S), Registrar(R), StudentID(ID).","can_access(R, ID) :- Registrar(R), StudentID(ID), provides(S, R, ID).",provides^{-1}.provides
+The Student may update the course selections on the current selection by deleting and adding new course offerings.,Student(S).,CourseOffering(CO).,"has_selection(S, CO) :- Student(S), CourseOffering(CO).","can_update(S, CO) :- Student(S), CourseOffering(CO), has_selection(S, CO).",has_selection
+"""Once the student has made his or her selections, the system updates the schedule for the Student using the selected course offerings.""",Student(S).,CourseOffering(CO).,"has_selection(S, CO) :- Student(S), CourseOffering(CO).","can_update_schedule(S, CO) :- Student(S), CourseOffering(CO), has_selection(S, CO).",has_selection
+This use case allows the Registrar to maintain professor information in the registration system.,Registrar(R).,"Professor(P), RegistrationSystem(S).","maintains(R, P, S) :- Registrar(R), Professor(P), RegistrationSystem(S).","can_maintain(R, P, S) :- Registrar(R), Professor(P), RegistrationSystem(S), maintains(R, P, S).",maintains
+The system requests that the Registrar enter the student information.,Registrar(R).,StudentInfo(SI).,"has_access(R, SI) :- Registrar(R), StudentInfo(SI).","can_enter(R, SI) :- Registrar(R), StudentInfo(SI), has_access(R, SI).",has_access
+The Student can also update or delete course selections if changes are made within the add or drop period at the beginning of the semester.,Student(S).,Course(C).,"enrolled_in(S, C) :- Student(S), Course(C).","can_update(S, C) :- Student(S), Course(C), enrolled_in(S, C), within_add_drop_period(). can_delete(S, C) :- Student(S), Course(C), enrolled_in(S, C), within_add_drop_period().",enrolled_in
+Professors cannot change the course offerings they teach after registration for the current semester has been closed.,Professor(P).,"Course(C), Semester(S).","teaches(P, C, S) :- Professor(P), Course(C), Semester(S). registration_closed(S) :- Semester(S).","cannot_change_course(P, C, S) :- Professor(P), Course(C), Semester(S), teaches(P, C, S), registration_closed(S).",teaches
+"""This use case starts when the Registrar wishes to add, change, possibly and possibly delete student information in the system.""",Registrar(R).,StudentInfo(SI).,"has_permission(R, SI) :- Registrar(R), StudentInfo(SI).","can_modify(R, SI) :- Registrar(R), StudentInfo(SI), has_permission(R, SI).",has_permission
+The Registrar enters the professor id.,Registrar(R).,Professor(P).,"enters_id(R, P) :- Registrar(R), Professor(P).","can_enter_id(R, P) :- Registrar(R), Professor(P), enters_id(R, P).",enters_id
+This use case allows a Registrar to close the registration process.,Registrar(R).,RegistrationProcess(P).,"can_close(R, P) :- Registrar(R), RegistrationProcess(P).","close_registration(R, P) :- Registrar(R), RegistrationProcess(P), can_close(R, P).",can_close
+"""If the use case was successful, the professor information is added, updated, or deleted from the system.""",User(U).,Professor(P).,"successful_use_case(U, P) :- User(U), Professor(P).","add_professor_info(U, P) :- User(U), Professor(P), successful_use_case(U, P). update_professor_info(U, P) :- User(U), Professor(P), successful_use_case(U, P). delete_professor_info(U, P) :- User(U), Professor(P), successful_use_case(U, P).",successful_use_case
+The system retrieves and displays the list of course offerings the professor is eligible to teach for the current semester.,Professor(P).,"CourseOffering(CO), Semester(S).","eligible_to_teach(P, CO) :- Professor(P), CourseOffering(CO), Semester(S), current_semester(S).","can_retrieve_display(P, CO) :- Professor(P), CourseOffering(CO), eligible_to_teach(P, CO).",eligible_to_teach
+"""If the schedule contains “enrolled in” course offerings, the Student must be removed from the course offering.""",Student(S).,CourseOffering(CO).,"enrolled_in(S, CO) :- Student(S), CourseOffering(CO).","remove_from_course(S, CO) :- Student(S), CourseOffering(CO), enrolled_in(S, CO).",enrolled_in
+The system retrieves and displays the professor information.,User(U).,Professor(P).,"has_access(U, P) :- User(U), Professor(P).","can_retrieve_display(U, P) :- User(U), Professor(P), has_access(U, P).",has_access
+Students must be able to access the system during this time to add or drop courses.,Student(S).,"System(SY), Course(C).","enrolled_in(S, C) :- Student(S), Course(C).","can_access(S, SY) :- Student(S), System(SY), during_time(T). can_add_course(S, C) :- Student(S), Course(C), can_access(S, SY). can_drop_course(S, C) :- Student(S), Course(C), can_access(S, SY), enrolled_in(S, C).",can_access
+"""Once the student has made his or her selections, the system creates a schedule for the Student containing the selected course offerings.""",Student(S).,CourseOffering(CO).,"has_selection(S, CO) :- Student(S), CourseOffering(CO).","can_create_schedule(S, CO) :- Student(S), CourseOffering(CO), has_selection(S, CO).",has_selection
+"""If the use case was successful, the student information is added, updated, or deleted from the system.""",User(U).,StudentInfo(SI).,"has_access(U, SI) :- User(U), StudentInfo(SI).","can_modify(U, SI) :- User(U), StudentInfo(SI), has_access(U, SI), use_case_successful(U, SI).",has_access
+any selections will be lost,User(U).,Selection(S).,"has_selection(U, S) :- User(U), Selection(S).","lose_selection(U, S) :- User(U), Selection(S), has_selection(U, S).",has_selection
+"The Student save the schedule, as is (see Save a Schedule subflow)",Student(S).,Schedule(SC).,"owns_schedule(S, SC) :- Student(S), Schedule(SC).","can_save(S, SC) :- Student(S), Schedule(SC), owns_schedule(S, SC).",owns_schedule
+the delete is cancelled,User(U).,Resource(R).,"has_permission(U, R, delete) :- User(U), Resource(R).","can_cancel_delete(U, R) :- User(U), Resource(R), has_permission(U, R, delete).",has_permission
+the Basic Flow is re-started at the beginning.,User(U).,Flow(F).,"can_restart(U, F) :- User(U), Flow(F).","restart_flow(U, F) :- User(U), Flow(F), can_restart(U, F).",can_restart
+The system must prevent students from changing any schedules other than their own,Student(S).,Schedule(SC).,"owns_schedule(S, SC) :- Student(S), Schedule(SC).","can_change_schedule(S, SC) :- Student(S), Schedule(SC), owns_schedule(S, SC).",owns_schedule
+The system must prevent professors from modifying assigned course offerings for other professors.,"Professor(P1), Professor(P2).",CourseOffering(CO).,"assigned_to(P1, CO) :- Professor(P1), CourseOffering(CO).","can_modify(P1, CO) :- Professor(P1), CourseOffering(CO), assigned_to(P1, CO), not (Professor(P2), P2 != P1, assigned_to(P2, CO)).",assigned_to
+The system calculates the tuition owed by each student for his current semester schedule,Student(S).,"Semester(SE), Course(C), Tuition(T).","enrolled_in(S, C, SE) :- Student(S), Course(C), Semester(SE).","calculate_tuition(S, T, SE) :- Student(S), Tuition(T), Semester(SE), enrolled_in(S, _, SE).",enrolled_in
+The system sends a transaction to the Billing System.,System(S).,BillingSystem(B).,"sends_transaction(S, B) :- System(S), BillingSystem(B).","can_send_transaction(S, B) :- System(S), BillingSystem(B), sends_transaction(S, B).",sends_transaction
+The new system will access course information from the legacy database,System(S).,"Course(C), Database(DB).","has_access(S, DB) :- System(S), Database(DB).","can_access_course_info(S, C, DB) :- System(S), Course(C), Database(DB), has_access(S, DB).",has_access
+The Student acknowledges the error message,Student(S).,ErrorMessage(EM).,"acknowledges(S, EM) :- Student(S), ErrorMessage(EM).","can_acknowledge(S, EM) :- Student(S), ErrorMessage(EM), acknowledges(S, EM).",acknowledges

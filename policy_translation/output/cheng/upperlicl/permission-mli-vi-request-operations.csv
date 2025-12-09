@@ -1,6 +1,0 @@
-datalog_actions,cheng_policy
-"can_query_status(V, VR) :- VIO(V), VIRequest(VR).
-can_get_sla_offer(V, VR) :- VIO(V), VIRequest(VR).
-can_sign_sla_offer(V, VR) :- VIO(V), VIRequest(VR).","No Path Found
-No Path Found
-No Path Found"

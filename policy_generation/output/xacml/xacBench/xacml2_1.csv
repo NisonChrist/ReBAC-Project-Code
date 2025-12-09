@@ -1,0 +1,730 @@
+xacml,datalog_subjects,datalog_objects,datalog_relationships,datalog_actions
+"<Policy PolicyId=""RPSlist.2.0.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isEq-subjUserId-resUserId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                </Target>
+                <Rule Effect=""Deny"" RuleId=""RPSlist.2.0.2.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",Subject(S).,Resource(R).,"has_role(S, 'admin') :- Subject(S).
+isEq_subjUserId_resUserId(S, 'false') :- Subject(S).","can_access(S, R) :- Subject(S), Resource(R), has_role(S, 'admin'), isEq_subjUserId_resUserId(S, 'false'), not deny_access(S, R).
+deny_access(S, R) :- Subject(S), Resource(R), has_role(S, 'admin'), isEq_subjUserId_resUserId(S, 'false')."
+"<Policy PolicyId=""RPSlist.2.0.4.3"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target/>
+                    <Rule Effect=""Deny"" RuleId=""RPSlist.2.0.4.3.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",,,,
+"<Policy PolicyId=""RPSlist.3.0.3.3"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.3.0.3.3.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",Subject(S).,Object(O).,"has_role(S, 'admin') :- Subject(S).","can_write(S, O) :- Subject(S), Object(O), has_role(S, 'admin')."
+"<Policy PolicyId=""RPSlist.4.0.3.4.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isMeeting"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                            <Actions>
+<Action>
+    <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </ActionMatch>
+</Action>
+                            </Actions>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.4.0.3.4.2.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>",Subject(S).,Object(O).,"has_role(S, admin) :- Subject(S).
+has_isMeeting(S, false) :- Subject(S).","can_access(S, O, read) :- Subject(S), Object(O), has_role(S, admin), has_isMeeting(S, false)."
+"<Policy PolicyId=""RPSlist.5.0.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.5.0.0.1.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",Subject(S).,Object(O).,"has_role(S, admin) :- Subject(S).","can_access(S, O, write) :- Subject(S), Object(O), has_role(S, admin)."
+"<Policy PolicyId=""RPSlist.5.0.0.3"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.5.0.0.3.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",Subject(S).,Object(O).,"has_role(S, ""admin"") :- Subject(S).","can_write(S, O) :- Subject(S), Object(O), has_role(S, ""admin"")."
+"<Policy PolicyId=""RPSlist.6.0.3.4.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                            <Actions>
+<Action>
+    <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </ActionMatch>
+</Action>
+<Action>
+    <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+        <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </ActionMatch>
+</Action>
+                            </Actions>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.6.0.3.4.0.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>",User(U).,Resource(R).,"has_role(U, ""admin"") :- User(U).","can_access(U, R, ""read"") :- User(U), Resource(R), has_role(U, ""admin"").
+can_access(U, R, ""write"") :- User(U), Resource(R), has_role(U, ""admin"")."
+"<Policy PolicyId=""RPSlist.6.0.3.4.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isMeeting"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                            <Actions>
+<Action>
+    <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </ActionMatch>
+</Action>
+                            </Actions>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.6.0.3.4.2.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>",User(U).,Resource(R).,"has_role(U, ""admin"") :- User(U).
+not_in_meeting(U) :- User(U).","can_read(U, R) :- User(U), Resource(R), has_role(U, ""admin""), not_in_meeting(U)."
+"<Policy PolicyId=""RPSlist.9.0.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                    <Actions>
+                        <Action>
+                            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+<ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </ActionMatch>
+                        </Action>
+                    </Actions>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.9.0.0.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",Subject(S).,Object(O).,"has_role(S, ""admin"") :- Subject(S).","can_access(S, O, ""write"") :- Subject(S), Object(O), has_role(S, ""admin"")."
+"<Policy PolicyId=""RPSlist.9.0.3.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isMeeting"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.9.0.3.2.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",Subject(S).,Object(O).,,"can_access(S, O, read) :- Subject(S), Object(O), not role(S, admin), isMeeting(S, false)."
+"<Policy PolicyId=""RPSlist.10.0.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isEq-subjUserId-resUserId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.10.0.0.1.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",Subject(S).,Resource(R).,"has_role(S, ""admin"") :- Subject(S).
+not_equal_subject_resource_user(S, R) :- Subject(S), Resource(R).","can_access(S, R, ""read"") :- Subject(S), Resource(R), has_role(S, ""admin""), not_equal_subject_resource_user(S, R)."
+"<Policy PolicyId=""RPSlist.13.0.1.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Resources>
+                            <Resource>
+<ResourceMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">paper_review_content_rating_rc</AttributeValue>
+    <ResourceAttributeDesignator AttributeId=""isEq-meetingPaper-resId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ResourceMatch>
+                            </Resource>
+                        </Resources>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.13.0.1.1.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>","Admin(S) :- Subject(S), role(S, ""admin"").","PaperReviewContentRatingRC(O) :- Resource(O), isEq_meetingPaper_resId(O, ""paper_review_content_rating_rc"").",,"can_read(S, O) :- Admin(S), PaperReviewContentRatingRC(O)."
+"<Policy PolicyId=""RPSlist.14.0.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                    <Actions>
+                        <Action>
+                            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+<ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </ActionMatch>
+                        </Action>
+                        <Action>
+                            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+<ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </ActionMatch>
+                        </Action>
+                    </Actions>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.14.0.0.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",Subject(S).,Resource(R).,"has_role(S, ""admin"") :- Subject(S).","can_access(S, R, ""read"") :- Subject(S), Resource(R), has_role(S, ""admin""). can_access(S, R, ""write"") :- Subject(S), Resource(R), has_role(S, ""admin"")."
+"<Policy PolicyId=""RPSlist.14.0.4.3.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isMeeting"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                            <Actions>
+<Action>
+    <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </ActionMatch>
+</Action>
+                            </Actions>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.14.0.4.3.2.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>",User(U).,Resource(R).,"has_role(U, ""admin"") :- User(U).
+not_in_meeting(U) :- User(U).","can_access(U, R, ""read"") :- User(U), Resource(R), has_role(U, ""admin""), not_in_meeting(U)."
+"<Policy PolicyId=""RPSlist.15.0.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target/>
+                <Rule Effect=""Deny"" RuleId=""RPSlist.15.0.4.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",,,,
+"<Policy PolicyId=""RPSlist.17.0.1.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.17.0.1.2.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>","Subject(S) :- role(S, ""admin"").",Object(O).,,"can_access(S, O, ""read"") :- Subject(S), Object(O)."
+"<Policy PolicyId=""RPSlist.17.0.1.5.3.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                            <Target>
+<Subjects>
+    <Subject>
+        <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+            <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </SubjectMatch>
+    </Subject>
+</Subjects>
+<Actions>
+    <Action>
+        <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+            <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </ActionMatch>
+    </Action>
+</Actions>
+                            </Target>
+                            <Rule Effect=""Permit"" RuleId=""RPSlist.17.0.1.5.3.1.r.1"">
+<Target/>
+                            </Rule>
+                        </Policy>",Subject(S).,,,"can_read(S) :- Subject(S), not role(S, ""false"")."
+"<Policy PolicyId=""RPSlist.18.0.2.5.3.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                            <Target>
+<Subjects>
+    <Subject>
+        <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+            <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </SubjectMatch>
+    </Subject>
+</Subjects>
+<Actions>
+    <Action>
+        <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+            <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </ActionMatch>
+    </Action>
+    <Action>
+        <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+            <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </ActionMatch>
+    </Action>
+</Actions>
+                            </Target>
+                            <Rule Effect=""Permit"" RuleId=""RPSlist.18.0.2.5.3.0.r.1"">
+<Target/>
+                            </Rule>
+                        </Policy>","Subject(S), role(S, R).",,,"can_access(S, A) :- Subject(S), role(S, R), R = ""admin"", (A = ""read"" ; A = ""write"")."
+"<Policy PolicyId=""RPSlist.19.0.1.1.5.3.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+<Target>
+    <Subjects>
+        <Subject>
+            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+                <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+                <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+            </SubjectMatch>
+        </Subject>
+    </Subjects>
+    <Actions>
+        <Action>
+            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+                <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+                <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+            </ActionMatch>
+        </Action>
+        <Action>
+            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+                <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+                <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+            </ActionMatch>
+        </Action>
+    </Actions>
+</Target>
+<Rule Effect=""Permit"" RuleId=""RPSlist.19.0.1.1.5.3.0.r.1"">
+    <Target/>
+</Rule>
+                            </Policy>",User(U).,Resource(R).,"has_role(U, ""admin"") :- User(U).","can_access(U, R, ""read"") :- User(U), Resource(R), has_role(U, ""admin""). can_access(U, R, ""write"") :- User(U), Resource(R), has_role(U, ""admin"")."
+"<Policy PolicyId=""RPSlist.19.0.1.1.5.3.3"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+<Target/>
+<Rule Effect=""Deny"" RuleId=""RPSlist.19.0.1.1.5.3.3.r.1"">
+    <Target/>
+</Rule>
+                            </Policy>",,,,
+"<Policy PolicyId=""RPSlist.20.0.0.2.3"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isConflicted"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                        </Target>
+                        <Rule Effect=""Deny"" RuleId=""RPSlist.20.0.0.2.3.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>",Subject(S).,,is_conflicted(S) :- Subject(S).,"can_access(S, O, A) :- Subject(S), Object(O), Action(A), not is_conflicted(S)."
+"<Policy PolicyId=""RPSlist.20.0.0.2.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isConflicted"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                            <Actions>
+<Action>
+    <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </ActionMatch>
+</Action>
+                            </Actions>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.20.0.0.2.4.r.4"">
+                            <Target>
+<Resources>
+    <Resource>
+        <ResourceMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">ismeetingflag_rc</AttributeValue>
+            <ResourceAttributeDesignator AttributeId=""isSeeUnassignedAllowed"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </ResourceMatch>
+    </Resource>
+</Resources>
+                            </Target>
+                        </Rule>
+                    </Policy>",Subject(S).,Resource(R).,"has_role(S, ""admin"") :- Subject(S).
+not_conflicted(S) :- Subject(S).
+has_attribute(R, ""ismeetingflag_rc"") :- Resource(R).","can_access(S, R, ""read"") :- Subject(S), Resource(R), has_role(S, ""admin""), not_conflicted(S), has_attribute(R, ""ismeetingflag_rc"")."
+"<Policy PolicyId=""RPSlist.21.0.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isEq-subjUserId-resUserId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                        <Actions>
+                            <Action>
+<ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</ActionMatch>
+                            </Action>
+                        </Actions>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.21.0.0.1.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>","Subject(S) :- role(S, ""admin""), isEq_subjUserId_resUserId(S, ""false"").",,,"can_access(S, A) :- Subject(S), action(A, ""read"")."
+"<Policy PolicyId=""RPSlist.21.0.0.2.5.3.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+<Target>
+    <Subjects>
+        <Subject>
+            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+                <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+                <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+            </SubjectMatch>
+            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+                <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+                <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isMeeting"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+            </SubjectMatch>
+        </Subject>
+    </Subjects>
+    <Actions>
+        <Action>
+            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+                <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+                <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+            </ActionMatch>
+        </Action>
+    </Actions>
+</Target>
+<Rule Effect=""Permit"" RuleId=""RPSlist.21.0.0.2.5.3.2.r.1"">
+    <Target/>
+</Rule>
+                            </Policy>",Subject(S).,Object(O).,"has_role(S, 'admin') :- Subject(S).
+has_isMeeting(S, 'false') :- Subject(S).","can_access(S, O, 'read') :- Subject(S), Object(O), has_role(S, 'admin'), has_isMeeting(S, 'false')."
+"<Policy PolicyId=""RPSlist.21.0.0.2.5.3.3"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+<Target/>
+<Rule Effect=""Deny"" RuleId=""RPSlist.21.0.0.2.5.3.3.r.1"">
+    <Target/>
+</Rule>
+                            </Policy>",,,,deny_all :- false.
+"<Policy PolicyId=""RPSlist.22.0.0.2.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isConflicted"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                            <Actions>
+<Action>
+    <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </ActionMatch>
+</Action>
+                            </Actions>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.22.0.0.2.4.r.3"">
+                            <Target>
+<Subjects>
+    <Subject>
+        <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+            <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""subjReviewsThisResPaper"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </SubjectMatch>
+        <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+            <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""hasSubmittedReviewForResPaper"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </SubjectMatch>
+    </Subject>
+</Subjects>
+                            </Target>
+                        </Rule>
+                    </Policy>",Subject(S).,Resource(R).,"role(S, 'false') :- Subject(S).
+isConflicted(S, 'false') :- Subject(S).
+subjReviewsThisResPaper(S, 'admin') :- Subject(S).
+hasSubmittedReviewForResPaper(S, 'false') :- Subject(S).","can_access(S, R, 'read') :- Subject(S), Resource(R), role(S, 'false'), isConflicted(S, 'false'), subjReviewsThisResPaper(S, 'admin'), hasSubmittedReviewForResPaper(S, 'false')."
+"<Policy PolicyId=""RPSlist.23.0.0.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                    <Target>
+                        <Subjects>
+                            <Subject>
+<SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+    <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+</SubjectMatch>
+                            </Subject>
+                        </Subjects>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.23.0.0.0.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",User(U).,Resource(R).,"has_role(U, 'admin') :- User(U).","can_access(U, R) :- User(U), Resource(R), has_role(U, 'admin')."
+"<Policy PolicyId=""RPSlist.23.0.0.1.3"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                        <Target>
+                            <Subjects>
+<Subject>
+    <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+        <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isConflicted"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+    </SubjectMatch>
+</Subject>
+                            </Subjects>
+                        </Target>
+                        <Rule Effect=""Deny"" RuleId=""RPSlist.23.0.0.1.3.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>",Subject(S).,,isConflicted(S) :- Subject(S).,"deny_access(S) :- Subject(S), isConflicted(S)."
+"<Policy PolicyId=""RPSlist.23.0.0.1.5.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                            <Target>
+<Subjects>
+    <Subject>
+        <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+            <SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </SubjectMatch>
+    </Subject>
+</Subjects>
+<Resources>
+    <Resource>
+        <ResourceMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">ismeetingflag_rc</AttributeValue>
+            <ResourceAttributeDesignator AttributeId=""isEq-meetingPaper-resId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </ResourceMatch>
+    </Resource>
+</Resources>
+<Actions>
+    <Action>
+        <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+            <ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+        </ActionMatch>
+    </Action>
+</Actions>
+                            </Target>
+                            <Rule Effect=""Permit"" RuleId=""RPSlist.23.0.0.1.5.1.r.1"">
+<Target/>
+                            </Rule>
+                        </Policy>",Subject(S).,Resource(R).,"has_role(S, 'admin') :- Subject(S).","can_read(S, R) :- Subject(S), Resource(R), has_role(S, 'admin'), is_resource(R, 'ismeetingflag_rc')."
+"<Policy PolicyId=""RPSlist.24.0.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                    <Actions>
+                        <Action>
+                            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+<ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </ActionMatch>
+                        </Action>
+                        <Action>
+                            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+<ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </ActionMatch>
+                        </Action>
+                    </Actions>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.24.0.0.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",Subject(S).,,,"can_access(S, Action) :- Subject(S), Action(Action), role(S, ""false""), (Action = ""read""; Action = ""write"")."

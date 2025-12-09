@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml3:PolicySet xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"  PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable" PolicySetId="health-care-policyset" Version="1.0">
+<xacml3:Policy xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+    PolicyId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessPharmacy"
+    RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides"
+    Version="1.0">
+    <xacml3:Description />
+    <xacml3:PolicyDefaults>
+        <xacml3:XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</xacml3:XPathVersion>
+    </xacml3:PolicyDefaults>
+    <xacml3:Target>
+        <xacml3:AnyOf>
+            <xacml3:AllOf>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">External</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="role"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Pharmacy</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="party-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Write</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="action-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+            </xacml3:AllOf>
+        </xacml3:AnyOf>
+    </xacml3:Target>
+    <xacml3:Rule 
+            Effect="Deny"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessPharmacy.permitmedicines">
+        <xacml3:Description />
+        <xacml3:Target />
+        <xacml3:Condition>
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                        <xacml3:AttributeDesignator 
+                            AttributeId="resource-type"
+                            DataType="http://www.w3.org/2001/XMLSchema#string"
+                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                            MustBePresent="false"
+                        />
+                    </xacml3:Apply>
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Patient.Record.Medicines</xacml3:AttributeValue>
+                </xacml3:Apply>
+            </xacml3:Apply>
+        </xacml3:Condition>
+    </xacml3:Rule>
+    <xacml3:Rule 
+            Effect="Permit"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessPharmacy.permit_rule">
+        <xacml3:Description />
+        <xacml3:Target />
+    </xacml3:Rule>
+</xacml3:Policy>
+<xacml3:Policy xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+    PolicyId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessInsurance"
+    RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides"
+    Version="1.0">
+    <xacml3:Description />
+    <xacml3:PolicyDefaults>
+        <xacml3:XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</xacml3:XPathVersion>
+    </xacml3:PolicyDefaults>
+    <xacml3:Target>
+        <xacml3:AnyOf>
+            <xacml3:AllOf>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">External</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="role"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Insurance</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="party-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Write</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="action-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+            </xacml3:AllOf>
+        </xacml3:AnyOf>
+    </xacml3:Target>
+    <xacml3:Rule 
+            Effect="Deny"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessInsurance.permitbilling">
+        <xacml3:Description />
+        <xacml3:Target />
+        <xacml3:Condition>
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                        <xacml3:AttributeDesignator 
+                            AttributeId="resource-type"
+                            DataType="http://www.w3.org/2001/XMLSchema#string"
+                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                            MustBePresent="false"
+                        />
+                    </xacml3:Apply>
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Patient.Record.Billing</xacml3:AttributeValue>
+                </xacml3:Apply>
+            </xacml3:Apply>
+        </xacml3:Condition>
+    </xacml3:Rule>
+    <xacml3:Rule 
+            Effect="Permit"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessInsurance.permit_rule">
+        <xacml3:Description />
+        <xacml3:Target />
+    </xacml3:Rule>
+</xacml3:Policy>
+<xacml3:Policy xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+    PolicyId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessDoctor"
+    RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides"
+    Version="1.0">
+    <xacml3:Description />
+    <xacml3:PolicyDefaults>
+        <xacml3:XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</xacml3:XPathVersion>
+    </xacml3:PolicyDefaults>
+    <xacml3:Target>
+        <xacml3:AnyOf>
+            <xacml3:AllOf>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Patient.Record</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="resource-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Read</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="action-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+            </xacml3:AllOf>
+        </xacml3:AnyOf>
+    </xacml3:Target>
+    <xacml3:Rule 
+            Effect="Deny"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessDoctor.permit_patient_assigned_doctor">
+        <xacml3:Description />
+        <xacml3:Target>
+            <xacml3:AnyOf>
+                <xacml3:AllOf>
+                    <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:AttributeValue
+                            DataType="http://www.w3.org/2001/XMLSchema#string">Doctor</xacml3:AttributeValue>
+                        <xacml3:AttributeDesignator 
+                            AttributeId="role"
+                            DataType="http://www.w3.org/2001/XMLSchema#string"
+                            Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                            MustBePresent="false"
+                        />
+                    </xacml3:Match>
+                </xacml3:AllOf>
+            </xacml3:AnyOf>
+        </xacml3:Target>
+        <xacml3:Condition>
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:or">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="user-id"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="patient:record:assigned-doctor-id"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="location"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="patient:record:department"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+            </xacml3:Apply>
+        </xacml3:Condition>
+    </xacml3:Rule>
+    <xacml3:Rule 
+            Effect="Deny"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessDoctor.permit_patient_assigned_nurse">
+        <xacml3:Description />
+        <xacml3:Target>
+            <xacml3:AnyOf>
+                <xacml3:AllOf>
+                    <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:AttributeValue
+                            DataType="http://www.w3.org/2001/XMLSchema#string">Nurse</xacml3:AttributeValue>
+                        <xacml3:AttributeDesignator 
+                            AttributeId="role"
+                            DataType="http://www.w3.org/2001/XMLSchema#string"
+                            Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                            MustBePresent="false"
+                        />
+                    </xacml3:Match>
+                </xacml3:AllOf>
+            </xacml3:AnyOf>
+        </xacml3:Target>
+        <xacml3:Condition>
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:or">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="user-id"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="patient:record:assigned-nurse-id"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="location"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="patient:record:department"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+            </xacml3:Apply>
+        </xacml3:Condition>
+    </xacml3:Rule>
+    <xacml3:Rule 
+            Effect="Permit"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.NormalAccessDoctor.permit_rule">
+        <xacml3:Description />
+        <xacml3:Target />
+    </xacml3:Rule>
+</xacml3:Policy>
+<xacml3:Policy xmlns:xacml3="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+    PolicyId="http://axiomatics.com/alfa/identifier/health_care.EmergencyAccess"
+    RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides"
+    Version="1.0">
+    <xacml3:Description />
+    <xacml3:PolicyDefaults>
+        <xacml3:XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</xacml3:XPathVersion>
+    </xacml3:PolicyDefaults>
+    <xacml3:Target>
+        <xacml3:AnyOf>
+            <xacml3:AllOf>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Patient.Record</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="resource-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">NotAvailableNurseDoctor</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="patient:management-info:status"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Doctor</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="role"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+                <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                    <xacml3:AttributeValue
+                        DataType="http://www.w3.org/2001/XMLSchema#string">Read</xacml3:AttributeValue>
+                    <xacml3:AttributeDesignator 
+                        AttributeId="action-type"
+                        DataType="http://www.w3.org/2001/XMLSchema#string"
+                        Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                        MustBePresent="false"
+                    />
+                </xacml3:Match>
+            </xacml3:AllOf>
+        </xacml3:AnyOf>
+    </xacml3:Target>
+    <xacml3:Rule 
+            Effect="Deny"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.EmergencyAccess.patient_conscious">
+        <xacml3:Description />
+        <xacml3:Target>
+            <xacml3:AnyOf>
+                <xacml3:AllOf>
+                    <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:AttributeValue
+                            DataType="http://www.w3.org/2001/XMLSchema#string">conscious</xacml3:AttributeValue>
+                        <xacml3:AttributeDesignator 
+                            AttributeId="patient:management-info:conscious-status"
+                            DataType="http://www.w3.org/2001/XMLSchema#string"
+                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                            MustBePresent="false"
+                        />
+                    </xacml3:Match>
+                </xacml3:AllOf>
+            </xacml3:AnyOf>
+        </xacml3:Target>
+        <xacml3:Condition>
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:or">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="patient:emgergency-agreement:doctor"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="user-id"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="location"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="patient:record:department"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+            </xacml3:Apply>
+        </xacml3:Condition>
+    </xacml3:Rule>
+    <xacml3:Rule 
+            Effect="Deny"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.EmergencyAccess.patient_unconscious">
+        <xacml3:Description />
+        <xacml3:Target>
+            <xacml3:AnyOf>
+                <xacml3:AllOf>
+                    <xacml3:Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:AttributeValue
+                            DataType="http://www.w3.org/2001/XMLSchema#string">unconscious</xacml3:AttributeValue>
+                        <xacml3:AttributeDesignator 
+                            AttributeId="patient:management-info:conscious-status"
+                            DataType="http://www.w3.org/2001/XMLSchema#string"
+                            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                            MustBePresent="false"
+                        />
+                    </xacml3:Match>
+                </xacml3:AllOf>
+            </xacml3:AnyOf>
+        </xacml3:Target>
+        <xacml3:Condition>
+            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:or">
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="patient:emgergency-agreement:doctor"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                            <xacml3:AttributeDesignator 
+                                AttributeId="user-id"
+                                DataType="http://www.w3.org/2001/XMLSchema#string"
+                                Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                MustBePresent="false"
+                            />
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+                <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:or">
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                                <xacml3:AttributeDesignator 
+                                    AttributeId="patient:emgergency-agreement:relative-passport-id"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                    MustBePresent="false"
+                                />
+                            </xacml3:Apply>
+                            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                                <xacml3:AttributeDesignator 
+                                    AttributeId="patient:management-info:relative-passport-id"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                    MustBePresent="false"
+                                />
+                            </xacml3:Apply>
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                    <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not" >
+                        <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                                <xacml3:AttributeDesignator 
+                                    AttributeId="location"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                    MustBePresent="false"
+                                />
+                            </xacml3:Apply>
+                            <xacml3:Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only" >
+                                <xacml3:AttributeDesignator 
+                                    AttributeId="patient:record:department"
+                                    DataType="http://www.w3.org/2001/XMLSchema#string"
+                                    Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                    MustBePresent="false"
+                                />
+                            </xacml3:Apply>
+                        </xacml3:Apply>
+                    </xacml3:Apply>
+                </xacml3:Apply>
+            </xacml3:Apply>
+        </xacml3:Condition>
+    </xacml3:Rule>
+    <xacml3:Rule 
+            Effect="Permit"
+            RuleId="http://axiomatics.com/alfa/identifier/health_care.EmergencyAccess.permit_rule">
+        <xacml3:Description />
+        <xacml3:Target />
+    </xacml3:Rule>
+</xacml3:Policy>
+
+</xacml3:PolicySet>

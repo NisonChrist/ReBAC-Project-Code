@@ -1,2 +1,0 @@
-datalog_actions,cheng_policy
-"can_access(S, O) :- Subject(S), Object(O), (has_permission(S, ""permission:mli:vi-operations""); has_permission(S, ""permission:mli:vi-request-operations""); has_permission(S, ""permission:mli:replanning:vr-it-operations""); has_permission(S, ""permission:mli:replanning:vlink-operations""); has_permission(S, ""permission:sli:operations"")).",No Path Found

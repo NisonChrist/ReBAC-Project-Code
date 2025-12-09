@@ -177,6 +177,7 @@ def translate(input_path: Path, output_path: Path):
 
 
 if __name__ == "__main__":
+    # Natural Language
     acre_acp_input_path = Path("policy_generation/output/litroacp/acre_acp.csv")
     acre_acp_output_path = Path("policy_translation/output/carminati/acre_acp.csv")
     translate(acre_acp_input_path, acre_acp_output_path)
@@ -196,120 +197,28 @@ if __name__ == "__main__":
     t2p_acp_input_path = Path("policy_generation/output/litroacp/t2p_acp.csv")
     t2p_acp_output_path = Path("policy_translation/output/carminati/t2p_acp.csv")
     translate(t2p_acp_input_path, t2p_acp_output_path)
-    xacml3_mli_interface_input_path = Path(
-        "policy_generation/output/xacml/xacml3-mli-interface.csv"
-    )
-    xacml3_mli_interface_output_path = Path(
-        "policy_translation/output/carminati/xacml3-mli-interface.csv"
-    )
-    translate(xacml3_mli_interface_input_path, xacml3_mli_interface_output_path)
-    pps_pip_role_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/PPS-PIP-Role.csv"
-    )
-    pps_pip_role_output_path = Path(
-        "policy_translation/output/carminati/PPS-PIP-Role.csv"
-    )
-    translate(pps_pip_role_input_path, pps_pip_role_output_path)
-    pps_vio_n_role_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/PPS-VIO-N-Role.csv"
-    )
-    pps_vio_n_role_output_path = Path(
-        "policy_translation/output/carminati/PPS-VIO-N-Role.csv"
-    )
-    translate(pps_vio_n_role_input_path, pps_vio_n_role_output_path)
-    pps_vio_role_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/PPS-VIO-Role.csv"
-    )
-    pps_vio_role_output_path = Path(
-        "policy_translation/output/carminati/PPS-VIO-Role.csv"
-    )
-    translate(pps_vio_role_input_path, pps_vio_role_output_path)
-    rps_pip_role_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/RPS-PIP-Role.csv"
-    )
-    rps_pip_role_output_path = Path(
-        "policy_translation/output/carminati/RPS-PIP-Role.csv"
-    )
-    translate(rps_pip_role_input_path, rps_pip_role_output_path)
-    rps_vio_n_role_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/RPS-VIO-N-Role.csv"
-    )
-    rps_vio_n_role_output_path = Path(
-        "policy_translation/output/carminati/RPS-VIO-N-Role.csv"
-    )
-    translate(rps_vio_n_role_input_path, rps_vio_n_role_output_path)
-    rps_vio_role_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/RPS-VIO-Role.csv"
-    )
-    rps_vio_role_output_path = Path(
-        "policy_translation/output/carminati/RPS-VIO-Role.csv"
-    )
-    translate(rps_vio_role_input_path, rps_vio_role_output_path)
-    permission_cci_operations_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/permission-cci-operations.csv"
-    )
-    permission_cci_operations_output_path = Path(
-        "policy_translation/output/carminati/permission-cci-operations.csv"
-    )
-    translate(
-        permission_cci_operations_input_path, permission_cci_operations_output_path
-    )
-    permission_mli_replanning_vlink_operations_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/permission-mli-replanning-vlink-operations.csv"
-    )
-    permission_mli_replanning_vlink_operations_output_path = Path(
-        "policy_translation/output/carminati/permission-mli-replanning-vlink-operations.csv"
-    )
-    translate(
-        permission_mli_replanning_vlink_operations_input_path,
-        permission_mli_replanning_vlink_operations_output_path,
-    )
-    permission_mli_replanning_vr_it_operations_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/permission-mli-replanning-vr-it-operations.csv"
-    )
-    permission_mli_replanning_vr_it_operations_output_path = Path(
-        "policy_translation/output/carminati/permission-mli-replanning-vr-it-operations.csv"
-    )
-    translate(
-        permission_mli_replanning_vr_it_operations_input_path,
-        permission_mli_replanning_vr_it_operations_output_path,
-    )
-    permission_mli_vi_operations_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/permission-mli-vi-operations.csv"
-    )
-    permission_mli_vi_operations_output_path = Path(
-        "policy_translation/output/carminati/permission-mli-vi-operations.csv"
-    )
-    translate(
-        permission_mli_vi_operations_input_path,
-        permission_mli_vi_operations_output_path,
-    )
-    permission_mli_vi_request_operations_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/permission-mli-vi-request-operations.csv"
-    )
-    permission_mli_vi_request_operations_output_path = Path(
-        "policy_translation/output/carminati/permission-mli-vi-request-operations.csv"
-    )
-    translate(
-        permission_mli_vi_request_operations_input_path,
-        permission_mli_vi_request_operations_output_path,
-    )
-    permission_ros_notifications_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/permission-ros-notifications.csv"
-    )
-    permission_ros_notifications_output_path = Path(
-        "policy_translation/output/carminati/permission-ros-notifications.csv"
-    )
-    translate(
-        permission_ros_notifications_input_path,
-        permission_ros_notifications_output_path,
-    )
-    permission_sli_operations_input_path = Path(
-        "policy_generation/output/xacml/upperlicl/permission-sli-operations.csv"
-    )
-    permission_sli_operations_output_path = Path(
-        "policy_translation/output/carminati/permission-sli-operations.csv"
-    )
-    translate(
-        permission_sli_operations_input_path, permission_sli_operations_output_path
-    )
+
+    # XACML
+    xacml2_1_input_path = Path("policy_generation/output/xacml/xacBench/xacml2_1.csv")
+    xacml2_1_output_path = Path("policy_translation/output/carminati/xacml2_1.csv")
+    translate(xacml2_1_input_path, xacml2_1_output_path)
+
+    xacml2_2_input_path = Path("policy_generation/output/xacml/xacBench/xacml2_2.csv")
+    xacml2_2_output_path = Path("policy_translation/output/carminati/xacml2_2.csv")
+    translate(xacml2_2_input_path, xacml2_2_output_path)
+
+    xacml2_3_input_path = Path("policy_generation/output/xacml/xacBench/xacml2_3.csv")
+    xacml2_3_output_path = Path("policy_translation/output/carminati/xacml2_3.csv")
+    translate(xacml2_3_input_path, xacml2_3_output_path)
+
+    xacml3_1_input_path = Path("policy_generation/output/xacml/xacBench/xacml3_1.csv")
+    xacml3_1_output_path = Path("policy_translation/output/carminati/xacml3_1.csv")
+    translate(xacml3_1_input_path, xacml3_1_output_path)
+
+    xacml3_2_input_path = Path("policy_generation/output/xacml/xacBench/xacml3_2.csv")
+    xacml3_2_output_path = Path("policy_translation/output/carminati/xacml3_2.csv")
+    translate(xacml3_2_input_path, xacml3_2_output_path)
+
+    xacml3_3_input_path = Path("policy_generation/output/xacml/xacBench/xacml3_3.csv")
+    xacml3_3_output_path = Path("policy_translation/output/carminati/xacml3_3.csv")
+    translate(xacml3_3_input_path, xacml3_3_output_path)

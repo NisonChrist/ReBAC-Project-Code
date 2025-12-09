@@ -1,125 +1,66 @@
-rule,path_condition
-"can_view(R, W, A) :- Reviewer(R), Webpage(W), Abstract(A), has_access(R, W).",No Path Found
-"can_generate(C, P, PC) :- CyberChair(C), Paper(P), PCC(PC), generates_proposal(C, P, PC).",generates_proposal
-"can_assign(P, R) :- Paper(P), Reviewer(R), deadline_passed(D).",No Path Found
-"can_submit(A, P) :- Author(A), Paper(P), has_author(P, A).",has_author^{-1}
-"can_watch_progress(PC, S, R) :- ProgramChair(PC), Submission(S), Review(R), has_progress(PC, S, R).",has_progress
-"can_submit_paper(A, P) :- Author(A), Paper(P), submitted_abstract(A, AB, TimeAB), submitted_paper(A, P, TimeP), TimeAB <= TimeP - 7 days.",submitted_paper
-"can_send(P, S, E) :- Person(P), Submission(S), Email(E), has_submission(P, S).",No Path Found
-"can_indicate(R, T, X) :- Reviewer(R), Topic(T), is_expert_on(R, T).",No Path Found
-"can_indicate(R, T, Y) :- Reviewer(R), Topic(T), knowledgable_in(R, T).",No Path Found
-"can_indicate(R, T, Z) :- Reviewer(R), Topic(T), informed_outsider_on(R, T).",No Path Found
-"can_download(R, P) :- Reviewer(R), Paper(P), submitted(P).",No Path Found
-"collects_data(R, P, T) :- Reviewer(R), Paper(P), Topic(T), has_preference(R, P), has_expertise(R, T), willing_to_review(R, T), not has_conflict(R, P).",has_expertise
-"can_fill_form(A, P) :- Author(A), Paper(P), submits(A, P).",submits
-"repeat_process_with_low_preference(P) :- Paper(P), count_reviewers(P, Count), Count < 4, has_low_preference(R, P).",Cannot determine Subject/Object (arity < 2)
-"indicates_agreement(R, P) :- Reviewer(R), Page(P), has_personal_page(R, P).",has_personal_page
-"can_receive_comment(A, P, C) :- Author(A), Paper(P), Comment(C), has_comment(P, C).",No Path Found
-"monitor(C, RP) :- can_monitor(C, RP).",can_monitor
-"can_update_webpage(U, W) :- User(U), Webpage(W), has_webpage(U, W).",has_webpage
-"mark_checkbox(R, P) :- Reviewer(R), Paper(P), wants_to_review(R, P).",wants_to_review
-"can_submit(A, P) :- Author(A), Paper(P), forced_to_submit(A, P).",forced_to_submit
-"can_view(U, PO) :- User(U), Poster(PO), has_access(U, PO).",has_access
-"can_select_best(PC, P) :- ProgramCommittee(PC), Paper(P), supports_selection(PC, P).",supports_selection
-"discover_paper(P, PA) :- PCC(P), Paper(PA), not exists R (reviewed_by(PA, R), is_expert(R)). ask_review(P, PA, R2) :- PCC(P), Paper(PA), Reviewer(R2), discover_paper(P, PA).",discover_paper
-"can_view(U, O) :- User(U), Overview(O), updated_at(O, T).",No Path Found
-"can_inform(PCC, M, PA) :- PCC(PCC), Maintainer(M), Paper(PA), Meeting(MT), has_accepted_paper(MT, PA).",No Path Found
-"can_submit(A, AB, P) :- Author(A), Abstract(AB), Paper(P), has_abstract(A, AB), has_paper(A, P).",has_paper
-"can_send_comment(PC, A, C) :- ProgramCommittee(PC), Author(A), Comment(C), Paper(P), selected_paper(P), has_comment(P, C), authored_by(P, A).",No Path Found
-"can_learn_opinion(R1, R2, O) :- Reviewer(R1), Reviewer(R2), Opinion(O), has_opinion(R2, O).",No Path Found
-"must_use(A, L, PW) :- Author(A), Login(L), Password(PW), sent_after_phase1(L, PW, P1).",No Path Found
-"can_submit_review(U, R) :- User(U), Review(R), (submitted_via_webpage(U, R); submitted_via_email(U, R)).",No Path Found
-"can_access(R, REV) :- Reviewer(R), Review(REV), has_directory(R, D), associated(REV, D).",has_directory.associated^{-1}
-"can_classify(R, P, F) :- Reviewer(R), Paper(P), ReviewForm(F), assigned_to(R, P).",No Path Found
-"can_be_in_preference_list(R, L) :- Reviewer(R), PreferenceList(L), not max_reviews_reached(R). max_reviews_reached(R) :- Reviewer(R), count(assigned_reviews(R, _)) >= MAX_REVIEWS.",No Path Found
-"can_assign_review(R, P) :- Reviewer(R), Paper(P), has_priority(R, P, Priority).",has_priority
-"accumulated_bids(BD) :- Bid(BD), submitted(B, BD).",Cannot determine Subject/Object (arity < 2)
-"assign_paper(R, P) :- Reviewer(R), Paper(P), assigned_papers(R, Count_R), not exists Reviewer(R2) (assigned_papers(R2, Count_R2), Count_R2 < Count_R and count(Reviewer(R3) (assigned_papers(R3, Count_R3), Count_R3 < Count_R) < 4).",No Path Found
-"can_assign_paper(R1, P) :- Reviewer(R1), Paper(P), has_expertise(R1, EV1), has_expertise(R2, EV2), EV1 = EV2, papers_assigned(R1, Count1), papers_assigned(R2, Count2), Count1 < Count2, not exists(R3) (Reviewer(R3), has_expertise(R3, EV3), EV3 = EV1, papers_assigned(R3, Count3), Count3 < Count1).",No Path Found
-"can_print(R, O) :- Reviewer(R), Overview(O), wants_to_read_offline(R, O).",wants_to_read_offline
-"can_access(R, F) :- Reviewer(R), ReviewFile(F), has_directory(R, D), contains_file(D, F).",has_directory.contains_file
-"can_generate(S, P, T) :- System(S), Proceedings(P), TableOfContents(T), has_input(A, P). can_generate(S, P, I) :- System(S), Proceedings(P), AuthorIndex(I), has_input(A, P).",No Path Found
-"can_submit_step1(A, P) :- Author(A), Paper(P), has_paper(A, P). can_submit_step2(A, P) :- Author(A), Paper(P), has_paper(A, P), can_submit_step1(A, P).",has_paper
-"can_prepare_proceedings(M, S, P, T) :- Maintainer(M), Paper(P), Session(S), TemplateFile(T), submitted(P), part_of(P, S), has_template(S, T).",No Path Found
-"add_reviewer(E, R, P) :- can_add_reviewer(E, R, P).",can_add_reviewer
-"can_generate(M, PA, R) :- Maintainer(M), Page(PA), Reviewer(R), distributed(P, R), not generated_page(PA, R).",No Path Found
-"calculate_assignment(C, A) :- Chair(C), AssignmentProposal(A), forall P (Paper(P) -> count(R, assigned_to(P, R)) = N), forall R (Reviewer(R) -> count(P, assigned_to(P, R)) = M), maximize(sum(R, P, has_preference(R, P) and assigned_to(P, R))).",No Path Found
-"can_view_other_reviews(R, P) :- Reviewer(R), Paper(P), has_submitted(R, P, REV), not (Reviewer(R2), has_submitted(R2, P, REV2), R2 != R).",has_submitted
-"assign_reviewer(M, P) :- PC_Member(M), Paper(P), all_submissions_arrived, suitable_reviewer(M, P).",suitable_reviewer
-"should_inform(R, M, P) :- Reviewer(R), Maintainer(M), Paper(P), has_conflict(R, P).",has_conflict
-"state_based_on(P, Classification) :- Paper(P), Reviewer(R), classified_as(P, Classification).",classified_as
-"can_view_reviews(R1, Rev) :- Reviewer(R1), Review(Rev), submitted_review(R2, Rev), Reviewer(R2), R1 != R2, not interfered_by_maintainer(Rev). interfered_by_maintainer(Rev) :- Maintainer(M), Review(Rev).",No Path Found
-"can_send_copy(S, M, P) :- Sender(S), Message(M), PCC(P).",No Path Found
-"can_display_default(R, P, Rev) :- Reviewer(R), Paper(P), Review(Rev), submitted_review(R, P, Rev).",submitted_review
-"detect_conflict(Rev1, Rev2) :- Review(Rev1), Review(Rev2), has_review(R1, Rev1), has_review(R2, Rev2), R1 != R2, Rev1 != Rev2.",No Path Found
-"sorted_list(R) :- Reviewer(R), count_assigned(R, N). count_assigned(R, N) :- Reviewer(R), N = count(P) : assigned_to(R, P).",Cannot determine Subject/Object (arity < 2)
-"can_access_review_form(R, F) :- Reviewer(R), ReviewForm(F), assigned_to(R, P), not page_regenerated(R, P).",No Path Found
-"can_match_paper_to_expert(PC, P, E) :- PC_Member(PC), Paper(P), Expert(E), is_domain_expert(E, P).",No Path Found
-"can_select(PM, P, C) :- PC_Member(PM), Paper(P), Conference(C), is_member_of(PM, C).",is_member_of
-"needs_tuning(S) :- Paper(P), Script(S), count_reviewers(P, Count), Count < required_reviewers(P).",Cannot determine Subject/Object (arity < 2)
-"can_upload(U, F) :- User(U), File(F), not is_demo_data(F).",No Path Found
-"can_review(R, P) :- Reviewer(R), Paper(P), Topic(T), has_expertise(R, T), willing_to_review(R, T).",No Path Found
-"can_view(C, O) :- Chair(C), Overview(O), available_to(C, O).",available_to
-"generate_list(P, R) :- Paper(P), Reviewer(R), high_preference(R, P).",high_preference^{-1}
-"can_submit_camera_ready(A, P, CRV) :- Author(A), Paper(P), CameraReadyVersion(CRV), submitted(A, P).",No Path Found
-"can_access_paper(R, P) :- Reviewer(R), Paper(P), CyberChair(C), not has_submitted_review(R, P).",No Path Found
-"can_use(A, W) :- Author(A), Webform(W). can_use(R, W) :- Reviewer(R), Webform(W).",No Path Found
-"can_display_review(U, R) :- User(U), Review(R), has_last_update(R, DateTime).",No Path Found
-"can_modify(A, I) :- Author(A), Information(I), submitted_in_step1(A, I).",submitted_in_step1
-"can_access_workspace(U, S) :- User(U), System(S), has_access(U, A), has_access(U, P), has_access(U, R).",No Path Found
-"can_update(U, R) :- User(U), Review(R), has_review(U, R).",has_review
-"can_enter_review_process(A, P) :- Author(A), Paper(P), is_author_of(A, P), sent_to_pcc(A, P).",is_author_of
-"can_view(R, Rev) :- Reviewer(R), Review(Rev), has_access(R, Rev).",has_access
-"can_copy_reviews(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P), has_directory(R, Dir), has_review(P, OtherR, Rev), Reviewer(OtherR), OtherR != R, not has_review_in_directory(R, Rev, Dir). has_review_in_directory(R, Rev, Dir) :- Reviewer(R), Review(Rev), Directory(Dir).",assigned_to
-"can_browse(R, P, T) :- Reviewer(R), Paper(P), ConferenceTopic(T), has_interest(R, T), has_expertise(R, T), matches_topic(P, T).",has_interest
-"can_assess(R, P) :- Reviewer(R), Paper(P), has_classification(P, C), highest_classification(P, C), lowest_classification(P, C).",No Path Found
-"must_upload(A, F2, PF) :- Author(A), is_phase2_form(F2), FullPaperFile(PF), can_upload(A, F2, PF).",can_upload
-"can_generate_hyperlink(U, P, H) :- User(U), Paper(P), Hyperlink(H), has_access(U, P).",No Path Found
-"assign_paper(R, P) :- Reviewer(R), Paper(P), not enough_bids(P), has_expertise(R, P).",has_expertise
-"can_access(R, W) :- Reviewer(R), Webpage(W), has_webpage(R, W). can_download(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P), contains_link(W, P), has_webpage(R, W).",has_webpage
-"can_send_or_upload(M, Pub, Proc) :- Maintainer(M), Publisher(Pub), Proceedings(Proc), allows_electronic(Pub).",No Path Found
-"can_generate(CyberChair, R, W) :- System(CyberChair), Reviewer(R), Webpage(W).",No Path Found
-"can_indicate_preference(R, P) :- Reviewer(R), Paper(P).",No Path Found
-"classify_paper(P, C_high, C_low) :- Paper(P), highest_classification(P, C_high), lowest_classification(P, C_low).",lowest_classification
-"can_store(M, D, P) :- Maintainer(M), Disk(D), Paper(P), has_disk_space(D, P).",No Path Found
-"must_indicate_expertise(R, P) :- Reviewer(R), Paper(P), covers(P, T), has_expertise(R, T).",has_expertise.covers^{-1}
-"can_use_hyperlink(R1, HL) :- Reviewer(R1), HyperLink(HL), has_conflict(REV), Review(REV).",No Path Found
-"can_give_special_attention(R, C, S) :- Reviewer(R), Chair(C), Submission(S), has_agreement_level(S, L1), has_agreement_level(S, L2), L1 != L2, threshold_exceeded(L1, L2).",No Path Found
-"can_use_pattern(C, P, PT) :- CyberChair(C), PC(P), Pattern(PT), supports(C, P).",No Path Found
-"can_access(U, CV, RPP) :- User(U), CyberChairVersion(CV), ReviewProcessPhase(RPP), supports(CV, RPP). can_access(U, CV, Proc) :- User(U), CyberChairVersion(CV), Proceedings(Proc), supports(CV, Proc), prescribed_format(Pub, EF).",No Path Found
-"can_fill_online(R, F) :- Reviewer(R), ReviewForm(F), likes_to_fill(R, F).",likes_to_fill
-"can_use(C, P) :- CyberChair(C), PC(P), reduces_workload(C, P).",reduces_workload
-"can_share(P, I, PR) :- Person(P), Information(I), Problem(PR), has_access(P, I).",No Path Found
-"can_access(R, L, PW) :- Reviewer(R), Login(L), Password(PW), has_login(R, L), has_password(R, PW).",has_password
-"points_out(C, REV1, REV2) :- CyberChair(C), Review(REV1), Review(REV2), conflicting_reviews(REV1, REV2).",No Path Found
-"can_communicate(R, C) :- Reviewer(R), Conflict(C), has_conflict(R, C).",has_conflict
-"assign_id(C, S) :- CyberChair(C), Submission(S).",No Path Found
-"can_send(C, P, LP, E) :- CyberChair(C), ContactPerson(P), LoginPassword(LP), EmailAddress(E), has_email(P, E).",No Path Found
-"can_start(M, S) :- Maintainer(M), Script(S), administrative_script(S), started_by(S, M).",started_by^{-1}
-"can_start_automatically(S, SC, I) :- System(S), Script(SC), Interval(I), is_administrative(SC), started_at_interval(S, SC, I).",started_at_interval
-"can_read(R, REV) :- Reviewer(R), Review(REV), submitted_review(R, _), not same_reviewer(R, REV). same_reviewer(R, REV) :- Reviewer(R), Review(REV), submitted_review(R, REV).",submitted_review
-"can_prepare_for_meeting(R, M) :- Reviewer(R), Meeting(M), Review(REV), submitted(REV).",No Path Found
-"submit_review(U, R) :- User(U), Review(R), can_submit(U, R).",can_submit
-"can_find_out(U, E) :- User(U), Event(E), can_access(U, E).",can_access
-"can_view_overview(R) :- Reviewer(R), not exists P (assigned_to(R, P) and not submitted_review(R, P)), has_time(R).",Cannot determine Subject/Object (arity < 2)
-"can_select(R, P) :- Reviewer(R), Paper(P), has_submitted_all_reviews(R), has_time_to_review_more(R), has_conflicting_reviews(P).",No Path Found
-"can_deliver(C, P, TOC, AI) :- CyberChair(C), Publisher(P), TableOfContents(TOC), AuthorIndex(AI), generates(C, TOC), generates(C, AI).",generates
-"can_deliver(A, PUB, PA) :- Author(A), Publisher(PUB), Paper(PA), has_paper(A, PA).",has_paper
-"can_handle(C, P) :- CyberChair(C), Paper(P), handles_distribution(C, P).",handles_distribution
-"can_collect(C, R) :- CyberChair(C), Review(R). can_categorize(C, R) :- CyberChair(C), Review(R).",No Path Found
-"can_prepare_overview(C, O) :- CyberChair(C), Overview(O). can_access_overview(P, O) :- PC_Member(P), Overview(O), prepares_overview(C, O).",prepares_overview
-"can_check(C, R) :- CyberChair(C), ReviewForm(R), is_correct(R).",No Path Found
-"can_convert(M, P) :- Maintainer(M), Paper(P), submitted_paper(P).",No Path Found
-"can_ask_to_submit(M, A, P) :- Maintainer(M), Author(A), Paper(P), submitted_by(P, A).",No Path Found
-"can_send(PCC, PA, RF, R) :- PCC(PCC), Paper(PA), ReviewForm(RF), Reviewer(R).",No Path Found
-"can_fill(R, F) :- Reviewer(R), ReviewForm(F), assigned_to(R, F).",assigned_to
-"can_send(R, F, P) :- Reviewer(R), ReviewForm(F), PCC(P), has_form(R, F).",No Path Found
-"deals_with(C, T) :- CyberChair(C), AdministrativeTask(T), involved_in(T, R).",No Path Found
-"can_access(S, A) :- System(S), Author(A), stores(S, A). can_access(S, AB) :- System(S), Abstract(AB), stores(S, AB). can_access(S, P) :- System(S), Paper(P), stores(S, P). can_access(S, RE) :- System(S), Review(RE), stores(S, RE).",No Path Found
-"calculate_expertise(P, R, Level) :- Paper(P), Reviewer(R), covers(P, T), has_expertise(R, T, Level), not enough_reviewers(P).",covers.has_expertise^{-1}.has_expertise
-"assign_paper(P, R) :- Paper(P), Reviewer(R), not enough_reviewers(P), highest_expertise(R).",No Path Found
-"enough_reviewers(P) :- Paper(P), count_reviewers(P, N), N >= required_reviewers(P).",Cannot determine Subject/Object (arity < 2)
-"highest_expertise(R) :- Reviewer(R), has_expertise(R, E), not exists(R2, Reviewer(R2), has_expertise(R2, E2), E2 > E).",Cannot determine Subject/Object (arity < 2)
-"can_submit(A, P, PCC) :- Author(A), Paper(P), is_author_of(A, P), is_accepted(P).",No Path Found
-"can_send(PCC, PUB, CRF, PF, TOC) :- PCC(PCC), Publisher(PUB), CameraReadyFormat(CRF), Preface(PF), TableOfContents(TOC), has_camera_ready_format(PCC, CRF), has_preface(PCC, PF), has_table_of_contents(PCC, TOC).",has_table_of_contents
-"can_display(C, RF, BF) :- CyberChair(C), ReviewForm(RF), BrowserFormat(BF), transforms(C, RF, BF).",transforms
+natural_language_statements,datalog_subjects,datalog_objects,datalog_relationships,datalog_actions,crampton
+CyberChair generates a paper distribution proposal for the PCC.,CyberChair(C).,"Paper(P), PCC(PC).","generates_proposal(C, P, PC) :- CyberChair(C), Paper(P), PCC(PC).","can_generate(C, P, PC) :- CyberChair(C), Paper(P), PCC(PC), generates_proposal(C, P, PC).",generates_proposal
+"In step 2, the full paper must be submitted by uploading it.",Author(A).,Paper(P).,"has_author(P, A) :- Paper(P), Author(A).","can_submit(A, P) :- Author(A), Paper(P), has_author(P, A).",has_author^{-1}
+"Although CyberChair is not something to sit in (please refer to www.cyberchair.com if you are looking for that), when you are a program chair, you can sit back, relax and watch the progress of the submission and review process.",ProgramChair(PC).,"Submission(S), Review(R).","has_progress(PC, S, R) :- ProgramChair(PC), Submission(S), Review(R).","can_watch_progress(PC, S, R) :- ProgramChair(PC), Submission(S), Review(R), has_progress(PC, S, R).",has_progress
+"For this process to work smoothly, the abstracts should be submitted at least one week  before the full paper is submitted.",Author(A).,"Abstract(AB), Paper(P).","submitted_abstract(A, AB, TimeAB) :- Author(A), Abstract(AB). submitted_paper(A, P, TimeP) :- Author(A), Paper(P).","can_submit_paper(A, P) :- Author(A), Paper(P), submitted_abstract(A, AB, TimeAB), submitted_paper(A, P, TimeP), TimeAB <= TimeP - 7 days.",submitted_paper
+"The current implementation collects the preferences (bids), expertise levels and willingness to review papers on certain topics and the conflicts of interest of the reviewers.",Reviewer(R).,"Paper(P), Topic(T).","has_preference(R, P) :- Reviewer(R), Paper(P).
+has_expertise(R, T) :- Reviewer(R), Topic(T).
+willing_to_review(R, T) :- Reviewer(R), Topic(T).
+has_conflict(R, P) :- Reviewer(R), Paper(P).","collects_data(R, P, T) :- Reviewer(R), Paper(P), Topic(T), has_preference(R, P), has_expertise(R, T), willing_to_review(R, T), not has_conflict(R, P).",has_expertise
+"In the first step, authors must fill in a webform shown by figures 1 and 2, on which they state their names and contact information, the title of their paper, an abstract of the paper, and indicate which conference topics their paper covers.",Author(A).,"Paper(P), ConferenceTopic(T).","submits(A, P) :- Author(A), Paper(P). covers_topic(P, T) :- Paper(P), ConferenceTopic(T).","can_fill_form(A, P) :- Author(A), Paper(P), submits(A, P).",submits
+"The level of agreement among reviewers is indicated on each reviewer's personal page, using a coloring scheme.",Reviewer(R).,Page(P).,"has_personal_page(R, P) :- Reviewer(R), Page(P).","indicates_agreement(R, P) :- Reviewer(R), Page(P), has_personal_page(R, P).",has_personal_page
+The review process can be monitored by the chair.,Chair(C).,ReviewProcess(RP).,"can_monitor(C, RP) :- Chair(C), ReviewProcess(RP).","monitor(C, RP) :- can_monitor(C, RP).",can_monitor
+His or her personal webpage will then be updated automatically.,User(U).,Webpage(W).,"has_webpage(U, W) :- User(U), Webpage(W).","can_update_webpage(U, W) :- User(U), Webpage(W), has_webpage(U, W).",has_webpage
+"For each paper that a reviewer would like to review, the corresponding checkbox in the left part of the window should be marked.",Reviewer(R).,Paper(P).,"wants_to_review(R, P) :- Reviewer(R), Paper(P).","mark_checkbox(R, P) :- Reviewer(R), Paper(P), wants_to_review(R, P).",wants_to_review
+Other reasons are that authors are forced to use it to submit their paper.,Author(A).,Paper(P).,"forced_to_submit(A, P) :- Author(A), Paper(P).","can_submit(A, P) :- Author(A), Paper(P), forced_to_submit(A, P).",forced_to_submit
+"You may also want to take a look at 2 posters: an overview (, 140 Kb) and a picture containing screenshots (, 1.71 Mb).",User(U).,Poster(PO).,"has_access(U, PO) :- User(U), Poster(PO).","can_view(U, PO) :- User(U), Poster(PO), has_access(U, PO).",has_access
+It generates several overviews based on the reviews which support the Program Committee (PC) in selecting the best papers.,"ProgramCommittee(PC), Reviewer(R), Paper(P).","Overview(O), Review(Rev).","has_review(P, Rev) :- Paper(P), Review(Rev). generates_overview(PC, O) :- ProgramCommittee(PC), Overview(O). supports_selection(PC, P) :- ProgramCommittee(PC), Paper(P).","can_select_best(PC, P) :- ProgramCommittee(PC), Paper(P), supports_selection(PC, P).",supports_selection
+"This is used to discover papers that have only been reviewed by non-experts, so that the PCC may ask another reviewer to review the paper.","PCC(P), Reviewer(R).",Paper(PA).,"reviewed_by(PA, R) :- Paper(PA), Reviewer(R). is_expert(R) :- Reviewer(R).","discover_paper(P, PA) :- PCC(P), Paper(PA), not exists R (reviewed_by(PA, R), is_expert(R)). ask_review(P, PA, R2) :- PCC(P), Paper(PA), Reviewer(R2), discover_paper(P, PA).",discover_paper
+Authors can submit their abstracts and papers using the web (uploading).,Author(A).,"Abstract(AB), Paper(P).","has_abstract(A, AB) :- Author(A), Abstract(AB). has_paper(A, P) :- Author(A), Paper(P).","can_submit(A, AB, P) :- Author(A), Abstract(AB), Paper(P), has_abstract(A, AB), has_paper(A, P).",has_paper
+"To be able to protect the reviews from outsiders, each reviewer gets his or her own directory on the webserver.",Reviewer(R).,"Directory(D), Review(REV).","has_directory(R, D) :- Reviewer(R), Directory(D).","can_access(R, REV) :- Reviewer(R), Review(REV), has_directory(R, D), associated(REV, D).",has_directory.associated^{-1}
+"Further, a high or low priority should be chosen, to indicate how eager they are to review the paper.",Reviewer(R).,Paper(P).,"has_priority(R, P, Priority) :- Reviewer(R), Paper(P), Priority in {high, low}.","can_assign_review(R, P) :- Reviewer(R), Paper(P), has_priority(R, P, Priority).",has_priority
+These overviews can be printed in case reviewers want to read the abstracts offline.,Reviewer(R).,Overview(O).,"wants_to_read_offline(R, O) :- Reviewer(R), Overview(O).","can_print(R, O) :- Reviewer(R), Overview(O), wants_to_read_offline(R, O).",wants_to_read_offline
+"All review files a reviewer needs, such as the review form and other reviewers’ reviews, are written in the reviewer’s directory.",Reviewer(R).,ReviewFile(F).,"has_directory(R, D) :- Reviewer(R), Directory(D).
+contains_file(D, F) :- Directory(D), ReviewFile(F).","can_access(R, F) :- Reviewer(R), ReviewFile(F), has_directory(R, D), contains_file(D, F).",has_directory.contains_file
+Authors must submit their paper in two steps.,Author(A).,Paper(P).,"has_paper(A, P) :- Author(A), Paper(P).","can_submit_step1(A, P) :- Author(A), Paper(P), has_paper(A, P). can_submit_step2(A, P) :- Author(A), Paper(P), has_paper(A, P), can_submit_step1(A, P).",has_paper
+The reviewer can be added to the list of reviewers for that paper.,"Reviewer(R), Editor(E).",Paper(P).,"can_add_reviewer(E, R, P) :- Editor(E), Reviewer(R), Paper(P).","add_reviewer(E, R, P) :- can_add_reviewer(E, R, P).",can_add_reviewer
+"In case a reviewer has already submitted a review of the selected paper, hyperlinks to the reviews of the other reviewers are shown, so that the reviewer can read their opinion.","Reviewer(R), Paper(P).",Review(REV).,"has_submitted(R, P, REV) :- Reviewer(R), Paper(P), Review(REV).","can_view_other_reviews(R, P) :- Reviewer(R), Paper(P), has_submitted(R, P, REV), not (Reviewer(R2), has_submitted(R2, P, REV2), R2 != R).",has_submitted
+"When all submissions have arrived, suitable members of the Program Committee (PC) must be selected to review each paper.","PC_Member(M), Paper(P).",Submission(S).,"submission_arrived(S) :- Submission(S). all_submissions_arrived :- forall S (Submission(S) -> submission_arrived(S)). suitable_reviewer(M, P) :- PC_Member(M), Paper(P).","assign_reviewer(M, P) :- PC_Member(M), Paper(P), all_submissions_arrived, suitable_reviewer(M, P).",suitable_reviewer
+Reviewers are also asked to inform the maintainer of papers they do not want to review because of a conflict of interest.,"Reviewer(R), Maintainer(M).",Paper(P).,"has_conflict(R, P) :- Reviewer(R), Paper(P).","should_inform(R, M, P) :- Reviewer(R), Maintainer(M), Paper(P), has_conflict(R, P).",has_conflict
+The state is based on the classification given to papers by the reviewers.,Reviewer(R).,Paper(P).,"classified_as(P, Classification) :- Paper(P), Reviewer(R).","state_based_on(P, Classification) :- Paper(P), Reviewer(R), classified_as(P, Classification).",classified_as
+"As soon as the reviewer has submitted his or her review, the review will be the default to be displayed in this frame when the reviewer clicks on the paper number in the top frame.",Reviewer(R).,"Paper(P), Review(Rev).","submitted_review(R, P, Rev) :- Reviewer(R), Paper(P), Review(Rev).","can_display_default(R, P, Rev) :- Reviewer(R), Paper(P), Review(Rev), submitted_review(R, P, Rev).",submitted_review
+"It helps the PC to select the best papers for the conference, which makes it a group decision support system.","PC_Member(PM), Conference(C).",Paper(P).,"is_member_of(PM, C) :- PC_Member(PM), Conference(C).","can_select(PM, P, C) :- PC_Member(PM), Paper(P), Conference(C), is_member_of(PM, C).",is_member_of
+You will see a list of overviews that are available to the chair.,Chair(C).,Overview(O).,"available_to(C, O) :- Chair(C), Overview(O).","can_view(C, O) :- Chair(C), Overview(O), available_to(C, O).",available_to
+"For each paper, a list of the reviewers who indicated a high preference for the paper is generated.","Reviewer(R), Paper(P).",Paper(P).,"high_preference(R, P) :- Reviewer(R), Paper(P).","generate_list(P, R) :- Paper(P), Reviewer(R), high_preference(R, P).",high_preference^{-1}
+The authors may make corrections or changes to the  information that was submitted in step 1.,"Author(A), Information(I).",Information(I).,"submitted_in_step1(A, I) :- Author(A), Information(I).","can_modify(A, I) :- Author(A), Information(I), submitted_in_step1(A, I).",submitted_in_step1
+Reviews can be updated.,User(U).,Review(R).,"has_review(U, R) :- User(U), Review(R).","can_update(U, R) :- User(U), Review(R), has_review(U, R).",has_review
+"To enter the review process, authors must send their paper to the Program Committee Chair (PCC).",Author(A).,Paper(P).,"is_author_of(A, P) :- Author(A), Paper(P).","can_enter_review_process(A, P) :- Author(A), Paper(P), is_author_of(A, P), sent_to_pcc(A, P).",is_author_of
+"This way, the reviewer can always look at the latest version of the reviews.",Reviewer(R).,Review(Rev).,"has_access(R, Rev) :- Reviewer(R), Review(Rev).","can_view(R, Rev) :- Reviewer(R), Review(Rev), has_access(R, Rev).",has_access
+"If this is the case, then the reviews of the other reviewers for this paper are copied into the reviewer’s directory.","Reviewer(R), Paper(P).","Review(Rev), Directory(Dir).","has_review(P, R, Rev) :- Paper(P), Reviewer(R), Review(Rev). assigned_to(R, P) :- Reviewer(R), Paper(P). has_directory(R, Dir) :- Reviewer(R), Directory(Dir).","can_copy_reviews(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P), has_directory(R, Dir), has_review(P, OtherR, Rev), Reviewer(OtherR), OtherR != R, not has_review_in_directory(R, Rev, Dir). has_review_in_directory(R, Rev, Dir) :- Reviewer(R), Review(Rev), Directory(Dir).",assigned_to
+"Reviewers can browse the overviews by conference topic, to quickly identify the papers that match their interest  and expertise (Figure 3).",Reviewer(R).,"Paper(P), ConferenceTopic(T).","has_interest(R, T) :- Reviewer(R), ConferenceTopic(T). has_expertise(R, T) :- Reviewer(R), ConferenceTopic(T). matches_topic(P, T) :- Paper(P), ConferenceTopic(T).","can_browse(R, P, T) :- Reviewer(R), Paper(P), ConferenceTopic(T), has_interest(R, T), has_expertise(R, T), matches_topic(P, T).",has_interest
+"The submission form in phase 2 is the same as the submission form in phase 1, except that authors must use it to upload their full paper file.","Author(A), SubmissionForm(F1), SubmissionForm(F2).",FullPaperFile(PF).,"is_phase1_form(F1) :- SubmissionForm(F1). is_phase2_form(F2) :- SubmissionForm(F2). same_form(F1, F2) :- is_phase1_form(F1), is_phase2_form(F2). can_upload(A, F2, PF) :- Author(A), is_phase2_form(F2), FullPaperFile(PF).","must_upload(A, F2, PF) :- Author(A), is_phase2_form(F2), FullPaperFile(PF), can_upload(A, F2, PF).",can_upload
+Papers that have not received enough bids should be assigned based on the expertise of the reviewers.,Reviewer(R).,Paper(P).,"has_expertise(R, P) :- Reviewer(R), Paper(P).","assign_paper(R, P) :- Reviewer(R), Paper(P), not enough_bids(P), has_expertise(R, P).",has_expertise
+"Each reviewer gets a personal, password-protected webpage, that contains links to the papers (s)he is assigned to review, so they can be downloaded.",Reviewer(R).,"Webpage(W), Paper(P).","has_webpage(R, W) :- Reviewer(R), Webpage(W). assigned_to(R, P) :- Reviewer(R), Paper(P). contains_link(W, P) :- Webpage(W), Paper(P).","can_access(R, W) :- Reviewer(R), Webpage(W), has_webpage(R, W). can_download(R, P) :- Reviewer(R), Paper(P), assigned_to(R, P), contains_link(W, P), has_webpage(R, W).",has_webpage
+"Papers are classified, using the highest and the lowest classification given by the reviewers (A to D), as described in the paper mentioned above.","Paper(P), Reviewer(R).",Classification(C).,"reviewed_by(P, R) :- Paper(P), Reviewer(R).
+gives_classification(R, P, C) :- Reviewer(R), Paper(P), Classification(C).
+highest_classification(P, C) :- Paper(P), Classification(C), gives_classification(R, P, C), not exists C2 (gives_classification(R2, P, C2), C2 > C).
+lowest_classification(P, C) :- Paper(P), Classification(C), gives_classification(R, P, C), not exists C2 (gives_classification(R2, P, C2), C2 < C).","classify_paper(P, C_high, C_low) :- Paper(P), highest_classification(P, C_high), lowest_classification(P, C_low).",lowest_classification
+"In addition, the reviewers must indicate their overall expertise on the topics that a paper covers.",Reviewer(R).,"Paper(P), Topic(T).","covers(P, T) :- Paper(P), Topic(T). has_expertise(R, T) :- Reviewer(R), Topic(T).","must_indicate_expertise(R, P) :- Reviewer(R), Paper(P), covers(P, T), has_expertise(R, T).",has_expertise.covers^{-1}
+Not all reviewers like to fill in review forms on-line.,Reviewer(R).,ReviewForm(F).,"likes_to_fill(R, F) :- Reviewer(R), ReviewForm(F).","can_fill_online(R, F) :- Reviewer(R), ReviewForm(F), likes_to_fill(R, F).",likes_to_fill
+"CyberChair significantly reduces the workload of the PC, by doing all necessary bookkeeping.",PC(P).,CyberChair(C).,"reduces_workload(C, P) :- CyberChair(C), PC(P).","can_use(C, P) :- CyberChair(C), PC(P), reduces_workload(C, P).",reduces_workload
+"Reviewer - Use the first and last name (in lowercase) as login and password, respectively.",Reviewer(R).,"Login(L), Password(PW).","has_login(R, L) :- Reviewer(R), Login(L), L = lowercase(first_name(R)). has_password(R, PW) :- Reviewer(R), Password(PW), PW = lowercase(last_name(R)).","can_access(R, L, PW) :- Reviewer(R), Login(L), Password(PW), has_login(R, L), has_password(R, PW).",has_password
+CyberChair offers the reviewers means to easily communicate to solve these conflicts.,Reviewer(R).,Conflict(C).,"has_conflict(R, C) :- Reviewer(R), Conflict(C).","can_communicate(R, C) :- Reviewer(R), Conflict(C), has_conflict(R, C).",has_conflict
+Other scripts are so-called administrative scripts which are started by the maintainer.,Maintainer(M).,Script(S).,"administrative_script(S) :- Script(S). started_by(S, M) :- Script(S), Maintainer(M).","can_start(M, S) :- Maintainer(M), Script(S), administrative_script(S), started_by(S, M).",started_by^{-1}
+Other scripts are so-called administrative scripts which are started automatically at regular intervals by the system (e.g. crontab on Unix systems).,"System(S), Script(SC).",Interval(I).,"is_administrative(SC) :- Script(SC).
+started_at_interval(S, SC, I) :- System(S), Script(SC), Interval(I).","can_start_automatically(S, SC, I) :- System(S), Script(SC), Interval(I), is_administrative(SC), started_at_interval(S, SC, I).",started_at_interval
+"After submission of a review, reviewers will be able to read the other reviewers' reviews.",Reviewer(R).,Review(REV).,"submitted_review(R, REV) :- Reviewer(R), Review(REV).","can_read(R, REV) :- Reviewer(R), Review(REV), submitted_review(R, _), not same_reviewer(R, REV). same_reviewer(R, REV) :- Reviewer(R), Review(REV), submitted_review(R, REV).",submitted_review
+You can submit reviews.,User(U).,Review(R).,"can_submit(U, R) :- User(U), Review(R).","submit_review(U, R) :- User(U), Review(R), can_submit(U, R).",can_submit
+You can find out what happens.,User(U).,Event(E).,"can_access(U, E) :- User(U), Event(E).","can_find_out(U, E) :- User(U), Event(E), can_access(U, E).",can_access
+The table of contents and author index of the proceedings are generated by CyberChair for electronic delivery to the publisher.,"CyberChair(C), Publisher(P).","TableOfContents(TOC), AuthorIndex(AI), Proceedings(PR).","generates(C, TOC) :- CyberChair(C), TableOfContents(TOC). generates(C, AI) :- CyberChair(C), AuthorIndex(AI). part_of(TOC, PR) :- TableOfContents(TOC), Proceedings(PR). part_of(AI, PR) :- AuthorIndex(AI), Proceedings(PR).","can_deliver(C, P, TOC, AI) :- CyberChair(C), Publisher(P), TableOfContents(TOC), AuthorIndex(AI), generates(C, TOC), generates(C, AI).",generates
+The camera-ready papers are prepared for electronic delivery to the publisher.,"Author(A), Publisher(PUB).",Paper(PA).,"has_paper(A, PA) :- Author(A), Paper(PA).","can_deliver(A, PUB, PA) :- Author(A), Publisher(PUB), Paper(PA), has_paper(A, PA).",has_paper
+CyberChair can handle the paper distribution.,CyberChair(C).,Paper(P).,"handles_distribution(C, P) :- CyberChair(C), Paper(P).","can_handle(C, P) :- CyberChair(C), Paper(P), handles_distribution(C, P).",handles_distribution
+CyberChair prepares overviews of reviews which can be used during the PC meeting.,"CyberChair(C), PC_Member(P).","Review(R), Overview(O).","has_review(R) :- Review(R). prepares_overview(C, O) :- CyberChair(C), Overview(O). can_use(P, O) :- PC_Member(P), Overview(O).","can_prepare_overview(C, O) :- CyberChair(C), Overview(O). can_access_overview(P, O) :- PC_Member(P), Overview(O), prepares_overview(C, O).",prepares_overview
+Reviewers must fill in the review forms.,Reviewer(R).,ReviewForm(F).,"assigned_to(R, F) :- Reviewer(R), ReviewForm(F).","can_fill(R, F) :- Reviewer(R), ReviewForm(F), assigned_to(R, F).",assigned_to
+"If there are still not enough reviewers for the paper, the expertise level of reviewers of all topics the paper covers is calculated.","Reviewer(R), Paper(P).",Topic(T).,"covers(P, T) :- Paper(P), Topic(T). has_expertise(R, T, Level) :- Reviewer(R), Topic(T), Level(Level).","calculate_expertise(P, R, Level) :- Paper(P), Reviewer(R), covers(P, T), has_expertise(R, T, Level), not enough_reviewers(P).",covers.has_expertise^{-1}.has_expertise
+"PCC will send camera-ready format, together with the preface and the table of contents to the publisher to have the proceedings printed.",PCC(PCC).,"CameraReadyFormat(CRF), Preface(PF), TableOfContents(TOC), Publisher(PUB), Proceedings(PR).","has_camera_ready_format(PCC, CRF) :- PCC(PCC), CameraReadyFormat(CRF). has_preface(PCC, PF) :- PCC(PCC), Preface(PF). has_table_of_contents(PCC, TOC) :- PCC(PCC), TableOfContents(TOC). can_print(PUB, PR) :- Publisher(PUB), Proceedings(PR).","can_send(PCC, PUB, CRF, PF, TOC) :- PCC(PCC), Publisher(PUB), CameraReadyFormat(CRF), Preface(PF), TableOfContents(TOC), has_camera_ready_format(PCC, CRF), has_preface(PCC, PF), has_table_of_contents(PCC, TOC).",has_table_of_contents
+CyberChair transforms review forms into a format that can be used for display in a browser.,CyberChair(C).,"ReviewForm(RF), BrowserFormat(BF).","transforms(C, RF, BF) :- CyberChair(C), ReviewForm(RF), BrowserFormat(BF).","can_display(C, RF, BF) :- CyberChair(C), ReviewForm(RF), BrowserFormat(BF), transforms(C, RF, BF).",transforms

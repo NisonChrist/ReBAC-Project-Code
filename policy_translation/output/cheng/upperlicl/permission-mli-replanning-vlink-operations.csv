@@ -1,2 +1,0 @@
-datalog_actions,cheng_policy
-"can_perform(V, VL, Action) :- VIO(V), VLink(VL), Action = ""Add-VLink""; Action = ""Modify-VLink""; Action = ""Delete-VLink"".",No Path Found

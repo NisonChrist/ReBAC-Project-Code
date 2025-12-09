@@ -1,0 +1,22 @@
+xacml,datalog_subjects,datalog_objects,datalog_relationships,datalog_actions,cheng
+"<Policy PolicyId=""RPSlist.2.0.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">admin</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isEq-subjUserId-resUserId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                </Target>
+                <Rule Effect=""Deny"" RuleId=""RPSlist.2.0.2.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",Subject(S).,Resource(R).,"has_role(S, 'admin') :- Subject(S).
+isEq_subjUserId_resUserId(S, 'false') :- Subject(S).","can_access(S, R) :- Subject(S), Resource(R), has_role(S, 'admin'), isEq_subjUserId_resUserId(S, 'false'), not deny_access(S, R).
+deny_access(S, R) :- Subject(S), Resource(R), has_role(S, 'admin'), isEq_subjUserId_resUserId(S, 'false').","< can_access, (u_a, ¬ (""[deny_access]"", 1)) >"

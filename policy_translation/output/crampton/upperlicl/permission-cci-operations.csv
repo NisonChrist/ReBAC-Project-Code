@@ -1,4 +1,0 @@
-rule,path_condition
-"can_request_sync(V, R) :- VIO_N(V), Resource(R), resource_type(R, 'http://geysers.eu/upperlicl/resource/resource-type/VNode-Info'), action(R, 'CCI:Sync-Request').",No Path Found
-"can_configure(V, R) :- VIO_N(V), Resource(R), resource_type(R, 'http://geysers.eu/upperlicl/resource/resource-type/VNode'), action(R, 'CCI:Configure').",No Path Found
-"can_monitor(V, R) :- VIO_N(V), Resource(R), resource_type(R, 'http://geysers.eu/upperlicl/resource/resource-type/VNode-Monitor-Info'), action(R, 'CCI:Monitor').",No Path Found

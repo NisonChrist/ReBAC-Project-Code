@@ -54,31 +54,39 @@ def translate_statement(text: str) -> dict[str, str]:
 
 
 output = translate_statement(
-    # "A user working on a project can read the project schedule."
     """
-    <Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" CombinedDecision="false" ReturnPolicyIdList="false">
-        <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
-            <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" IncludeInResult="false">
+    <?xml version="1.0" encoding="UTF-8"?>
+    <Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="medi-xpath-test-policy" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable" Version="1.0">
+    <Description>XPath evaluation is done with respect to content elementand check for a matching value. Here content element has been bounded with custom namespace and prefix</Description>
+    <PolicyDefaults>
+        <XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
+    </PolicyDefaults>
+    <Target>
+        <AnyOf>
+            <AllOf>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
                 <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
-            </Attribute>
-        </Attributes>
-        <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
-            <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" IncludeInResult="false">
-                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
-            </Attribute>
-        </Attributes>
-        <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
-            <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" IncludeInResult="false">
-                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">http://localhost:8280/services/echo/</AttributeValue>
-            </Attribute>
-        </Attributes>
-        <Attributes Category="urn:oasis:names:tc:xacml:3.0:group">
-            <Attribute AttributeId="group" IncludeInResult="false">
-                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
-                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">business</AttributeValue>
-            </Attribute>
-        </Attributes>
-    </Request>
+                <AttributeDesignator MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string" />
+                </Match>
+            </AllOf>
+        </AnyOf>
+    </Target>
+    <Rule RuleId="rule1" Effect="Permit">
+        <Description>Rule to match value in content element using XPath</Description>
+        <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:any-of">
+                <Function FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal" />
+                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+                <AttributeDesignator Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="false" />
+                </Apply>
+                <AttributeSelector MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" Path="//ak:record/ak:patient/ak:patientId/text()" DataType="http://www.w3.org/2001/XMLSchema#string" />
+            </Apply>
+        </Condition>
+    </Rule>
+    <Rule RuleId="rule2" Effect="Deny">
+        <Description>Deny rule</Description>
+    </Rule>
+    </Policy>
     """
 )
 print(json.dumps(output, indent=2))

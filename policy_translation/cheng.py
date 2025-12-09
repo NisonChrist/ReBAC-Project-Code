@@ -230,7 +230,8 @@ class ChengTranslator:
         # So, if paths_ua is empty, we might return "No Path".
 
         if not path_rules:
-            return "No Path Found"
+            return ""
+            # return "No Path Found"
 
         # Construct the final policy string
         # < act, graphrule >
@@ -242,11 +243,22 @@ class ChengTranslator:
         full_policy = f"< {action}, {' ∧ '.join(path_rules)} >"
         return full_policy
 
-    def process_csv(self, input_file, output_file):
+    def process_csv(
+        self, input_file, output_file, source_type="natural_language_statements"
+    ):
         results = []
         with open(input_file, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                type = ""
+                if source_type == "natural_language_statements":
+                    type = source_type
+                elif source_type == "xacml":
+                    type = "xacml"
+                first_field = row.get(type, "")
+                datalog_subject = row.get("datalog_subjects", "")
+                datalog_object = row.get("datalog_objects", "")
+                datalog_relationships = row.get("datalog_relationships", "")
                 datalog_action = row.get("datalog_actions", "")
 
                 # Split by newline if multiple
@@ -274,12 +286,28 @@ class ChengTranslator:
                             converted_policies.append(policy)
 
                 if converted_policies:
-                    results.append(
-                        {
-                            "datalog_actions": datalog_action,
-                            "cheng_policy": "\n".join(converted_policies),
-                        }
-                    )
+                    if source_type == "natural_language_statements":
+                        results.append(
+                            {
+                                "natural_language_statements": first_field,
+                                "datalog_subjects": datalog_subject,
+                                "datalog_objects": datalog_object,
+                                "datalog_relationships": datalog_relationships,
+                                "datalog_actions": datalog_action,
+                                "cheng": "\n".join(converted_policies),
+                            }
+                        )
+                    elif source_type == "xacml":
+                        results.append(
+                            {
+                                "xacml": first_field,
+                                "datalog_subjects": datalog_subject,
+                                "datalog_objects": datalog_object,
+                                "datalog_relationships": datalog_relationships,
+                                "datalog_actions": datalog_action,
+                                "cheng": "\n".join(converted_policies),
+                            }
+                        )
                 else:
                     # If no can_ rule found, maybe just try to translate the last one?
                     pass
@@ -287,7 +315,17 @@ class ChengTranslator:
         # Write output
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
         with open(output_file, "w") as f:
-            writer = csv.DictWriter(f, fieldnames=["datalog_actions", "cheng_policy"])
+            writer = csv.DictWriter(
+                f,
+                fieldnames=[
+                    source_type,
+                    "datalog_subjects",
+                    "datalog_objects",
+                    "datalog_relationships",
+                    "datalog_actions",
+                    "cheng",
+                ],
+            )
             writer.writeheader()
             writer.writerows(results)
 
@@ -310,28 +348,22 @@ if __name__ == "__main__":
         in_p = Path(f"policy_generation/output/litroacp/{fname}")
         out_p = Path(f"policy_translation/output/cheng/{fname}")
         if in_p.exists():
-            translator.process_csv(in_p, out_p)
+            translator.process_csv(
+                in_p, out_p, source_type="natural_language_statements"
+            )
 
     # XACML files
     xacml_files = [
-        "xacml3-mli-interface.csv",
-        "upperlicl/PPS-PIP-Role.csv",
-        "upperlicl/PPS-VIO-N-Role.csv",
-        "upperlicl/PPS-VIO-Role.csv",
-        "upperlicl/RPS-PIP-Role.csv",
-        "upperlicl/RPS-VIO-N-Role.csv",
-        "upperlicl/RPS-VIO-Role.csv",
-        "upperlicl/permission-cci-operations.csv",
-        "upperlicl/permission-mli-replanning-vlink-operations.csv",
-        "upperlicl/permission-mli-replanning-vr-it-operations.csv",
-        "upperlicl/permission-mli-vi-operations.csv",
-        "upperlicl/permission-mli-vi-request-operations.csv",
-        "upperlicl/permission-ros-notifications.csv",
-        "upperlicl/permission-sli-operations.csv",
+        "xacml2_1.csv",
+        "xacml2_2.csv",
+        "xacml2_3.csv",
+        "xacml3_1.csv",
+        "xacml3_2.csv",
+        "xacml3_3.csv",
     ]
 
     for fname in xacml_files:
-        in_p = Path(f"policy_generation/output/xacml/{fname}")
+        in_p = Path(f"policy_generation/output/xacml/xacBench/{fname}")
         out_p = Path(f"policy_translation/output/cheng/{fname}")
         if in_p.exists():
-            translator.process_csv(in_p, out_p)
+            translator.process_csv(in_p, out_p, source_type="xacml")

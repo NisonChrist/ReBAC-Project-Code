@@ -1,6 +1,7 @@
 import csv
 import re
-import sys
+
+# import sys
 import os
 from pathlib import Path
 
@@ -147,7 +148,8 @@ class CramptonTranslator:
         # Identify Subject and Object
         # Assumption: Subject is 1st arg, Object is last arg.
         if len(head["args"]) < 2:
-            return "Cannot determine Subject/Object (arity < 2)"
+            return ""
+            # return "Cannot determine Subject/Object (arity < 2)"
 
         subject_var = head["args"][0]
         object_var = head["args"][-1]
@@ -159,19 +161,33 @@ class CramptonTranslator:
         if path is None:
             # Check if they are the same variable?
             if subject_var == object_var:
-                return "self"
-            return "No Path Found"
+                # return "self"
+                return ""
+            return ""
+            # return "No Path Found"
 
         if len(path) == 0:
-            return "Direct Link (or same node)"
+            # return "Direct Link (or same node)"
+            return ""
 
         return ".".join(path)
 
-    def process_csv(self, input_file, output_file):
+    def process_csv(
+        self, input_file, output_file, source_type="natural_language_statements"
+    ):
         results = []
         with open(input_file, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                type = ""
+                if source_type == "natural_language_statements":
+                    type = source_type
+                elif source_type == "xacml":
+                    type = "xacml"
+                first_field = row.get(type, "")
+                datalog_subject = row.get("datalog_subjects", "")
+                datalog_object = row.get("datalog_objects", "")
+                datalog_relationships = row.get("datalog_relationships", "")
                 datalog_action = row.get("datalog_actions", "")
 
                 # Split by newline if multiple
@@ -181,12 +197,43 @@ class CramptonTranslator:
                         continue
                     path_condition = self.translate_rule(rule)
                     if path_condition:
-                        results.append({"datalog_actions": rule, "path_condition": path_condition})
+                        if source_type == "natural_language_statements":
+                            results.append(
+                                {
+                                    "natural_language_statements": first_field,
+                                    "datalog_subjects": datalog_subject,
+                                    "datalog_objects": datalog_object,
+                                    "datalog_relationships": datalog_relationships,
+                                    "datalog_actions": rule,
+                                    "crampton": path_condition,
+                                }
+                            )
+                        elif source_type == "xacml":
+                            results.append(
+                                {
+                                    "xacml": first_field,
+                                    "datalog_subjects": datalog_subject,
+                                    "datalog_objects": datalog_object,
+                                    "datalog_relationships": datalog_relationships,
+                                    "datalog_actions": rule,
+                                    "crampton": path_condition,
+                                }
+                            )
 
         # Write output
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
         with open(output_file, "w") as f:
-            writer = csv.DictWriter(f, fieldnames=["datalog_actions", "path_condition"])
+            writer = csv.DictWriter(
+                f,
+                fieldnames=[
+                    source_type,
+                    "datalog_subjects",
+                    "datalog_objects",
+                    "datalog_relationships",
+                    "datalog_actions",
+                    "crampton",
+                ],
+            )
             writer.writeheader()
             writer.writerows(results)
 
@@ -210,29 +257,23 @@ if __name__ == "__main__":
         in_p = Path(f"policy_generation/output/litroacp/{fname}")
         out_p = Path(f"policy_translation/output/crampton/{fname}")
         if in_p.exists():
-            translator.process_csv(in_p, out_p)
+            translator.process_csv(
+                in_p, out_p, source_type="natural_language_statements"
+            )
 
     # XACML files
     xacml_files = [
-        "xacml3-mli-interface.csv",
-        "upperlicl/PPS-PIP-Role.csv",
-        "upperlicl/PPS-VIO-N-Role.csv",
-        "upperlicl/PPS-VIO-Role.csv",
-        "upperlicl/RPS-PIP-Role.csv",
-        "upperlicl/RPS-VIO-N-Role.csv",
-        "upperlicl/RPS-VIO-Role.csv",
-        "upperlicl/permission-cci-operations.csv",
-        "upperlicl/permission-mli-replanning-vlink-operations.csv",
-        "upperlicl/permission-mli-replanning-vr-it-operations.csv",
-        "upperlicl/permission-mli-vi-operations.csv",
-        "upperlicl/permission-mli-vi-request-operations.csv",
-        "upperlicl/permission-ros-notifications.csv",
-        "upperlicl/permission-sli-operations.csv",
+        "xacml2_1.csv",
+        "xacml2_2.csv",
+        "xacml2_3.csv",
+        "xacml3_1.csv",
+        "xacml3_2.csv",
+        "xacml3_3.csv",
     ]
 
     for fname in xacml_files:
-        in_p = Path(f"policy_generation/output/xacml/{fname}")
+        in_p = Path(f"policy_generation/output/xacml/xacBench/{fname}")
         out_p = Path(f"policy_translation/output/crampton/{fname}")
         out_p.parent.mkdir(parents=True, exist_ok=True)
         if in_p.exists():
-            translator.process_csv(in_p, out_p)
+            translator.process_csv(in_p, out_p, source_type="xacml")

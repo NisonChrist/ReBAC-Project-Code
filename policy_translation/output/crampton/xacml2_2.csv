@@ -1,0 +1,67 @@
+xacml,datalog_subjects,datalog_objects,datalog_relationships,datalog_actions,crampton
+"<Policy PolicyId=""RPSlist.8.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">subreviewer</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isEq-subjUserId-resUserId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                </Target>
+                <Rule Effect=""Deny"" RuleId=""RPSlist.8.0.1.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>","Subject(S), Resource(R).",Resource(R).,"has_role(S, 'pc-member') :- Subject(S).
+is_subreviewer(S, R) :- Subject(S), Resource(R).","deny_access(S, R) :- Subject(S), Resource(R), has_role(S, 'pc-member'), is_subreviewer(S, R).",is_subreviewer
+"<Policy PolicyId=""RPSlist.19.0.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">subreviewer</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isEq-subjUserId-resUserId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                    <Actions>
+                        <Action>
+                            <ActionMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">write</AttributeValue>
+<ActionAttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </ActionMatch>
+                        </Action>
+                    </Actions>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.19.0.0.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>","Subject(S), Resource(R).",Resource(R).,"has_role(S, 'pc-member') :- Subject(S). is_subreviewer(S, R) :- Subject(S), Resource(R).","can_write(S, R) :- Subject(S), Resource(R), has_role(S, 'pc-member'), is_subreviewer(S, R).",is_subreviewer
+"<Policy PolicyId=""RPSlist.8.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"">
+                <Target>
+                    <Subjects>
+                        <Subject>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""role"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                            <SubjectMatch MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">subreviewer</AttributeValue>
+<SubjectAttributeDesignator SubjectCategory=""urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"" AttributeId=""isEq-subjUserId-resUserId"" DataType=""http://www.w3.org/2001/XMLSchema#string""/>
+                            </SubjectMatch>
+                        </Subject>
+                    </Subjects>
+                </Target>
+                <Rule Effect=""Deny"" RuleId=""RPSlist.8.0.1.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>","PC_Member(S), Subreviewer(S).",Resource(R).,"is_subject_user_id_equal_to_resource_user_id(S, R) :- PC_Member(S), Subreviewer(S), Resource(R).","deny_access(S, R) :- PC_Member(S), Subreviewer(S), Resource(R), is_subject_user_id_equal_to_resource_user_id(S, R).",is_subject_user_id_equal_to_resource_user_id

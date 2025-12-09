@@ -1,0 +1,671 @@
+xacml,datalog_subjects,datalog_objects,datalog_relationships,datalog_actions,cheng
+"<Policy PolicyId=""RPSlist.3.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                <Target>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+<AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+<AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+<AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.3.0.1.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>","User(U), Resource(R).",Resource(R).,"has_role(U, ""pc-member"") :- User(U).
+isEq_subjUserId_resUserId(U, R) :- User(U), Resource(R).","can_read(U, R) :- User(U), Resource(R), has_role(U, ""pc-member""), isEq_subjUserId_resUserId(U, R).","< can_read, (u_a, (""[isEq_subjUserId_resUserId]"", 1)) >"
+"<Policy PolicyId=""RPSlist.3.0.3.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                    <Target>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+    <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+    <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                    </Target>
+                    <Rule Effect=""Deny"" RuleId=""RPSlist.3.0.3.2.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>",User(U).,Resource(R).,"has_role(U, 'pc-member') :- User(U).
+is_eq_subjUserId_resUserId(U, R) :- User(U), Resource(R).","can_access(U, R) :- User(U), Resource(R), has_role(U, 'pc-member'), is_eq_subjUserId_resUserId(U, R).","< can_access, (u_a, (""[is_eq_subjUserId_resUserId]"", 1)) >"
+"<Policy PolicyId=""RPSlist.4.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                <Target>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+<AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+<AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+<AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.4.0.1.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>","User(U), Resource(R).",Resource(R).,"has_role(U, ""pc-member"") :- User(U).
+is_same_user(U, R) :- User(U), Resource(R).","can_read(U, R) :- User(U), Resource(R), has_role(U, ""pc-member""), is_same_user(U, R).","< can_read, (u_a, (""[is_same_user]"", 1)) >"
+"<Policy PolicyId=""RPSlist.5.0.0.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                    <Target>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+    <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+    <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                    </Target>
+                    <Rule Effect=""Deny"" RuleId=""RPSlist.5.0.0.2.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>","User(S), User(O).",Resource(R).,"has_role(S, 'pc-member') :- User(S).
+is_eq_subjUserId_resUserId(S, O) :- User(S), User(O).","can_access(S, R) :- User(S), Resource(R), has_role(S, 'pc-member'), is_eq_subjUserId_resUserId(S, O), not deny_access(S, R).
+deny_access(S, R) :- User(S), Resource(R).","< can_access, (u_a, ¬ (""[deny_access]"", 1)) >"
+"<Policy PolicyId=""RPSlist.6.0.3.2"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                    <Target>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+    <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+    <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                    </Target>
+                    <Rule Effect=""Deny"" RuleId=""RPSlist.6.0.3.2.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>","User(U), Resource(R).",,"has_role(U, 'pc-member') :- User(U).
+is_same_user(U, R) :- User(U), Resource(R).","can_access(U, R) :- User(U), Resource(R), has_role(U, 'pc-member'), is_same_user(U, R).","< can_access, (u_a, (""[is_same_user]"", 1)) >"
+"<Policy PolicyId=""RPSlist.7.0.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                <Target>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+<AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+<AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">create</AttributeValue>
+<AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.7.0.0.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",User(U).,Resource(R).,"has_role(U, 'pc-member') :- User(U).
+is_eq_subjUserId_resUserId(U, R) :- User(U), Resource(R).","can_create(U, R) :- User(U), Resource(R), has_role(U, 'pc-member'), is_eq_subjUserId_resUserId(U, R).","< can_create, (u_a, (""[is_eq_subjUserId_resUserId]"", 1)) >"
+"<Policy PolicyId=""RPSlist.10.0.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                    <Target>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc_chair</AttributeValue>
+    <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+    <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.10.0.0.1.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>","User(U), Resource(R).",Resource(R).,"has_role(U, ""pc_chair"") :- User(U).
+is_same_user(U, R) :- User(U), Resource(R).","can_read(U, R) :- User(U), Resource(R), has_role(U, ""pc_chair""), is_same_user(U, R).","< can_read, (u_a, (""[is_same_user]"", 1)) >"
+"<Policy PolicyId=""RPSlist.18.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                <Target>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc_chair</AttributeValue>
+<AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+<AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">create</AttributeValue>
+<AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.18.0.1.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>","User(U), Resource(R).",Resource(R).,"has_role(U, pc_chair) :- User(U).
+isEq_subjUserId_resUserId(U, R) :- User(U), Resource(R).","can_create(U, R) :- User(U), Resource(R), has_role(U, pc_chair), isEq_subjUserId_resUserId(U, R).","< can_create, (u_a, (""[isEq_subjUserId_resUserId]"", 1)) >"
+"<Policy PolicyId=""RPSlist.18.0.2.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                    <Target>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+    <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+    <AttributeDesignator AttributeId=""isConflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+    <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.18.0.2.4.r.1"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+        <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                    </Rule>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.18.0.2.4.r.2"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">discussion</AttributeValue>
+        <AttributeDesignator AttributeId=""phase"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                    </Rule>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.18.0.2.4.r.3"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+        <AttributeDesignator AttributeId=""ismeeting"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+        <AttributeDesignator AttributeId=""hasSubmittedReviewForResPaper"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                    </Rule>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.18.0.2.4.r.4"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+        <AttributeDesignator AttributeId=""subject"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                    </Rule>
+                </Policy>",PCMember(S).,Resource(R).,"isConflicted(S, R) :- PCMember(S), Resource(R).
+isEq_subjUserId_resUserId(S, R) :- PCMember(S), Resource(R).
+phase(R, discussion) :- Resource(R).
+ismeeting(R) :- Resource(R).
+hasSubmittedReviewForResPaper(S, R) :- PCMember(S), Resource(R).
+subject(S, R) :- PCMember(S), Resource(R).","can_read(S, R) :- PCMember(S), Resource(R), not isConflicted(S, R), (isEq_subjUserId_resUserId(S, R); phase(R, discussion); (ismeeting(R), hasSubmittedReviewForResPaper(S, R)); subject(S, R)).","< can_read, (u_a, ¬ (""[isConflicted]"", 1)) >"
+"<Policy PolicyId=""RPSlist.19.0.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                <Target>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+<AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+<AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">discussion</AttributeValue>
+<AttributeDesignator AttributeId=""phase"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                    <AnyOf>
+                        <AllOf>
+                            <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+<AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">create</AttributeValue>
+<AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+                            </Match>
+                        </AllOf>
+                    </AnyOf>
+                </Target>
+                <Rule Effect=""Permit"" RuleId=""RPSlist.19.0.0.r.1"">
+                    <Target/>
+                </Rule>
+            </Policy>",User(U).,Resource(R).,"has_role(U, ""pc-member"") :- User(U).
+is_same_user(U, R) :- User(U), Resource(R).
+has_phase(R, ""discussion"") :- Resource(R).","can_create(U, R) :- User(U), Resource(R), has_role(U, ""pc-member""), is_same_user(U, R), has_phase(R, ""discussion"").","< can_create, (u_a, (""[is_same_user]"", 1)) >"
+"<Policy PolicyId=""RPSlist.19.0.1.1.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+        <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <AttributeDesignator AttributeId=""isConflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.19.0.1.1.4.r.1"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.19.0.1.1.4.r.2"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">discussion</AttributeValue>
+            <AttributeDesignator AttributeId=""phase"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.19.0.1.1.4.r.3"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""isconflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""hasSubmittedReviewForResPaper"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.19.0.1.1.4.r.4"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""isconflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                    </Policy>","User(U), Role(U, R).","Resource(Res), Phase(Res, P), Attribute(Res, A, V).","has_role(U, R) :- User(U), Role(U, R).
+has_attribute(Res, A, V) :- Resource(Res), Attribute(Res, A, V).
+is_conflicted(U, Res) :- User(U), Resource(Res), has_attribute(Res, 'isConflicted', 'true').
+has_submitted_review(U, Res) :- User(U), Resource(Res), has_attribute(Res, 'hasSubmittedReviewForResPaper', 'true').
+is_eq_subj_user_id_res_user_id(U, Res) :- User(U), Resource(Res), has_attribute(Res, 'isEq-subjUserId-resUserId', 'true').
+is_phase(Res, P) :- Resource(Res), Phase(Res, P).","can_read(U, Res) :- User(U), Resource(Res), has_role(U, 'pc-member'), not is_conflicted(U, Res), (is_eq_subj_user_id_res_user_id(U, Res); is_phase(Res, 'discussion'); (is_conflicted(U, Res), has_submitted_review(U, Res)); is_conflicted(U, Res)).","< can_read, (u_a, ¬ (""[is_conflicted]"", 1)) >"
+"<Policy PolicyId=""RPSlist.20.0.0.2.0"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-chair</AttributeValue>
+        <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <AttributeDesignator AttributeId=""isConflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.20.0.0.2.0.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>",PCChair(S).,Paper(P).,"is_conflicted(S, P) :- PCChair(S), Paper(P).","can_access(S, P) :- PCChair(S), Paper(P), not is_conflicted(S, P).","< can_access, (u_a, ¬ (""[is_conflicted]"", 1)) >"
+"<Policy PolicyId=""RPSlist.21.0.0.2.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-chair</AttributeValue>
+        <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+        <AttributeDesignator AttributeId=""isSubjectsMeeting"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+        <AttributeDesignator AttributeId=""ismeeting"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.21.0.0.2.1.r.1"">
+                            <Target/>
+                        </Rule>
+                    </Policy>","Subject(S), Role(S, R), IsSubjectsMeeting(S, ISM).","Object(O), IsMeeting(O, IM).","has_role(S, R) :- Subject(S), Role(S, R).
+has_isSubjectsMeeting(S, ISM) :- Subject(S), IsSubjectsMeeting(S, ISM).
+has_isMeeting(O, IM) :- Object(O), IsMeeting(O, IM).","can_read(S, O) :- Subject(S), Object(O), has_role(S, ""pc-chair""), has_isSubjectsMeeting(S, ""true""), has_isMeeting(O, ""true"").","< can_read, (u_a, (""[has_isSubjectsMeeting.has_isMeeting^{-1}]"", 2)) >"
+"<Policy PolicyId=""RPSlist.21.0.0.2.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+        <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <AttributeDesignator AttributeId=""isConflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.21.0.0.2.4.r.1"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.21.0.0.2.4.r.3"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc_chair</AttributeValue>
+            <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""hasSubmittedReviewForResPaper"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                    </Policy>","User(U), Role(R), Paper(P).",Paper(P).,"has_role(U, R) :- User(U), Role(R).
+is_conflicted(U, P) :- User(U), Paper(P).
+is_eq_subjUserId_resUserId(U, P) :- User(U), Paper(P).
+has_submitted_review_for_respaper(U, P) :- User(U), Paper(P).","can_read(U, P) :- User(U), Paper(P), has_role(U, ""pc-member""), not is_conflicted(U, P).
+can_read(U, P) :- User(U), Paper(P), is_eq_subjUserId_resUserId(U, P).
+can_read(U, P) :- User(U), Paper(P), has_role(U, ""pc_chair""), has_submitted_review_for_respaper(U, P).","< can_read, (u_a, ¬ (""[is_conflicted]"", 1)) >
+< can_read, (u_a, (""[is_eq_subjUserId_resUserId]"", 1)) >
+< can_read, (u_a, (""[has_submitted_review_for_respaper]"", 1)) >"
+"<Policy PolicyId=""RPSlist.22.0.0.1"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                    <Target>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc_chair</AttributeValue>
+    <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+    <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                        <AnyOf>
+                            <AllOf>
+<Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+    <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">create</AttributeValue>
+    <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+</Match>
+                            </AllOf>
+                        </AnyOf>
+                    </Target>
+                    <Rule Effect=""Permit"" RuleId=""RPSlist.22.0.0.1.r.1"">
+                        <Target/>
+                    </Rule>
+                </Policy>","User(U), PC_Chair(C).",Resource(R).,"has_role(U, ""pc_chair"") :- PC_Chair(U).
+is_eq_subjUserId_resUserId(U, R) :- User(U), Resource(R).","can_create(C, R) :- PC_Chair(C), Resource(R), has_role(C, ""pc_chair""), is_eq_subjUserId_resUserId(C, R).","< can_create, (u_a, (""[is_eq_subjUserId_resUserId]"", 1)) >"
+"<Policy PolicyId=""RPSlist.22.0.0.2.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+        <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <AttributeDesignator AttributeId=""isConflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.22.0.0.2.4.r.1"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.22.0.0.2.4.r.3"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""isconflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""hasSubmittedReviewForResPaper"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.22.0.0.2.4.r.4"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc_chair</AttributeValue>
+            <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Deny"" RuleId=""RPSlist.22.0.0.2.4.r.5"">
+                            <Target/>
+                        </Rule>
+                    </Policy>","User(U), Paper(P).",Paper(P).,"has_role(U, 'pc-member') :- User(U).
+has_role(U, 'pc_chair') :- User(U).
+is_conflicted(U, P) :- User(U), Paper(P).
+has_submitted_review(U, P) :- User(U), Paper(P).
+is_eq_subjUserId_resUserId(U, P) :- User(U), Paper(P).","can_read(U, P) :- User(U), Paper(P), has_role(U, 'pc-member'), not is_conflicted(U, P), is_eq_subjUserId_resUserId(U, P).
+can_read(U, P) :- User(U), Paper(P), has_role(U, 'pc-member'), not is_conflicted(U, P), is_conflicted(U, P), has_submitted_review(U, P).
+can_read(U, P) :- User(U), Paper(P), has_role(U, 'pc-member'), not is_conflicted(U, P), has_role(U, 'pc_chair').
+not can_read(U, P) :- User(U), Paper(P), has_role(U, 'pc-member'), not is_conflicted(U, P).","< can_read, (u_a, ¬ (""[is_conflicted]"", 1) ∧ (""[is_eq_subjUserId_resUserId]"", 1)) >
+< can_read, (u_a, ¬ (""[is_conflicted]"", 1) ∧ (""[is_conflicted]"", 1) ∧ (""[has_submitted_review]"", 1)) >
+< can_read, (u_a, ¬ (""[is_conflicted]"", 1)) >"
+"<Policy PolicyId=""RPSlist.23.0.0.1.4"" RuleCombiningAlgId=""urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"" Version=""1.0"">
+                        <Target>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">pc-member</AttributeValue>
+        <AttributeDesignator AttributeId=""role"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">false</AttributeValue>
+        <AttributeDesignator AttributeId=""isConflicted"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                            <AnyOf>
+<AllOf>
+    <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+        <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">read</AttributeValue>
+        <AttributeDesignator AttributeId=""urn:oasis:names:tc:xacml:1.0:action:action-id"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+    </Match>
+</AllOf>
+                            </AnyOf>
+                        </Target>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.23.0.0.1.4.r.1"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">true</AttributeValue>
+            <AttributeDesignator AttributeId=""isEq-subjUserId-resUserId"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Permit"" RuleId=""RPSlist.23.0.0.1.4.r.2"">
+                            <Target>
+<AnyOf>
+    <AllOf>
+        <Match MatchId=""urn:oasis:names:tc:xacml:1.0:function:string-equal"">
+            <AttributeValue DataType=""http://www.w3.org/2001/XMLSchema#string"">discussion</AttributeValue>
+            <AttributeDesignator AttributeId=""phase"" Category=""unknown"" DataType=""http://www.w3.org/2001/XMLSchema#string"" MustBePresent=""false""/>
+        </Match>
+    </AllOf>
+</AnyOf>
+                            </Target>
+                        </Rule>
+                        <Rule Effect=""Deny"" RuleId=""RPSlist.23.0.0.1.4.r.5"">
+                            <Target/>
+                        </Rule>
+                    </Policy>","User(U), Role(U, R).","Resource(Res), Phase(Res, P).","is_conflicted(U) :- User(U), Role(U, R), R = ""pc-member"".
+is_eq_subjUserId_resUserId(U, Res) :- User(U), Resource(Res).","can_read(U, Res) :- User(U), Resource(Res), Role(U, ""pc-member""), not is_conflicted(U), is_eq_subjUserId_resUserId(U, Res).
+can_read(U, Res) :- User(U), Resource(Res), Role(U, ""pc-member""), not is_conflicted(U), Phase(Res, ""discussion"").
+can_read(U, Res) :- User(U), Resource(Res), Role(U, ""pc-member""), not is_conflicted(U), not is_eq_subjUserId_resUserId(U, Res), not Phase(Res, ""discussion"").","< can_read, (u_a, (""[is_eq_subjUserId_resUserId]"", 1)) >
+< can_read, (u_a, ¬ (""[is_eq_subjUserId_resUserId]"", 1)) >"

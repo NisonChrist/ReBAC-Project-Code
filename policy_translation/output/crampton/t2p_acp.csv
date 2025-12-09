@@ -1,403 +1,206 @@
-rule,path_condition
-"can_edit(L, P, BP) :- LHCP(L), Patient(P), BloodPressure(BP), on_monitoring_list(P).",No Path Found
-"can_edit(L, P, GL) :- LHCP(L), Patient(P), GlucoseLevel(GL), on_monitoring_list(P).",No Path Found
-"can_edit(L, P, H) :- LHCP(L), Patient(P), Height(H), on_monitoring_list(P).",No Path Found
-"can_edit(L, P, W) :- LHCP(L), Patient(P), Weight(W), on_monitoring_list(P).",No Path Found
-"can_edit(L, P, PR) :- LHCP(L), Patient(P), PedometerReading(PR), on_monitoring_list(P).",No Path Found
-"can_view(L, PR) :- LHCP(L), PatientReport(PR), has_access(L, PR).",has_access
-"can_view(U, R, T) :- User(U), Report(R), Tab(T), has_access_to(U, R), is_in_tab(R, T).",has_access_to.is_in_tab
-"can_save(U, D, T, F) :- User(U), Data(D), Timestamp(T), Fact(F).",No Path Found
-"can_view(L, P, H) :- LHCP(L), Patient(P), HealthData(H), has_data(P, H).",No Path Found
-"can_present_list(S, P, PR) :- System(S), Patient(P), Prescription(PR), has_prescription(P, PR), expired(PR). sort_by_start_date_desc(PR) :- Prescription(PR), start_date(PR, Date).",No Path Found
-"ordered_appointments(U, A1, A2) :- User(U), Appointment(A1), Appointment(A2), has_appointment(U, A1), has_appointment(U, A2), appointment_datetime(A1, DT1), appointment_datetime(A2, DT2), DT1 < DT2.",has_appointment
-"can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
-"can_maintain(A, L) :- Administrator(A), HospitalListing(L), maintains(A, L).",maintains
-"can_display(S, U, A, C) :- System(S), User(U), Appointment(A), Calendar(C), has_appointment(U, A).",No Path Found
-"can_select_reason(H, R) :- HCP(H), Reason(R), has_reason_list(R).",No Path Found
-"can_view(P, L) :- Patient(P), LaboratoryProcedure(L), has_procedure_status(L, S). can_view(R, L) :- PersonalHealthRepresentative(R), LaboratoryProcedure(L), has_procedure_status(L, S). can_view(H, L) :- HealthcareProfessional(H), LaboratoryProcedure(L), has_procedure_status(L, S).",No Path Found
-"can_add_prescription(H, PR, ML) :- HCP(H), Prescription(PR), MedicationList(ML), has_access_to(H, ML).",has_access_to
-"can_add(A, E, R) :- Administrator(A), Entry(E), Reason(R), not has_reason(E, R).",No Path Found
-"can_edit(H, P, F) :- HCP(H), Patient(P), DataFormat(F), has_access(H, P, F).",has_access
-"can_prescribe(D, P, DR) :- Prescriber(D), Patient(P), Drug(DR), not has_allergy(P, DR).",No Path Found
-"can_read_details(U, LP) :- User(U), LaboratoryProcedure(LP), scheduled_on(LP, C).",No Path Found
-"obtain_report(L, R) :- LHCP(L), Report(R), can_access(L, R).",can_access
-"can_refer(L1, P, L2) :- LHCP(L1), Patient(P), LHCP(L2), L1 != L2.",No Path Found
-"can_access_note(H, V) :- HCP(H), OfficeVisit(V), has_note(H, V).",has_note
-"can_view_listing(U, I) :- User(U), Immunization(I), administered_to(U, I, Date).",administered_to
-"can_sort(L, MI) :- LHCP(L), MessageInbox(MI), has_inbox(L, MI). can_sort(P, MI) :- Patient(P), MessageInbox(MI), has_inbox(P, MI). can_sort(R, MI) :- Representative(R), MessageInbox(MI), has_inbox(R, MI). can_sort(L, MO) :- LHCP(L), MessageOutbox(MO), has_outbox(L, MO). can_sort(P, MO) :- Patient(P), MessageOutbox(MO), has_outbox(P, MO). can_sort(R, MO) :- Representative(R), MessageOutbox(MO), has_outbox(R, MO).",No Path Found
-"can_disallow_view(H, L) :- HCP(H), LabResult(L), has_access(H, L).",has_access
-"can_access(P, PR) :- Patient(P), Provider(PR), has_zip_code(P, Z), matches_zip_prefix(Z, PR).",has_zip_code.matches_zip_prefix
-"can_view_listing(A, T) :- PublicHealthAgent(A), TimePeriod(T), AdverseEvent(E), (related_to(E, D) ; related_to(E, I)).",No Path Found
-"can_choose(P, D) :- Patient(P), Diagnosis(D), has_diagnosis(P, D).",has_diagnosis
-"can_sort_by_last_name_asc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O). can_sort_by_last_name_desc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O). can_sort_by_timestamp_asc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O). can_sort_by_timestamp_desc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O).",has_outbox
-"can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A). can_edit_or_remove_appointment(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
-"can_view(P, L) :- Patient(P), AccessLog(L), owns_log(P, L).",owns_log
-"can_specify_specialty(A, L, S) :- Admin(A), LHCP(L), Specialty(S), S in {General_Physician, Heart_Surgeon, OB, GYN, Pediatrician, Surgeon}.",No Path Found
-"can_undesignate(P, L) :- Patient(P), LHCP(L), is_dlhcp_for(L, P).",is_dlhcp_for^{-1}
-"can_see_trend(A, E) :- PublicHealthAgent(A), AdverseEvent(E), (related_to(E, D) ; related_to(E, I)).",No Path Found
-"can_edit(E, P, F) :- Editor(E), Personnel(P), DataFormat(F), has_format(P, F).",No Path Found
-"can_modify(L, F) :- LHCP(L), MessageDisplayingFilter(F), has_filter(L, F). can_modify(P, F) :- Patient(P), MessageDisplayingFilter(F), has_filter(P, F). can_modify(R, F) :- Representative(R), MessageDisplayingFilter(F), has_filter(R, F).",No Path Found
-"can_store(A, H, ID, Name) :- Administrator(A), Hospital(H), has_id(H, ID), has_name(H, Name).",No Path Found
-"maintain_medical_id(H, M) :- HCP(H), MedicalID(M), has_medical_id(H, M).",has_medical_id
-"can_select(H, M) :- HCP(H), Medication(M), prescribed_medication(H, M).",prescribed_medication
-"can_view(P, M) :- Patient(P), MedicalRecord(M), has_record(P, M). can_view(R, M) :- PersonalRepresentative(R), MedicalRecord(M), Patient(P), is_representative(R, P), has_record(P, M). can_view(P, F) :- Patient(P), FamilyHistory(F), MedicalRecord(M), has_record(P, M), includes_family_history(M, F). can_view(R, F) :- PersonalRepresentative(R), FamilyHistory(F), MedicalRecord(M), Patient(P), is_representative(R, P), has_record(P, M), includes_family_history(M, F).",has_record
-"send_request(L, R) :- LHCP(L), Request(R), can_send(L, R). cancel_request(L, R) :- LHCP(L), Request(R), can_send(L, R).",can_send
-"send_fake_email(L, P, I, DR, S) :- LHCP(L), Patient(P), Immunization(I), Drug(DR), Symptom(S), administered(L, I).",No Path Found
-"present_patients(U, P) :- User(U), Patient(P), can_view_patients(U).",No Path Found
-"can_view(P, L) :- Patient(P), LHCP(L), designated(P, L).",designated
-"can_document(H, M, L, D, MP, I) :- HCP(H), Medication(M), LabProcedure(L), Diagnosis(D), MedicalProcedure(MP), Immunization(I), can_document_medication(H, M), can_document_lab_procedure(H, L), can_document_diagnosis(H, D), can_document_medical_procedure(H, MP), can_document_immunization(H, I).",can_document_immunization
-"can_view_patient_list(U, P) :- User(U), Patient(P), under_monitoring(P, DT), can_report(U, P, DT), (DT = 'height'; DT = 'weight'; DT = 'pedometer').",can_report
-"can_display(S, U, A) :- System(S), User(U), Appointment(A), has_appointment(U, A).",No Path Found
-"can_view_patient_info(U, P) :- User(U), Patient(P).",No Path Found
-"cannot_enter(H, P) :- HCP(H), Patient(P).",No Path Found
-"can_report(R, P, H) :- Reporter(R), Patient(P), Height(H), has_height(P, H). can_report(R, P, W) :- Reporter(R), Patient(P), Weight(W), has_weight(P, W). can_report(R, P, PR) :- Reporter(R), Patient(P), PedometerReading(PR), has_pedometer_reading(P, PR).",No Path Found
-"can_display(NC, P, A) :- NotificationCenter(NC), Patient(P), Appointment(A), has_upcoming_appointment(P, A). can_display(NC, R, A) :- NotificationCenter(NC), PatientRepresentee(R), Appointment(A), has_upcoming_appointment(R, A). can_display(NC, P, H) :- NotificationCenter(NC), Patient(P), HCP(H), designated_hcp(P, H). can_display(NC, P, M) :- NotificationCenter(NC), Patient(P), Message(M), has_unread_message(P, M).",No Path Found
-"can_display(U, L) :- User(U), Link(L), is_older_activities(L).",No Path Found
-"can_record_interaction(A, DR1, DR2) :- Administrator(A), Drug(DR1), Drug(DR2), has_list(DR1, List1), has_list(DR2, List2), DR1 != DR2.",No Path Found
-"can_create(L, U) :- LHCP(L), UAP(U), creates(L, U).",creates
-"can_view(L, P) :- LHCP(L), Patient(P), had_office_visit(L, P).",had_office_visit
-"must_remain_on_page(H, OVP) :- HCP(H), OfficeVisitPage(OVP), is_on_page(H, OVP).",is_on_page
-"can_select(P, D) :- Patient(P), Diagnosis(D).",No Path Found
-"can_display(S, U, LP, P) :- System(S), User(U), LaboratoryProcedure(LP), Page(P), has_access_to(U, LP).",No Path Found
-"can_view_interactions(U, DR) :- User(U), Drug(DR), has_interaction(DR, I).",No Path Found
-"can_view(L, PD) :- LHCP(L), PhysiologicData(PD), has_access(L, PD).",has_access
-"can_choose(P, PR) :- Patient(P), PrescriptionReport(PR), chooses(P, PR).",chooses
-"can_access(U, S, R) :- User(U), System(S), Role(R), has_credential(U, MID, Password).",No Path Found
-"can_view(H, L, R) :- HCP(H), LabProcedure(L), Result(R), has_result(L, R), last_updated(L, D).",No Path Found
-"can_enter(L, R, M) :- LHCP(L), Representative(R), MID(M), has_mid(R, M).",No Path Found
-"can_input(P, W) :- Patient(P), Weight(W). can_input(P, H) :- Patient(P), Height(H). can_input(P, PR) :- Patient(P), PedometerReading(PR).",No Path Found
-"can_see_physiologic(L, P, PD) :- LHCP(L), Patient(P), PhysiologicData(PD), monitors(L, P), has_physiologic_data(P, PD). can_see_height_weight_pedometer(L, P, HWPD) :- LHCP(L), Patient(P), HeightWeightPedometerData(HWPD), monitors(L, P), has_height_weight_pedometer_data(P, HWPD).",No Path Found
-"can_read_details(U, PR) :- User(U), Prescription(PR), has_prescription(C, PR), displays_medication(PR, M).",No Path Found
-"can_view_listing(U) :- User(U), has_patient(U, P), has_data(P, D), (is_weight(D) ; is_pedometer(D)), reported_on(D, current_date).",Cannot determine Subject/Object (arity < 2)
-"can_create(H, P) :- HCP(H), Patient(P), not exists(Patient(P)).",No Path Found
-"can_store(A, D, C, CL, N) :- Administrator(A), Diagnosis(D), ICD9CM_Code(C), Classification(CL), Name(N), has_code(D, C), has_classification(D, CL), has_name(D, N).",No Path Found
-"can_view_diagnoses(U, D) :- User(U), Diagnosis(D), has_diagnosis(U, D).",has_diagnosis
-"can_maintain(A, DR) :- Administrator(A), Drug(DR), maintains_listing(A, DR).",maintains_listing
-"can_select(L, P) :- LHCP(L), Patient(P).",No Path Found
-"can_set_length(A, P) :- Administrator(A), Period(P), has_authority(A, P).",has_authority
-"can_select(H, R) :- HCP(H), OverridingReason(R), Administrator(A), maintains(A, R).",No Path Found
-"can_report(R, P, H) :- Reporter(R), Patient(P), Height(H), has_height(P, H). can_report(R, P, W) :- Reporter(R), Patient(P), Weight(W), has_weight(P, W). can_report(R, P, PR) :- Reporter(R), Patient(P), PedometerReading(PR), has_pedometer_reading(P, PR).",No Path Found
-"can_monitor(L, P) :- LHCP(L), Patient(P), has_mid(P, M). can_monitor(U, P) :- UAP(U), Patient(P), has_mid(P, M).",No Path Found
-"can_read_details(U, LP) :- User(U), LaboratoryProcedure(LP), has_access_to(U, LP).",has_access_to
-"can_access_outbox(L, M) :- LHCP(L), Message(M), sent_by(L, M).",sent_by
-"can_view_prescriptions(U, P, PR) :- (User(U), Patient(P), Prescription(PR), is_patient(U, P), has_prescription(P, PR)) OR (User(U), PersonalRepresentative(R), Patient(P), Prescription(PR), is_representative(R, P), has_prescription(P, PR)).",No Path Found
-"can_present(T, H) :- TextBox(T), HCP(H).",No Path Found
-"can_input(U, P, HD) :- UAP(U), Patient(P), HealthData(HD), is_associated(U, P).",No Path Found
-"can_input(R, P, HD) :- PatientRepresentative(R), Patient(P), HealthData(HD), is_associated(R, P).",No Path Found
-"can_modify_reason_name(A, E, R) :- Administrator(A), Entry(E), ReasonName(R), has_reason_name(E, R).",No Path Found
-"can_add_provider(P, H, L) :- Patient(P), HCP(H), ProviderList(L), has_provider_list(P, L).",has_provider_list
-"can_maintain(A, I) :- Administrator(A), Immunization(I), maintains_allowable_listing(A, I).",maintains_allowable_listing
-"can_view(S, R) :- Subject(S), PrescriptionReport(R), has_access(S, R).",has_access
-"can_view_sorted(P, L) :- Patient(P), AccessList(L), has_access_record(L, R).",No Path Found
-"can_view_visit_details(U, V) :- User(U), Visit(V), has_access(U, V).",has_access
-"can_view_doctor_name(U, D, M) :- User(U), Doctor(D), Medication(M), has_access(U, V), associated_with(V, M), prescribed_by(M, D).",has_access.associated_with
-"can_type_message(P, M) :- Patient(P), Message(M).",No Path Found
-"can_click(L, R) :- LHCP(L), ReplyLink(R), above(R, M), Message(M).",No Path Found
-"can_view(R, MI) :- Representative(R), MessageInbox(MI), has_inbox(R, MI).",has_inbox
-"can_indicate_death(H, P, C) :- HCP(H), Patient(P), DiagnosisCode(C), has_patient(H, P), is_appropriate_code(C).",No Path Found
-"can_read(U, OV) :- User(U), OfficeVisit(OV), has_access_to(U, OV).",has_access_to
-"can_cancel_filter_modifications(S, F) :- (LHCP(S) ; Patient(S) ; Representative(S)), Filter(F), has_saved_filter(F).",No Path Found
-"can_record_interaction(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2).",No Path Found
-"delete_confirmed(A) :- Action(A), LHCP(L), can_confirm(L, A).",Cannot determine Subject/Object (arity < 2)
-"can_delete_interaction(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2), has_interaction(D1, D2).",No Path Found
-"can_add_appointment_type(A, AT, Name, Duration) :- Administrator(A), AppointmentType(AT), has_name(AT, Name), has_duration(AT, Duration).",No Path Found
-"can_store(U, S, A) :- User(U), Survey(S), Answer(A), has_answer(S, A).",No Path Found
-"can_view(PHR, L, BI) :- PersonalHealthRepresentative(PHR), LHCP(L), BasicInfo(BI), designated(PHR, L), has_basic_info(L, BI).",designated.has_basic_info
-"can_delete(L, P) :- LHCP(L), Patient(P), monitors(L, P).",monitors
-"is_logged(E) :- Event(E), Information(I), performs_action(E, I, Action).",Cannot determine Subject/Object (arity < 2)
-"cannot_modify(A, E, R) :- Administrator(A), Entry(E), ReasonID(R), has_reason_id(E, R).",No Path Found
-"can_choose(A, H) :- Administrator(A), Hospital(H).",No Path Found
-"can_store(A, L) :- Administrator(A), LOINC_Code(L).",No Path Found
-"cannot_modify(A, AT, E) :- Administrator(A), AppointmentType(AT), Entry(E), has_entry(AT, E).",No Path Found
-"can_report(R, P, BP, GL) :- Reporter(R), Patient(P), BloodPressure(BP), GlucoseLevel(GL), is_assigned_to(R, P).",No Path Found
-"can_select(A, DR) :- Administrator(A), Drug(DR).",No Path Found
-"can_add_personal_representative(D, P, R) :- DLHCP(D), Patient(P), PersonalRepresentative(R), has_personal_representative(P, R).",No Path Found
-"can_present(E, M) :- Editor(E), Message(M), (is_success(M); is_failure(M)).",No Path Found
-"can_present(L, P, D) :- LHCP(L), Patient(P), Diagnosis(D), in_same_area(P, L), handled_diagnosis(L, D, Year), Year >= current_year - 3.",handled_diagnosis
-"can_choose_period(P, B, E) :- Patient(P), Date(B), Date(E), chooses_period(P, B, E).",chooses_period
-"can_edit(E, P, DF) :- Editor(E), Personnel(P), DataFormat(DF), has_format(P, DF).",No Path Found
-"can_read_details(U, PR) :- User(U), Prescription(PR), Calendar(C), has_prescription(C, PR).",No Path Found
-"can_see(U, D) :- User(U), Diagnosis(D), has_diagnosis(P, D), Diagnosis(D) in {blood_pressure, high_cholesterol, diabetes, cancer, heart_disease, smoking, cause_of_death}.",No Path Found
-"can_send_fake_email(L, U, E, M) :- LHCP(L), User(U), Email(E), Message(M), has_message(U, M).",No Path Found
-"can_use(H, S) :- HCP(H), PhysicalService(S), maintains_listing(A, S).",No Path Found
-"can_view(P, NC) :- Patient(P), NotificationCenter(NC), has_access_to(P, NC).",has_access_to
-"can_input(P, BP) :- Patient(P), BloodPressure(BP). can_input(P, GL) :- Patient(P), GlucoseLevel(GL).",No Path Found
-"can_read_details(U, OV) :- User(U), OfficeVisit(OV), has_visit(C, OV), has_diagnosis(OV, ICD).",No Path Found
-"displays(NC, M) :- NotificationCenter(NC), Message(M), has_message(NC, M).",has_message
-"can_view_appointments(S, A) :- (Patient(S) ; PersonalHealthRepresentative(S)), Appointment(A), (patient_of_appointment(A, S) ; (PersonalHealthRepresentative(S), patient_of_appointment(A, P), represents(S, P))).",No Path Found
-"can_find(P, L, C) :- Patient(P), LHCP(L), Condition(C), has_condition(P, C), handled_condition(L, C).",has_condition
-"can_specify_specialty(A, L, S) :- Admin(A), LHCP(L), Specialty(S), not has_specialty(L, S).",No Path Found
-"can_send_message(M, R) :- Message(M), AdverseEventReporter(R), is_about(M, Rem). can_send_message(M, L) :- Message(M), LHCP(L), is_about(M, Rem).",No Path Found
-"can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A).",has_appointment
-"can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
-"can_enter(L, U, S) :- LHCP(L), UAP(U), System(S), data_format_6_2_compliant(L, U, S).",data_format_6_2_compliant
-"can_report_adverse_event(P, DR) :- Patient(P), Drug(DR), chooses_drug(P, DR).",chooses_drug
-"provide_warning(L, P, CD) :- LHCP(L), Patient(P), ChronicDisease(CD), satisfies_preconditions(P, CD).",No Path Found
-"can_report(R, P, H) :- PatientRepresentative(R), Patient(P), Height(H), is_representative_for(R, P). can_report(R, P, W) :- PatientRepresentative(R), Patient(P), Weight(W), is_representative_for(R, P). can_report(R, P, PR) :- PatientRepresentative(R), Patient(P), PedometerReading(PR), is_representative_for(R, P).",No Path Found
-"can_view(P, H) :- Patient(P), Homepage(H), has_homepage(P, H). can_view(R, H) :- PersonalHealthRepresentative(R), Homepage(H), has_homepage(R, H).",No Path Found
-"can_view(H, L) :- HCP(H), LabResult(L), has_access(H, L).",has_access
-"can_enter(U, DI) :- User(U), DemographicInfo(DI).",No Path Found
-"can_select(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2), D1 != D2.",No Path Found
-"can_reply(L, M) :- LHCP(L), Message(M), has_message(L, M). can_reply(P, M) :- Patient(P), Message(M), has_message(P, M). can_reply(R, M) :- Representative(R), Message(M), has_message(R, M).",No Path Found
-"can_sort_by_last_name(P, M, LN, Order) :- Patient(P), Message(M), has_message_inbox(P, M), message_sender(M, S), sender_last_name(S, LN), (Order = ascending; Order = descending).",No Path Found
-"can_sort_by_last_name(PR, M, LN, Order) :- PatientRepresentative(PR), Message(M), has_message_inbox(PR, M), message_sender(M, S), sender_last_name(S, LN), (Order = ascending; Order = descending).",No Path Found
-"can_sort_by_last_name(L, M, LN, Order) :- LHCP(L), Message(M), has_message_inbox(L, M), message_sender(M, S), sender_last_name(S, LN), (Order = ascending; Order = descending).",No Path Found
-"can_sort_by_timestamp(P, M, TS, Order) :- Patient(P), Message(M), has_message_inbox(P, M), message_timestamp(M, TS), (Order = ascending; Order = descending).",No Path Found
-"can_sort_by_timestamp(PR, M, TS, Order) :- PatientRepresentative(PR), Message(M), has_message_inbox(PR, M), message_timestamp(M, TS), (Order = ascending; Order = descending).",No Path Found
-"can_sort_by_timestamp(L, M, TS, Order) :- LHCP(L), Message(M), has_message_inbox(L, M), message_timestamp(M, TS), (Order = ascending; Order = descending).",No Path Found
-"can_report(U, M) :- UAP(U), Measurement(M), (is_type_of(M, 'height'); is_type_of(M, 'weight'); is_type_of(M, 'pedometer')).",No Path Found
-can_view_pending_referrals(U) :- User(U).,Cannot determine Subject/Object (arity < 2)
-"can_access_info(U, N, E) :- User(U), Name(N), Email(E), has_name(U, N), has_email(U, E).",has_email
-"can_access(H, N) :- HCP(H), Name(N), provides(H, N). can_access(H, E) :- HCP(H), Email(E), provides(H, E).",No Path Found
-"can_delete(D, P, PR) :- DLHCP(D), Patient(P), PersonalRepresentative(PR), has_personal_representative(P, PR).",No Path Found
-"can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A). can_view(R, A) :- PersonalHealthRepresentative(R), Appointment(A), has_appointment(P, A), is_representative_of(R, P).",has_appointment
-"can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
-"can_view(P, CI) :- Patient(P), LHCP(L), ContactInfo(CI), has_expired_prescription(P, L).",No Path Found
-"cannot_remove(L, A) :- LHCP(L), Appointment(A), past_appointment(A).",No Path Found
-"can_maintain(A, I) :- Administrator(A), Immunization(I).",No Path Found
-"can_maintain(A, DG) :- Administrator(A), Diagnosis(DG).",No Path Found
-"can_maintain(A, AD) :- Administrator(A), AllowableDrug(AD).",No Path Found
-"can_maintain(A, APS) :- Administrator(A), AllowablePhysicalService(APS).",No Path Found
-"can_report(P, BP, GL) :- Patient(P), BloodPressure(BP), GlucoseLevel(GL), has_blood_pressure(P, BP), has_glucose_level(P, GL).",has_glucose_level
-"can_report(P, PM) :- Patient(P), PhysiologicMeasurement(PM).",No Path Found
-"can_list_patients(S) :- System(S), has_patient(S, P).",Cannot determine Subject/Object (arity < 2)
-"can_schedule(L, P, A) :- LHCP(L), Patient(P), Appointment(A).",No Path Found
-"can_send_message(L, M, P) :- LHCP(L), Message(M), Patient(P). can_send_message(L, M, R) :- LHCP(L), Message(M), Representative(R), is_representative_of(R, P).",No Path Found
-"can_enter(H, P) :- HCP(H), Patient(P).",No Path Found
-"can_access_outbox(P, O) :- Patient(P), Outbox(O), has_outbox(P, O). can_access_outbox(PR, O) :- PersonalRepresentative(PR), Outbox(O), has_outbox(PR, O).",No Path Found
-"can_access_physician_info(U, Z, H, T) :- User(U), ZipCode(Z), HospitalCode(H), PhysicianType(T), (provides_zip_code(U, Z); provides_hospital_code(U, H)), provides_physician_type(U, T).",provides_physician_type
-"can_send(P, L, M) :- Patient(P), LHCP(L), Message(M). can_send(PR, L, M) :- PersonalRepresentative(PR), LHCP(L), Message(M), Patient(P), represents(PR, P).",No Path Found
-"can_report(P, H, W, PD) :- Patient(P), Height(H), Weight(W), PedometerData(PD).",No Path Found
-"can_see(L, P, D) :- LHCP(L), Patient(P), PatientData(D), has_data(P, D).",No Path Found
-"click(P, B) :- Patient(P), Button(B), can_click(P, B).",can_click
-"can_view_calendar(P, L) :- Patient(P), CalendarLink(L), has_appointment(P, A).",No Path Found
-"can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A), in_current_month(A).",has_appointment
-"click(P, SB) :- Patient(P), SortButton(SB), can_click(P, SB). click(PR, SB) :- PatientRepresentative(PR), SortButton(SB), can_click(PR, SB). click(L, SB) :- LHCP(L), SortButton(SB), can_click(L, SB).",No Path Found
-"cannot_delete(A, E) :- Administrator(A), Entry(E), existing_entry(E).",No Path Found
-"can_view_patients(U, S) :- User(U), System(S), has_patient(S, P).",No Path Found
-"can_view_ordered(U, M) :- User(U), Message(M), has_timestamp(M, T), order_by_desc(T).",No Path Found
-"can_add_prescription(H, PR) :- HCP(H), Prescription(PR), provides_instructions(H, PR).",provides_instructions
-"can_view(L, P, MD) :- LHCP(L), Patient(P), MonitoringDetails(MD), has_patient(L, P), has_details(P, MD), current_date(MD).",has_patient.has_details
-"can_refer(L1, P, L2) :- LHCP(L1), Patient(P), LHCP(L2), not refers_to(L1, P, L2).",No Path Found
-"can_read_message(U, M) :- User(U), Message(M), (in_inbox(U, M) ; in_outbox(U, M)).",No Path Found
-"can_view(L, P, PR) :- LHCP(L), Patient(P), Prescription(PR), has_prescription(P, PR).",No Path Found
-"can_display(S, P, I) :- System(S), Patient(P), InputEntry(I), applicable_to(I, P).",No Path Found
-"can_view(U, PL) :- User(U), PrescriptionList(PL), has_access_to(U, PL).",has_access_to
-"store_interaction(D1, D2, I) :- Drug(D1), Drug(D2), Interaction(I).",No Path Found
-"can_access_diagnosis(A, D) :- Administrator(A), Diagnosis(D), maintains_listing(A, D).",maintains_listing
-"can_send_message(L, P, M) :- LHCP(L), Patient(P), Message(M), is_patient_of(P, L). can_send_message(L, R, M) :- LHCP(L), PersonalRepresentative(R), Message(M), Patient(P), is_patient_of(P, L), is_representative_of(R, P).",No Path Found
-"can_designate(P, L, D) :- Patient(P), LHCP(L), DLHCP(D).",No Path Found
-"can_delete(A, D1, D2) :- Administrator(A), Drug(D1), Drug(D2), has_interaction(D1, D2).",No Path Found
-"display(I, U) :- InputEntry(I), UAP(U), applicable_to(I, U).",applicable_to
-"can_add(L, P) :- LHCP(L), Patient(P), monitors(L, P). can_add(U, P) :- UAP(U), Patient(P), monitors(U, P).",No Path Found
-"can_review(L, C) :- LHCP(L), Consultation(C), pending_consultation(C).",No Path Found
-"can_edit(H, P) :- HCP(H), Patient(P).",No Path Found
-"can_open(P, MI), can_open(P, MO) :- Patient(P), MessageInbox(MI), MessageOutbox(MO), has_access_to(P, MI), has_access_to(P, MO). can_open(PR, MI), can_open(PR, MO) :- PatientRepresentative(PR), MessageInbox(MI), MessageOutbox(MO), has_access_to(PR, MI), has_access_to(PR, MO). can_open(L, MI), can_open(L, MO) :- LHCP(L), MessageInbox(MI), MessageOutbox(MO), has_access_to(L, MI), has_access_to(L, MO).",has_access_to.has_access_to^{-1}.has_access_to
-"can_return(H, V) :- HCP(H), OfficeVisit(V), has_visit(H, V).",has_visit
-"can_view_profile(U, OP) :- User(U), Operation(OP), has_access(U, OP).",has_access
-"can_append_activities(S, U, P) :- System(S), User(U), Page(P), viewing_page(U, P).",No Path Found
-"can_view(L, I) :- LHCP(L), MessageInbox(I), has_message_inbox(L, I).",has_message_inbox
-"can_schedule(L, P, A) :- LHCP(L), Patient(P), Appointment(A).",No Path Found
-"can_add_to_list(L, P, LIST) :- LHCP(L), Patient(P), List(LIST), has_access(L, LIST). can_add_to_list(U, P, LIST) :- UAP(U), Patient(P), List(LIST), has_access(U, LIST).",No Path Found
-"cannot_edit(H, P, SQ) :- HCP(H), Patient(P), SecurityQuestion(SQ), has_security_question(P, SQ). cannot_edit(H, P, PW) :- HCP(H), Patient(P), Password(PW), has_password(P, PW).",No Path Found
-"can_view(U, PR, M) :- User(U), Prescription(PR), Medication(M), has_prescription(PR, M).",No Path Found
-"proceed(H, PR) :- HCP(H), Prescription(PR), can_proceed(H, PR).",can_proceed
-"can_view(L, P, PD) :- LHCP(L), Patient(P), PhysiologicData(PD), has_patient(L, P), has_data(P, PD, current_date).",has_patient.has_data
-"can_reset_password(U, P) :- User(U), Password(P), has_secret_key(U, K).",No Path Found
-"choose(L, CD, P) :- LHCP(L), ChronicDisease(CD), Patient(P), can_choose(L, CD, P).",can_choose
-"can_manage(A, AT) :- Administrator(A), AppointmentType(AT).",No Path Found
-"can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
-"can_view(P, M) :- Patient(P), MessageInbox(M), owns_inbox(P, M).",owns_inbox
-"can_view_menu(U, P) :- User(U), Patient(P), LHCP(L), has_patient(L, P). can_view_menu(U, L2) :- User(U), LHCP(L2).",No Path Found
-"can_present(S, L, P, RD) :- System(S), LHCP(L), Patient(P), ReferralDetails(RD), sends_referral(L, P, RD).",No Path Found
-"can_view_ordered(U, M) :- User(U), Message(M), has_inbox(U, M), has_timestamp(M, T), ordered_by_timestamp_desc(M, T).",has_inbox
-"can_provide_prescription_details(H, PR, D, SD, ED, SI) :- HCP(H), Prescription(PR), Dosage(D), StartDate(SD), EndDate(ED), SpecialInstructions(SI), provides_dosage(H, PR, D), provides_start_date(H, PR, SD), provides_end_date(H, PR, ED), provides_special_instructions(H, PR, SI).",provides_special_instructions
-"can_store(A, NDC) :- Administrator(A), NationalDrugCode(NDC).",No Path Found
-"can_view(U, SR) :- User(U), SurveyResult(SR), has_access_to(U, SR).",has_access_to
-"can_delete(S, P) :- (LHCP(S) ; UAP(S)), Patient(P), monitors(S, P).",monitors
-"can_click(R, B) :- Representative(R), Button(B), has_access(R, B).",has_access
-"cannot_modify(A, E, H) :- Administrator(A), Entry(E), HospitalID(H), has_entry(E, H).",No Path Found
-"can_present(S, P, Name) :- System(S), Patient(P), has_name(P, Name).",No Path Found
-"can_request_password_change(U, PW) :- User(U), Password(PW), has_password(U, PW).",has_password
-"edit_action(E, I) :- can_edit(E, I).",can_edit
-"highlight(P) :- Patient(P), has_weight(P, W), has_previous_weight(P, PW), (W >= PW * 0.95, W <= PW * 1.05).",Cannot determine Subject/Object (arity < 2)
-"can_view_sorted(P, L) :- Patient(P), List(L), sorted_by_role_and_date(P, L).",sorted_by_role_and_date
-"sorted_by_role_and_date(P, L) :- Patient(P), List(L), forall(A, (in_list(A, L) -> (exists(R, D, (relative_to(A, P, R), access_date(A, P, D)))))).",No Path Found
-"can_type_message(R, M) :- Representative(R), Message(M), types_subject(R, M), types_text(R, M).",types_subject
-"can_read_details(U, A) :- User(U), Appointment(A), has_appointment(U, A).",has_appointment
-"can_view_notification_center(L, NC) :- LHCP(L), NotificationCenter(NC).",No Path Found
-"can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
-"can_view_physiologic_reports(L, PR) :- LHCP(L), PhysiologicReport(PR), has_patient(L, P), has_physiologic_report(P, PR).",has_patient.has_physiologic_report
-"can_view_weight_pedometer_reports(L, WPR) :- LHCP(L), WeightPedometerReport(WPR), has_patient(L, P), has_weight_pedometer_report(P, WPR).",has_patient.has_weight_pedometer_report
-"can_view_messages(L, M) :- LHCP(L), Message(M), has_message(L, M).",has_message
-"can_present_listing(S, AE, C) :- System(S), AdverseEvent(AE), CPTCode(C), not has_status(AE, ""removed"").",No Path Found
-"can_view(L, M) :- LHCP(L), Message(M). can_view(P, M) :- Patient(P), Message(M). can_view(R, M) :- Representative(R), Message(M).",No Path Found
-"can_view(P, L) :- Patient(P), LHCP(L), (has_office_visit(P, L) ; designated(P, L)).",No Path Found
-"can_obtain_info(L, P, I) :- LHCP(L), Patient(P), AdditionalInfo(I), has_additional_info(P, I).",No Path Found
-"can_access(L, N, S, A) :- LHCP(L), Name(N), Specialty(S), Address(A), has_name(L, N), has_specialty(L, S), has_address(L, A).",has_address
-"can_enter(A, L) :- Administrator(A), LHCP(L). can_enter(A, E) :- Administrator(A), ER(E). can_enter(A, PHA) :- Administrator(A), PublicHealthAgent(PHA).",No Path Found
-"can_view_report_count(L, P, current_date) :- LHCP(L), Patient(P), has_patient(L, P), submitted_report(P, WR, current_date).",has_patient.submitted_report
-"can_see(A, R) :- PublicHealthAgent(A), Report(R), assigned_to(A, R).",assigned_to
-"present_screen(U, S) :- User(U), Screen(S), can_access(U, S).",can_access
-"can_view_messages(U) :- User(U), has_message(U, M).",Cannot determine Subject/Object (arity < 2)
-"must_confirm(L, A) :- LHCP(L), Add(A).",No Path Found
-"can_view(L, R) :- LHCP(L), ComprehensivePatientReport(R), Patient(P), has_report(P, R).",No Path Found
-"can_edit(H, V) :- HCP(H), OfficeVisit(V), LaboratoryProcedure(L), ordered_in(L, V).",No Path Found
-"can_view(L, H) :- LHCP(L), Homepage(H), has_homepage(L, H).",has_homepage
-"can_view_patient_listing(D, P) :- DLHCP(D), Patient(P), needs_care(P), assigned_to(D, P).",assigned_to
-"can_document(H, OV) :- HCP(H), OfficeVisit(OV).",No Path Found
-"can_report(P, PD) :- Patient(P), PhysiologicData(PD).",No Path Found
-"can_present_listing(S, AE, DR, TP) :- System(S), AdverseEvent(AE), Drug(DR), TimePeriod(TP), related_to(AE, DR), occurred_during(AE, TP), not has_status(AE, ""removed"").",No Path Found
-"can_open(L, M) :- LHCP(L), Message(M), can_reply_to(L, M).",can_reply_to
-"can_see(U, PHI) :- User(U), PersonalHealthInfo(PHI), (is_patient(U, P), has_record(P, PHI); is_personal_representative(U, PR), has_record(P, PHI)). can_see(U, IMM) :- User(U), Immunization(IMM), (is_patient(U, P), has_record(P, IMM); is_personal_representative(U, PR), has_record(P, IMM)). can_see(U, OVI) :- User(U), OfficeVisitInfo(OVI), (is_patient(U, P), has_record(P, OVI); is_personal_representative(U, PR), has_record(P, OVI)).",No Path Found
-"can_check_interaction(D, P, DR) :- Prescriber(D), Patient(P), Drug(DR), takes_drug(P, DR_other), not interacts(DR, DR_other).",No Path Found
-"can_request(L, P, R) :- LHCP(L), Patient(P), Report(R), has_report(P, R).",No Path Found
-"can_edit(H, V) :- HCP(H), OfficeVisit(V), has_access(H, V).",has_access
-"can_send_fake_email(S, P, FE) :- Sender(S), Patient(P), FakeEmail(FE), is_sent_to(FE, P).",No Path Found
-"can_edit(L, A) :- LHCP(L), Appointment(A), is_future(A).",No Path Found
-"can_confirm(L, P, MID) :- LHCP(L), Patient(P), MID(MID), has_mid(P, MID).",No Path Found
-"can_view_inbox(P, I) :- Patient(P), MessageInbox(I), has_access_to(P, I). can_view_inbox(R, I) :- PatientRepresentative(R), MessageInbox(I), has_access_to(R, I). can_view_inbox(L, I) :- LHCP(L), MessageInbox(I), has_access_to(L, I).",No Path Found
-"can_prescribe(H, P, DR) :- HCP(H), Patient(P), Drug(DR).",No Path Found
-"can_choose_date_range(U, S, DR) :- User(U), Screen(S), DateRange(DR), can_access_screen(U, S).",No Path Found
-"can_graph(H, P, M) :- HCP(H), Patient(P), Measurement(M), has_measurement(P, M), (M = height; M = weight).",No Path Found
-"can_edit(U, DI) :- User(U), DemographicInfo(DI), has_access_to(U, DI).",has_access_to
-"can_report_adverse_event(P, I) :- Patient(P), Immunization(I), has_immunization(P, I).",has_immunization
-"can_view(L1, L2) :- System(S), NDC_List(L1), NDC_List(L2), presents(S, L1), presents(S, L2).",presents^{-1}.presents
-"can_add_lhcp(P, L, PL) :- Patient(P), LHCP(L), ProviderList(PL), has_provider_list(P, PL).",has_provider_list
-"can_search(S, F) :- (Subject(S), FilterCriteria(F)), (S = L; S = P; S = R).",No Path Found
-"can_graph(H, P, M) :- HCP(H), Patient(P), Measurement(M), has_measurement(P, M, Year), M.type in {height, weight}.",No Path Found
-"can_select(S, DD, O) :- (Patient(S) ; PatientRepresentative(S) ; LHCP(S)), DropDownBox(DD), Option(O), has_option(DD, O).",No Path Found
-"can_modify_or_delete(H, OV, F) :- HCP(H), OfficeVisit(OV), Field(F), has_field(OV, F).",No Path Found
-"can_enter_user(A, U) :- Administrator(A), User(U).",No Path Found
-"can_edit(H, P, HV) :- HCP(H), Patient(P), HistoricalValues(HV), has_historical_values(P, HV).",No Path Found
-"can_edit(H, P, I) :- HCP(H), Patient(P), Immunizations(I), has_immunizations(P, I).",No Path Found
-"can_edit(H, P, OV) :- HCP(H), Patient(P), OfficeVisitInfo(OV), has_office_visit_info(P, OV).",No Path Found
-"can_edit(H, P, FH) :- HCP(H), Patient(P), FamilyHistory(FH), has_family_history(P, FH).",No Path Found
-"can_edit(H, P, B) :- HCP(H), Patient(P), BMI(B), has_bmi(P, B).",No Path Found
-"can_create(A, L) :- Admin(A), LHCP(L). can_create(A, E) :- Admin(A), ER(E). can_create(A, PHA) :- Admin(A), PublicHealthAgent(PHA).",No Path Found
-"can_authenticate(ST, IT) :- SoftwareTester(ST), iTrustSystem(IT).",No Path Found
-"can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A).",has_appointment
-"can_identify(H, P, OV) :- HCP(H), Patient(P), OfficeVisit(OV), needs_office_visit(P, OV).",No Path Found
-"can_identify(H, P, FS) :- HCP(H), Patient(P), FluShot(FS), needs_flu_shot(P, FS).",No Path Found
-"can_identify(H, P, I) :- HCP(H), Patient(P), Immunization(I), is_overdue_for_immunization(P, I).",No Path Found
-"can_modify_duration(A, E, D) :- Administrator(A), Entry(E), Duration(D), has_entry(A, E).",No Path Found
-"can_notify(H, P, DR) :- HCP(H), Patient(P), Drug(DR), has_allergy(P, DR).",No Path Found
-"send_fake_email(E, L, P, DR, S) :- LHCP(L), Patient(P), Drug(DR), Symptom(S), prescribed(L, P, DR).",No Path Found
-"cannot_edit(U, P, MID) :- User(U), Patient(P), has_mid(P, MID).",No Path Found
-"can_view(U, LR) :- User(U), LabRecord(LR), (is_patient_of(U, LR); is_personal_representative_of(U, LR)).",No Path Found
-"send_fake_email(L, E, M) :- LHCP(L), Email(E), Message(M), is_fake_email(E), has_new_reply(M).",No Path Found
-"can_document(H, OV) :- HCP(H), OfficeVisit(OV).",No Path Found
-"can_edit(H, LP) :- HCP(H), LaboratoryProcedure(LP), has_access(H, LP).",has_access
-"can_remove(A, R) :- PublicHealthAgent(A), AdverseEventReport(R), (exists(P) such that is_reporter_of(P, R) and communication(A, P)) or appears_bogus(R).",No Path Found
-"can_view_appointment_details(U, A) :- User(U), Appointment(A), has_type(A, T), has_date(A, D), has_start_time(A, ST), has_duration(A, DUR), has_patient(A, P), has_comment(A, C).",No Path Found
-"can_choose(H, R) :- HCP(H), OfficeVisitReminders(R).",No Path Found
-"can_enter_as_new_user(H, P) :- HCP(H), Patient(P), not exists_user(P).",No Path Found
-"can_view_unread_count(P, I) :- Patient(P), Inbox(I), has_inbox(P, I).",has_inbox
-"can_view_unread_count(PR, I) :- PatientRepresentative(PR), Inbox(I), has_inbox(PR, I).",has_inbox
-"can_view_unread_count(L, I) :- LHCP(L), Inbox(I), has_inbox(L, I).",has_inbox
-"can_see(P, H) :- Patient(P), AbbreviatedHealthHistory(H), (is_sibling(P, S) ; is_parent(P, PA) ; is_grandparent(P, G)), has_mid(S) ; has_mid(PA) ; has_mid(G).",No Path Found
-"can_see(R, H) :- PersonalRepresentative(R), AbbreviatedHealthHistory(H), represents(R, P), (is_sibling(P, S) ; is_parent(P, PA) ; is_grandparent(P, G)), has_mid(S) ; has_mid(PA) ; has_mid(G).",No Path Found
-"cannot_view(H, P, SQ) :- HCP(H), Patient(P), SecurityQuestion(SQ), has_security_question(P, SQ). cannot_view(H, P, PW) :- HCP(H), Patient(P), Password(PW), has_password(P, PW).",No Path Found
-"can_view_appointment_details(U, A) :- User(U), Appointment(A), has_appointment(U, A), (is_lhcp(U, L) ; is_patient(U, P)).",has_appointment
-"can_modify(L, F) :- LHCP(L), Filter(F), has_filter(L, F). can_modify(P, F) :- Patient(P), Filter(F), has_filter(P, F). can_modify(R, F) :- Representative(R), Filter(F), has_filter(R, F). can_save(L, F) :- LHCP(L), Filter(F), has_filter(L, F). can_save(P, F) :- Patient(P), Filter(F), has_filter(P, F). can_save(R, F) :- Representative(R), Filter(F), has_filter(R, F).",No Path Found
-"can_click(P, L) :- Patient(P), Link(L).",No Path Found
-"can_view(U, I) :- User(U), Information(I).",No Path Found
-"can_view_patient_info(U, P, Name, PN) :- User(U), Patient(P), has_name(P, Name), has_phone(P, PN).",No Path Found
-"send_notification(U, N) :- User(U), Notification(N), receives_notification(U, N).",receives_notification
-"can_view_report_count(L, P, current_date) :- LHCP(L), Patient(P), has_patient(L, P), submitted_report(P, R, current_date).",has_patient.submitted_report
-"can_access_menu(U, DLH) :- User(U), DLHCP(DLH), presents_menu(U, DLH).",presents_menu
-"can_choose(P, DL) :- Patient(P), DLHCP(DL). can_choose(R, DL) :- Representative(R), DLHCP(DL).",No Path Found
-"can_save(L, F) :- LHCP(L), Filter(F), has_modified_filter(L, F).",has_modified_filter
-"can_save(P, F) :- Patient(P), Filter(F), has_modified_filter(P, F).",has_modified_filter
-"can_save(R, F) :- Representative(R), Filter(F), has_modified_filter(R, F).",has_modified_filter
-"can_send_message(A, R, MSG) :- PublicHealthAgent(A), AdverseEventReporter(R), Message(MSG), has_read(A, REP), Report(REP).",No Path Found
-"can_cancel(H, PR) :- HCP(H), Prescription(PR), has_prescription(PR).",No Path Found
-"can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
-"can_confirm_status(L, S) :- LHCP(L), Status(S), has_status(S).",No Path Found
-"can_enter_consultation(L, C) :- LHCP(L), Consultation(C), has_consultation(C).",No Path Found
-"can_cancel_consultation(L, C) :- LHCP(L), Consultation(C), has_consultation(C).",No Path Found
-"can_confirm(L, R, M) :- LHCP(L), Representative(R), MID(M), has_mid(R, M).",No Path Found
-"can_select(P, SO) :- Patient(P), SortOption(SO), has_access(P, SO). can_select(PR, SO) :- PatientRepresentative(PR), SortOption(SO), has_access(PR, SO). can_select(L, SO) :- LHCP(L), SortOption(SO), has_access(L, SO).",No Path Found
-"store_reason(S, R, ID, Name) :- System(S), Reason(R), ID(ID), Name(Name), has_id(R, ID), has_name(R, Name).",No Path Found
-"can_view(L, I) :- LHCP(L), MessageInbox(I), has_inbox(L, I).",has_inbox
-"review(L, C) :- LHCP(L), Consultation(C), can_review(L, C).",can_review
-"can_store(A, I, C) :- Administrator(A), Immunization(I), CPT_Code(C).",No Path Found
-"present_patients(U, P) :- User(U), Patient(P), can_report(U, P).",can_report
-"can_view(L, P, A) :- LHCP(L), Patient(P), AdditionalInfo(A), has_info(P, A).",No Path Found
-"can_edit(L, A) :- LHCP(L), Appointment(A), not is_past(A).",No Path Found
-"can_view(S, P, PT, PD) :- System(S), Physician(P), Patient(PT), PhysiologicData(PD), has_patient(P, PT), reported_on(PD, current_date).",No Path Found
-"set_status_pending(C) :- Consultation(C), has_status(C, ""pending"").",Cannot determine Subject/Object (arity < 2)
-"can_select(L, P) :- LHCP(L), Patient(P), requested_report(P, R).",No Path Found
-"can_report(P, E) :- Patient(P), Event(E), (related_to_drug(E, DR) ; related_to_immunization(E, I)).",No Path Found
-"can_display(M, P, R) :- Message(M), Patient(P), RiskFactor(R), exhibits_risk_factor(P, R).",No Path Found
-"can_send_message(S, M, D) :- (Patient(S) or PersonalRepresentative(S)), Message(M), DLHCP(D), (S = P or (PersonalRepresentative(S) and represents(S, P))).",No Path Found
-"can_answer(P, Q, V) :- Patient(P), Question(Q), OfficeVisit(V), relative_to(Q, V). can_answer(PR, Q, V) :- PersonalRepresentative(PR), Question(Q), OfficeVisit(V), relative_to(Q, V).",No Path Found
-"can_remove(A, R) :- PublicHealthAgent(A), AdverseEventReport(R), (reported_by(R, P), communication_with(A, P); appears_bogus(R)).",No Path Found
-"can_assign(A, L, H) :- Administrator(A), LHCP(L), Hospital(H).",No Path Found
-"can_view_listing(U, DR) :- User(U), Drug(DR), prescribed_to(U, DR), taken_by(U, DR).",prescribed_to
-"can_view(L, R) :- LHCP(L), Referral(R), has_access(L, R).",has_access
-"can_review(H, C) :- HCP(H), Consultation(C).",No Path Found
-"can_read_appointment(U, A) :- User(U), Appointment(A), has_appointment(U, A).",has_appointment
-"can_view_calendar(P, C, A, O, PR, L) :- Patient(P), Calendar(C), Appointment(A), OfficeVisit(O), Prescription(PR), LabProcedure(L), on_calendar(P, C), has_appointment(P, A), has_office_visit(P, O), has_prescription(P, PR), has_lab_procedure(P, L).",has_lab_procedure
-"can_view_calendar(L, AC) :- LHCP(L), AppointmentCalendar(AC), has_appointment(L, A), is_current_month(A).",No Path Found
-"can_view_calendar(P, AC) :- Patient(P), AppointmentCalendar(AC), has_appointment(P, A), is_current_month(A).",No Path Found
-"can_present(S, B) :- System(S), BMI(B), calculates_bmi(S, B).",calculates_bmi
-"can_report(U, PM) :- UAP(U), PhysiologicMeasurement(PM).",No Path Found
-"can_open(U, AL) :- User(U), AppointmentList(AL), has_upcoming_appointment_list(U, AL).",has_upcoming_appointment_list
-"send_email_alert(U) :- User(U), (has_password(U, PW) and changed(PW)) or (has_laboratory_procedure(U, LP) and status_changed(LP)) or (has_report(U, R) and requested_and_generated(R)).",Cannot determine Subject/Object (arity < 2)
-"can_present_mid(L, P, M, R) :- LHCP(L), Patient(P), MID(M), ReceivingHCP(R), has_mid(P, M).",No Path Found
-"can_enter(L, P, M) :- LHCP(L), Patient(P), MID(M), has_mid(P, M).",No Path Found
-"can_view_chart(U, P) :- User(U), Patient(P), has_measurement(P, M, Q).",No Path Found
-"send_fake_email(S, P, E, M) :- System(S), Patient(P), Email(E), Message(M), has_message(P, M), is_fake_email(E), receives_email(P, E).",No Path Found
-"can_delete(L, A) :- LHCP(L), Appointment(A), future_appointment(A).",No Path Found
-"write(P, TD) :- Patient(P), TextualDescription(TD), can_write(P, TD).",can_write
-"can_log_event(U, E, C) :- User(U), Event(E), Change(C), made_change(U, C).",made_change
-"can_verify(H, V) :- HCP(H), OfficeVisitRecord(V), has_record(H, V).",has_record
-"can_mark_status(U, C, O) :- User(U), Consultation(C), StatusOption(O), System(S), default_status(O, 'pending').",No Path Found
-"can_enter_details(U, C) :- User(U), Consultation(C), can_access_consultation(U, C).",can_access_consultation
-"can_enter(L, M) :- LHCP(L), MID(M). can_enter(E, M) :- ER(E), MID(M).",No Path Found
-"can_confirm(L, I) :- LHCP(L), Input(I). can_confirm(E, I) :- ER(E), Input(I).",No Path Found
-"can_enter(R, M) :- Representative(R), ResponseMessage(M), length(M, L), L <= 1000.",No Path Found
-"click(R, B) :- Representative(R), Button(B), can_click(R, B).",can_click
-"can_open(P, M) :- Patient(P), Message(M), has_access_to(P, M).",has_access_to
-"can_click(P, L) :- Patient(P), ReplyLink(L), has_message(P, M), has_reply_link(M, L).",has_message.has_reply_link
-"can_renew(P, PR) :- Patient(P), Prescription(PR), has_prescription(P, PR), end_date(PR, ED), current_date(CD), ED < CD.",has_prescription
-"can_find(P, L) :- Patient(P), LHCP(L), wrote_prescription(L, P, PR), expired(PR).",wrote_prescription^{-1}
-"can_enter(H, P) :- HCP(H), Patient(P), (has_mid(P, MID) ; has_name(P, Name)).",No Path Found
-"can_confirm(H, S) :- HCP(H), Selection(S), has_selection(H, S).",has_selection
-"can_enter(L, P, M) :- LHCP(L), Patient(P), MID(M), has_mid(P, M).",No Path Found
-"can_confirm(L, I) :- LHCP(L), Input(I), has_input(L, I).",has_input
-"may_type(P, L) :- Patient(P), LastName(L), can_type(P, L).",can_type
-"reduce_choices(P, S) :- Patient(P), Specialty(S), has_specialty_choice(P, S).",has_specialty_choice
-"can_open(R, M) :- Representative(R), Message(M), wants_to_reply(R, M).",wants_to_reply
-"can_click(R, L, M) :- Representative(R), ReplyLink(L), Message(M), above(L, M).",No Path Found
-"can_add(A, H) :- Administrator(A), Hospital(H).",No Path Found
-"can_modify_hospital_name(A, H) :- Administrator(A), Hospital(H), has_entry(A, H).",has_entry
-"can_enter(P, M) :- Patient(P), Message(M), length(M, L), L <= 1000.",No Path Found
-"click(P, B) :- Patient(P), Button(B), can_click(P, B).",can_click
-"can_enter_mid(H, P, M) :- HCP(H), Patient(P), MID(M), has_mid(P, M).",No Path Found
-"can_confirm(H, I) :- HCP(H), Input(I), has_input(H, I).",has_input
-"can_enter(L, RM) :- LHCP(L), ResponseMessage(RM), length(RM, Len), Len <= 1000.",No Path Found
-"click(L, B) :- LHCP(L), Button(B), can_click(L, B).",can_click
-"view(L, R) :- LHCP(L), EmergencyReport(R), can_view(L, R). view(E, R) :- ER(E), EmergencyReport(R), can_view(E, R).",No Path Found
-"can_provide(S, M) :- (LHCP(S) ; ER(S)), MID(M).",No Path Found
-"can_view(H, LP) :- HCP(H), LaboratoryProcedure(LP).",No Path Found
-"can_update(H, S) :- HCP(H), Status(S). can_update(H, C) :- HCP(H), Comment(C).",No Path Found
-"can_correct(E, F) :- Editor(E), Form(F), has_permission(E, F).",has_permission
-"add_information(E, I) :- Editor(E), Information(I), can_edit(E, I).",can_edit
-"can_enter_MID(H, P) :- HealthCarePersonnel(H), Patient(P).",No Path Found
-"can_confirm(H, S) :- HealthCarePersonnel(H), Selection(S), has_selection(H, S).",has_selection
-"can_type_message(L, M) :- LHCP(L), Message(M).",No Path Found
-"can_click(L, B) :- LHCP(L), Button(B), has_access(L, B).",has_access
-"can_take_survey(P, V, S) :- Patient(P), OfficeVisit(V), Survey(S), has_visit(P, V), not has_taken_survey(P, V, S). can_take_survey(PR, V, S) :- PersonalRepresentative(PR), OfficeVisit(V), Survey(S), has_visit(PR, V), not has_taken_survey(PR, V, S).",No Path Found
-"can_take(P, S) :- Patient(P), Survey(S), not has_taken(P, S). can_take(R, S) :- PersonalHealthRepresentative(R), Survey(S), not has_taken(R, S).",No Path Found
-"can_view(P, S) :- Patient(P), Survey(S), not has_taken(P, S).",No Path Found
-"can_view(R, S) :- PersonalHealthRepresentative(R), Survey(S), not has_taken(R, S).",No Path Found
-"can_enter(L, P) :- LHCP(L), Patient(P).",No Path Found
-"can_select_appointment_type(L, AT) :- LHCP(L), AppointmentType(AT), available_appointment_type(AT).",No Path Found
-"can_enter(L, A) :- LHCP(L), Appointment(A).",No Path Found
-"can_enter_comment(L, C) :- LHCP(L), Comment(C), length(C, Len), Len <= 1000.",No Path Found
-"can_read(U, M) :- User(U), Message(M), has_access_to(U, M).",has_access_to
-"can_display(U, M) :- User(U), Message(M), has_sender(M, Sender), has_recipient(M, Recipient), has_subject(M, Subject), has_timestamp(M, Timestamp), has_text(M, Text).",No Path Found
-"can_select(U, P) :- User(U), Patient(P).",No Path Found
-"can_enter(U, D) :- User(U), Data(D).",No Path Found
+natural_language_statements,datalog_subjects,datalog_objects,datalog_relationships,datalog_actions,crampton
+The LHCP is able to view the comprehensive patient report.,LHCP(L).,PatientReport(PR).,"has_access(L, PR) :- LHCP(L), PatientReport(PR).","can_view(L, PR) :- LHCP(L), PatientReport(PR), has_access(L, PR).",has_access
+"""The reports are viewed under the """"View My Records"""" tab.""",User(U).,"Report(R), Tab(T).","has_access_to(U, R) :- User(U), Report(R). is_in_tab(R, T) :- Report(R), Tab(T).","can_view(U, R, T) :- User(U), Report(R), Tab(T), has_access_to(U, R), is_in_tab(R, T).",has_access_to.is_in_tab
+"""The appointments in the list shall be ordered by appointment date and time, the soonest upcoming first.""",User(U).,Appointment(A).,"has_appointment(U, A) :- User(U), Appointment(A).
+appointment_datetime(A, DT) :- Appointment(A).","ordered_appointments(U, A1, A2) :- User(U), Appointment(A1), Appointment(A2), has_appointment(U, A1), has_appointment(U, A2), appointment_datetime(A1, DT1), appointment_datetime(A2, DT2), DT1 < DT2.",has_appointment
+An LHCP views a list of his upcoming appointments.,LHCP(L).,Appointment(A).,"has_appointment(L, A) :- LHCP(L), Appointment(A).","can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
+An administrator maintains the hospital listing.,Administrator(A).,HospitalListing(L).,"maintains(A, L) :- Administrator(A), HospitalListing(L).","can_maintain(A, L) :- Administrator(A), HospitalListing(L), maintains(A, L).",maintains
+The HCP can add the prescription to the list of medications.,HCP(H).,"Prescription(PR), MedicationList(ML).","has_access_to(H, ML) :- HCP(H), MedicationList(ML).","can_add_prescription(H, PR, ML) :- HCP(H), Prescription(PR), MedicationList(ML), has_access_to(H, ML).",has_access_to
+The HCP can edit the patient according to data format.,HCP(H).,"Patient(P), DataFormat(F).","has_access(H, P, F) :- HCP(H), Patient(P), DataFormat(F).","can_edit(H, P, F) :- HCP(H), Patient(P), DataFormat(F), has_access(H, P, F).",has_access
+The LHCP obtains a printable report.,LHCP(L).,Report(R).,"can_access(L, R) :- LHCP(L), Report(R), printable(R).","obtain_report(L, R) :- LHCP(L), Report(R), can_access(L, R).",can_access
+The HCP notes about an office visit.,HCP(H).,OfficeVisit(V).,"has_note(H, V) :- HCP(H), OfficeVisit(V).","can_access_note(H, V) :- HCP(H), OfficeVisit(V), has_note(H, V).",has_note
+System presents a listing of all immunizations for which he has been administered in the last 12 months.,User(U).,Immunization(I).,"administered_to(U, I, Date) :- User(U), Immunization(I), Date(Date), Date >= current_date - 365.","can_view_listing(U, I) :- User(U), Immunization(I), administered_to(U, I, Date).",administered_to
+The HCP can disallow viewing access to the laboratory results.,HCP(H).,LabResult(L).,"has_access(H, L) :- HCP(H), LabResult(L).","can_disallow_view(H, L) :- HCP(H), LabResult(L), has_access(H, L).",has_access
+"""The patient may optionally enter a zip code (match on first three numbers of zip code), in addition to the name possibly and possibly specialty.""",Patient(P).,"Provider(PR), ZipCode(Z).","has_zip_code(P, Z) :- Patient(P), ZipCode(Z).
+matches_zip_prefix(Z, PR) :- ZipCode(Z), Provider(PR).","can_access(P, PR) :- Patient(P), Provider(PR), has_zip_code(P, Z), matches_zip_prefix(Z, PR).",has_zip_code.matches_zip_prefix
+The patient chooses My Diagnoses.,Patient(P).,Diagnosis(D).,"has_diagnosis(P, D) :- Patient(P), Diagnosis(D).","can_choose(P, D) :- Patient(P), Diagnosis(D), has_diagnosis(P, D).",has_diagnosis
+"""A patient, patient representative, or LHCP can sort messages in his message outbox by the recipient's last name or timestamp (but not both) in either ascending or descending order.""","Patient(P), PatientRepresentative(PR), LHCP(L).","Message(M), Outbox(O).","has_outbox(P, O) :- Patient(P), Outbox(O). has_outbox(PR, O) :- PatientRepresentative(PR), Outbox(O). has_outbox(L, O) :- LHCP(L), Outbox(O). contains_message(O, M) :- Outbox(O), Message(M). recipient_last_name(M, LN) :- Message(M). message_timestamp(M, TS) :- Message(M).","can_sort_by_last_name_asc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O). can_sort_by_last_name_desc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O). can_sort_by_timestamp_asc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O). can_sort_by_timestamp_desc(S, O) :- (Patient(S); PatientRepresentative(S); LHCP(S)), Outbox(O), has_outbox(S, O).",has_outbox
+"""When an LHCP views a list of his upcoming appointments, system presents an option to edit or remove the appointment.""",LHCP(L).,Appointment(A).,"has_appointment(L, A) :- LHCP(L), Appointment(A).","can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A). can_edit_or_remove_appointment(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
+The patient views his access log.,Patient(P).,AccessLog(L).,"owns_log(P, L) :- Patient(P), AccessLog(L).","can_view(P, L) :- Patient(P), AccessLog(L), owns_log(P, L).",owns_log
+The patient can undesignate any LHCP as being a DLHCP for them.,"Patient(P), LHCP(L).",DLHCP(D).,"is_dlhcp_for(L, P) :- LHCP(L), Patient(P).","can_undesignate(P, L) :- Patient(P), LHCP(L), is_dlhcp_for(L, P).",is_dlhcp_for^{-1}
+The HCP's medical identification number should also be maintained.,HCP(H).,MedicalID(M).,"has_medical_id(H, M) :- HCP(H), MedicalID(M).","maintain_medical_id(H, M) :- HCP(H), MedicalID(M), has_medical_id(H, M).",has_medical_id
+The HCP selects a medication prescribed from a pull down list.,HCP(H).,Medication(M).,"prescribed_medication(H, M) :- HCP(H), Medication(M).","can_select(H, M) :- HCP(H), Medication(M), prescribed_medication(H, M).",prescribed_medication
+A patient or personal representative may view medical records including family history.,"Patient(P), PersonalRepresentative(R).","MedicalRecord(M), FamilyHistory(F).","has_record(P, M) :- Patient(P), MedicalRecord(M). includes_family_history(M, F) :- MedicalRecord(M), FamilyHistory(F). is_representative(R, P) :- PersonalRepresentative(R), Patient(P).","can_view(P, M) :- Patient(P), MedicalRecord(M), has_record(P, M). can_view(R, M) :- PersonalRepresentative(R), MedicalRecord(M), Patient(P), is_representative(R, P), has_record(P, M). can_view(P, F) :- Patient(P), FamilyHistory(F), MedicalRecord(M), has_record(P, M), includes_family_history(M, F). can_view(R, F) :- PersonalRepresentative(R), FamilyHistory(F), MedicalRecord(M), Patient(P), is_representative(R, P), has_record(P, M), includes_family_history(M, F).",has_record
+The LHCP then sends the request or to cancel.,LHCP(L).,Request(R).,"can_send(L, R) :- LHCP(L), Request(R).","send_request(L, R) :- LHCP(L), Request(R), can_send(L, R). cancel_request(L, R) :- LHCP(L), Request(R), can_send(L, R).",can_send
+"""A patient views basic information about his designated LHCPs, including the name, phone number, and contact email information.""",Patient(P).,LHCP(L).,"designated(P, L) :- Patient(P), LHCP(L).","can_view(P, L) :- Patient(P), LHCP(L), designated(P, L).",designated
+"""Additionally, the HCP can document none, one, or more medications prescribed; none, one, or more lab procedures that are ordered (LOINC code, see Data Format 6.11); none, one, or more diagnoses (via the ICD-9CM code); none, one, or more medical procedures performed; and none, one, or more immunizations given chosen from appropriate pull-down lists.""",HCP(H).,"Medication(M), LabProcedure(L), Diagnosis(D), MedicalProcedure(MP), Immunization(I).","can_document_medication(H, M) :- HCP(H), Medication(M).
+can_document_lab_procedure(H, L) :- HCP(H), LabProcedure(L).
+can_document_diagnosis(H, D) :- HCP(H), Diagnosis(D).
+can_document_medical_procedure(H, MP) :- HCP(H), MedicalProcedure(MP).
+can_document_immunization(H, I) :- HCP(H), Immunization(I).","can_document(H, M, L, D, MP, I) :- HCP(H), Medication(M), LabProcedure(L), Diagnosis(D), MedicalProcedure(MP), Immunization(I), can_document_medication(H, M), can_document_lab_procedure(H, L), can_document_diagnosis(H, D), can_document_medical_procedure(H, MP), can_document_immunization(H, I).",can_document_immunization
+"""System presents a list of the patients whose height, weight, or pedometer data type is specified to be under monitoring and for which he or she is allowed to report measurements.""","User(U), Patient(P).",DataType(DT).,"under_monitoring(P, DT) :- Patient(P), DataType(DT).
+can_report(U, P, DT) :- User(U), Patient(P), DataType(DT).","can_view_patient_list(U, P) :- User(U), Patient(P), under_monitoring(P, DT), can_report(U, P, DT), (DT = 'height'; DT = 'weight'; DT = 'pedometer').",can_report
+A LHCP creates UAPs.,LHCP(L).,UAP(U).,"creates(L, U) :- LHCP(L), UAP(U).","can_create(L, U) :- LHCP(L), UAP(U), creates(L, U).",creates
+The LHCP views all patients with which he or she has ever had an office visit with.,LHCP(L).,Patient(P).,"had_office_visit(L, P) :- LHCP(L), Patient(P).","can_view(L, P) :- LHCP(L), Patient(P), had_office_visit(L, P).",had_office_visit
+The HCP must remain on the office visit page.,HCP(H).,OfficeVisitPage(OVP).,"is_on_page(H, OVP) :- HCP(H), OfficeVisitPage(OVP).","must_remain_on_page(H, OVP) :- HCP(H), OfficeVisitPage(OVP), is_on_page(H, OVP).",is_on_page
+An LHCP views the physiologic data monitoring details.,LHCP(L).,PhysiologicData(PD).,"has_access(L, PD) :- LHCP(L), PhysiologicData(PD).","can_view(L, PD) :- LHCP(L), PhysiologicData(PD), has_access(L, PD).",has_access
+The patient chooses prescription report.,Patient(P).,PrescriptionReport(PR).,"chooses(P, PR) :- Patient(P), PrescriptionReport(PR).","can_choose(P, PR) :- Patient(P), PrescriptionReport(PR), chooses(P, PR).",chooses
+"""System presents a listing of all their own diagnoses, sorted by diagnosis date (more recent first).""",User(U).,Diagnosis(D).,"has_diagnosis(U, D) :- User(U), Diagnosis(D).","can_view_diagnoses(U, D) :- User(U), Diagnosis(D), has_diagnosis(U, D).",has_diagnosis
+The administrator maintains a listing of allowable drugs.,Administrator(A).,Drug(DR).,"maintains_listing(A, DR) :- Administrator(A), Drug(DR).","can_maintain(A, DR) :- Administrator(A), Drug(DR), maintains_listing(A, DR).",maintains_listing
+The administrator is allowed to set the length of this period of time.,Administrator(A).,Period(P).,"has_authority(A, P) :- Administrator(A), Period(P).","can_set_length(A, P) :- Administrator(A), Period(P), has_authority(A, P).",has_authority
+"""The user selects a laboratory procedure from the calendar to read its details by clicking the """"Read Details"""" link beside or below the LOINC code displayed for the laboratory procedure.""",User(U).,"LaboratoryProcedure(LP), Calendar(C), LOINCCode(LC).","has_access_to(U, LP) :- User(U), LaboratoryProcedure(LP), Calendar(C), LOINCCode(LC), displayed_on(LP, C), associated_with(LP, LC).","can_read_details(U, LP) :- User(U), LaboratoryProcedure(LP), has_access_to(U, LP).",has_access_to
+"""After a message is sent, the LHCP is directed to his message outbox.""",LHCP(L).,Message(M).,"sent_by(L, M) :- LHCP(L), Message(M).","can_access_outbox(L, M) :- LHCP(L), Message(M), sent_by(L, M).",sent_by
+The patient can add the HCP to their list of providers.,"Patient(P), HCP(H).",ProviderList(L).,"has_provider_list(P, L) :- Patient(P), ProviderList(L).","can_add_provider(P, H, L) :- Patient(P), HCP(H), ProviderList(L), has_provider_list(P, L).",has_provider_list
+The administrator maintains a listing of allowable immunizations.,Administrator(A).,Immunization(I).,"maintains_allowable_listing(A, I) :- Administrator(A), Immunization(I).","can_maintain(A, I) :- Administrator(A), Immunization(I), maintains_allowable_listing(A, I).",maintains_allowable_listing
+"""A patient, personal representative or LHCP views prescription reports.""","Patient(P), PersonalRepresentative(PR), LHCP(L).",PrescriptionReport(R).,"has_access(P, R) :- Patient(P), PrescriptionReport(R). has_access(PR, R) :- PersonalRepresentative(PR), PrescriptionReport(R). has_access(L, R) :- LHCP(L), PrescriptionReport(R).","can_view(S, R) :- Subject(S), PrescriptionReport(R), has_access(S, R).",has_access
+"""System displays the details for the visit in a new page, including date of office visit, note text, diagnoses (i.e., ICD-9CM codes), medical procedures performed (i.e., CPT code) , lab procedures ordered (LOINC code, see Data Format 6.11), medications prescribed (i.e., NDC, see Data Format 5.6), immunizations given (i.e., CPT Code, see UC15, S1), and the name of the doctor who prescribed the medication.""","User(U), Doctor(D).","Visit(V), Diagnosis(DI), Procedure(PR), LabOrder(LO), Medication(M), Immunization(I).","has_access(U, V) :- User(U), Visit(V).
+prescribed_by(M, D) :- Medication(M), Doctor(D).
+associated_with(V, DI) :- Visit(V), Diagnosis(DI).
+associated_with(V, PR) :- Visit(V), Procedure(PR).
+associated_with(V, LO) :- Visit(V), LabOrder(LO).
+associated_with(V, M) :- Visit(V), Medication(M).
+associated_with(V, I) :- Visit(V), Immunization(I).","can_view_visit_details(U, V) :- User(U), Visit(V), has_access(U, V).",has_access
+"""System displays the details for the visit in a new page, including date of office visit, note text, diagnoses (i.e., ICD-9CM codes), medical procedures performed (i.e., CPT code) , lab procedures ordered (LOINC code, see Data Format 6.11), medications prescribed (i.e., NDC, see Data Format 5.6), immunizations given (i.e., CPT Code, see UC15, S1), and the name of the doctor who prescribed the medication.""","User(U), Doctor(D).","Visit(V), Diagnosis(DI), Procedure(PR), LabOrder(LO), Medication(M), Immunization(I).","has_access(U, V) :- User(U), Visit(V).
+prescribed_by(M, D) :- Medication(M), Doctor(D).
+associated_with(V, DI) :- Visit(V), Diagnosis(DI).
+associated_with(V, PR) :- Visit(V), Procedure(PR).
+associated_with(V, LO) :- Visit(V), LabOrder(LO).
+associated_with(V, M) :- Visit(V), Medication(M).
+associated_with(V, I) :- Visit(V), Immunization(I).","can_view_doctor_name(U, D, M) :- User(U), Doctor(D), Medication(M), has_access(U, V), associated_with(V, M), prescribed_by(M, D).",has_access.associated_with
+The representative views his message inbox.,Representative(R).,MessageInbox(MI).,"has_inbox(R, MI) :- Representative(R), MessageInbox(MI).","can_view(R, MI) :- Representative(R), MessageInbox(MI), has_inbox(R, MI).",has_inbox
+The user can select an office visit from the calendar to read the visit's details.,User(U).,"OfficeVisit(OV), Calendar(C).","has_access_to(U, OV) :- User(U), OfficeVisit(OV), Calendar(C).","can_read(U, OV) :- User(U), OfficeVisit(OV), has_access_to(U, OV).",has_access_to
+"""A personal health representative views basic information about his designated LHCPs, including the name, phone number, and contact email information.""",PersonalHealthRepresentative(PHR).,"LHCP(L), BasicInfo(BI).","designated(PHR, L) :- PersonalHealthRepresentative(PHR), LHCP(L). has_basic_info(L, BI) :- LHCP(L), BasicInfo(BI).","can_view(PHR, L, BI) :- PersonalHealthRepresentative(PHR), LHCP(L), BasicInfo(BI), designated(PHR, L), has_basic_info(L, BI).",designated.has_basic_info
+An LHCP can delete a patient from his monitoring list by the LHCP typing the the patient's MID.,LHCP(L).,Patient(P).,"monitors(L, P) :- LHCP(L), Patient(P).","can_delete(L, P) :- LHCP(L), Patient(P), monitors(L, P).",monitors
+System presents the LHCPs in the patient's living area (based upon the first three numbers of their zip code) who have handled this diagnosis in the last three years.,"Patient(P), LHCP(L).","Diagnosis(D), ZipCode(Z).","lives_in(P, Z) :- Patient(P), ZipCode(Z).
+handled_diagnosis(L, D, Year) :- LHCP(L), Diagnosis(D), Year.
+in_same_area(P, L) :- Patient(P), LHCP(L), lives_in(P, Z1), has_zip(L, Z2), substring(Z1, 0, 3) = substring(Z2, 0, 3).","can_present(L, P, D) :- LHCP(L), Patient(P), Diagnosis(D), in_same_area(P, L), handled_diagnosis(L, D, Year), Year >= current_year - 3.",handled_diagnosis
+The patient then chooses the beginning and end date for the period of time.,Patient(P).,"Date(B), Date(E).","chooses_period(P, B, E) :- Patient(P), Date(B), Date(E).","can_choose_period(P, B, E) :- Patient(P), Date(B), Date(E), chooses_period(P, B, E).",chooses_period
+"""On the patient homepage, the Patient views a notification center.""",Patient(P).,NotificationCenter(NC).,"has_access_to(P, NC) :- Patient(P), NotificationCenter(NC).","can_view(P, NC) :- Patient(P), NotificationCenter(NC), has_access_to(P, NC).",has_access_to
+The notification center displays the message (You haven't entered remote monitoring information for today yet!),User(U).,"NotificationCenter(NC), Message(M).","has_message(NC, M) :- NotificationCenter(NC), Message(M).","displays(NC, M) :- NotificationCenter(NC), Message(M), has_message(NC, M).",has_message
+A patient finds the LHCPs who have handled that condition.,"Patient(P), LHCP(L).",Condition(C).,"has_condition(P, C) :- Patient(P), Condition(C). handled_condition(L, C) :- LHCP(L), Condition(C).","can_find(P, L, C) :- Patient(P), LHCP(L), Condition(C), has_condition(P, C), handled_condition(L, C).",has_condition
+Both patients and LHCPs can view a list of their upcoming appointments.,"Patient(P), LHCP(L).",Appointment(A).,"has_appointment(P, A) :- Patient(P), Appointment(A).
+has_appointment(L, A) :- LHCP(L), Appointment(A).","can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A).",has_appointment
+Both patients and LHCPs can view a list of their upcoming appointments.,"Patient(P), LHCP(L).",Appointment(A).,"has_appointment(P, A) :- Patient(P), Appointment(A).
+has_appointment(L, A) :- LHCP(L), Appointment(A).","can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
+A LHCP enters an UAP as a user of system according to data format 6.2 (all fields mandatory).,"LHCP(L), UAP(U).",System(S).,"enters_as_user(L, U, S) :- LHCP(L), UAP(U), System(S), data_format_6_2_compliant(L, U, S).","can_enter(L, U, S) :- LHCP(L), UAP(U), System(S), data_format_6_2_compliant(L, U, S).",data_format_6_2_compliant
+The patient chooses drugs for which to report the adverse event.,Patient(P).,Drug(DR).,"chooses_drug(P, DR) :- Patient(P), Drug(DR).","can_report_adverse_event(P, DR) :- Patient(P), Drug(DR), chooses_drug(P, DR).",chooses_drug
+The HCP can allow viewing access to the laboratory results.,HCP(H).,LabResult(L).,"has_access(H, L) :- HCP(H), LabResult(L).","can_view(H, L) :- HCP(H), LabResult(L), has_access(H, L).",has_access
+Initially only the name and email are provided.,User(U).,"Name(N), Email(E).","has_name(U, N) :- User(U), Name(N). has_email(U, E) :- User(U), Email(E).","can_access_info(U, N, E) :- User(U), Name(N), Email(E), has_name(U, N), has_email(U, E).",has_email
+The patient or personal health representative views an appointment.,"Patient(P), PersonalHealthRepresentative(R).",Appointment(A).,"has_appointment(P, A) :- Patient(P), Appointment(A).","can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A). can_view(R, A) :- PersonalHealthRepresentative(R), Appointment(A), has_appointment(P, A), is_representative_of(R, P).",has_appointment
+"""An LHCP views a list of his upcoming appointments for the current date, with each appointment displayed in the format """"HH:MM AM or PM - AppointmentType"""".""",LHCP(L).,Appointment(A).,"has_appointment(L, A) :- LHCP(L), Appointment(A).","can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
+He can report his blood pressure (systolic and diastolic) and glucose levels.,Patient(P).,"BloodPressure(BP), GlucoseLevel(GL).","has_blood_pressure(P, BP) :- Patient(P), BloodPressure(BP). has_glucose_level(P, GL) :- Patient(P), GlucoseLevel(GL).","can_report(P, BP, GL) :- Patient(P), BloodPressure(BP), GlucoseLevel(GL), has_blood_pressure(P, BP), has_glucose_level(P, GL).",has_glucose_level
+The user provides a zip code or a hospital code and an physician type.,User(U).,"ZipCode(Z), HospitalCode(H), PhysicianType(T).","provides_zip_code(U, Z) :- User(U), ZipCode(Z). provides_hospital_code(U, H) :- User(U), HospitalCode(H). provides_physician_type(U, T) :- User(U), PhysicianType(T).","can_access_physician_info(U, Z, H, T) :- User(U), ZipCode(Z), HospitalCode(H), PhysicianType(T), (provides_zip_code(U, Z); provides_hospital_code(U, H)), provides_physician_type(U, T).",provides_physician_type
+The patient clicks the send button.,Patient(P).,Button(B).,"can_click(P, B) :- Patient(P), Button(B).","click(P, B) :- Patient(P), Button(B), can_click(P, B).",can_click
+An patient views his appointments in the current month.,Patient(P).,Appointment(A).,"has_appointment(P, A) :- Patient(P), Appointment(A).","can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A), in_current_month(A).",has_appointment
+"""The HCP must provide instructions, or else they cannot add the prescription.""",HCP(H).,Prescription(PR).,"provides_instructions(H, PR) :- HCP(H), Prescription(PR).","can_add_prescription(H, PR) :- HCP(H), Prescription(PR), provides_instructions(H, PR).",provides_instructions
+The LHCP views the weight or pedometer monitoring details of his patients for the current date.,"LHCP(L), Patient(P).",MonitoringDetails(MD).,"has_patient(L, P) :- LHCP(L), Patient(P). has_details(P, MD) :- Patient(P), MonitoringDetails(MD). current_date(MD) :- MonitoringDetails(MD).","can_view(L, P, MD) :- LHCP(L), Patient(P), MonitoringDetails(MD), has_patient(L, P), has_details(P, MD), current_date(MD).",has_patient.has_details
+A prescription list is then displayed.,User(U).,PrescriptionList(PL).,"has_access_to(U, PL) :- User(U), PrescriptionList(PL).","can_view(U, PL) :- User(U), PrescriptionList(PL), has_access_to(U, PL).",has_access_to
+The administrator maintains a listing of allowable diagnoses.,Administrator(A).,Diagnosis(D).,"maintains_listing(A, D) :- Administrator(A), Diagnosis(D).","can_access_diagnosis(A, D) :- Administrator(A), Diagnosis(D), maintains_listing(A, D).",maintains_listing
+System displays only the applicable input entries to the UAP.,UAP(U).,InputEntry(I).,"applicable_to(I, U) :- InputEntry(I), UAP(U).","display(I, U) :- InputEntry(I), UAP(U), applicable_to(I, U).",applicable_to
+"""A patient, patient representative or LHCP opens his message inbox or outbox.""","Patient(P), PatientRepresentative(PR), LHCP(L).","MessageInbox(MI), MessageOutbox(MO).","has_access_to(P, MI), has_access_to(P, MO) :- Patient(P), MessageInbox(MI), MessageOutbox(MO). has_access_to(PR, MI), has_access_to(PR, MO) :- PatientRepresentative(PR), MessageInbox(MI), MessageOutbox(MO). has_access_to(L, MI), has_access_to(L, MO) :- LHCP(L), MessageInbox(MI), MessageOutbox(MO).","can_open(P, MI), can_open(P, MO) :- Patient(P), MessageInbox(MI), MessageOutbox(MO), has_access_to(P, MI), has_access_to(P, MO). can_open(PR, MI), can_open(PR, MO) :- PatientRepresentative(PR), MessageInbox(MI), MessageOutbox(MO), has_access_to(PR, MI), has_access_to(PR, MO). can_open(L, MI), can_open(L, MO) :- LHCP(L), MessageInbox(MI), MessageOutbox(MO), has_access_to(L, MI), has_access_to(L, MO).",has_access_to.has_access_to^{-1}.has_access_to
+HCPs can return to an office visit.,HCP(H).,OfficeVisit(V).,"has_visit(H, V) :- HCP(H), OfficeVisit(V).","can_return(H, V) :- HCP(H), OfficeVisit(V), has_visit(H, V).",has_visit
+System presents the actual operational profile of the operations of the iTrust.,User(U).,Operation(OP).,"has_access(U, OP) :- User(U), Operation(OP).","can_view_profile(U, OP) :- User(U), Operation(OP), has_access(U, OP).",has_access
+The LHCP views his message inbox.,LHCP(L).,MessageInbox(I).,"has_message_inbox(L, I) :- LHCP(L), MessageInbox(I).","can_view(L, I) :- LHCP(L), MessageInbox(I), has_message_inbox(L, I).",has_message_inbox
+The HCP must proceed with the prescription.,HCP(H).,Prescription(PR).,"can_proceed(H, PR) :- HCP(H), Prescription(PR).","proceed(H, PR) :- HCP(H), Prescription(PR), can_proceed(H, PR).",can_proceed
+The LHCP views the physiologic data monitoring details of his patients for the current date.,LHCP(L).,"Patient(P), PhysiologicData(PD).","has_patient(L, P) :- LHCP(L), Patient(P). has_data(P, PD, current_date) :- Patient(P), PhysiologicData(PD).","can_view(L, P, PD) :- LHCP(L), Patient(P), PhysiologicData(PD), has_patient(L, P), has_data(P, PD, current_date).",has_patient.has_data
+An LHCP chooses a chronic disease and a patient.,LHCP(L).,"ChronicDisease(CD), Patient(P).","can_choose(L, CD, P) :- LHCP(L), ChronicDisease(CD), Patient(P).","choose(L, CD, P) :- LHCP(L), ChronicDisease(CD), Patient(P), can_choose(L, CD, P).",can_choose
+The LHCP views an appointment.,LHCP(L).,Appointment(A).,"has_appointment(L, A) :- LHCP(L), Appointment(A).","can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
+The patient views his message inbox.,Patient(P).,MessageInbox(M).,"owns_inbox(P, M) :- Patient(P), MessageInbox(M).","can_view(P, M) :- Patient(P), MessageInbox(M), owns_inbox(P, M).",owns_inbox
+"""By default, the messages in the message inbox should be ordered by timestamp, the most recent first.""",User(U).,Message(M).,"has_inbox(U, M) :- User(U), Message(M).
+has_timestamp(M, T) :- Message(M), Timestamp(T).","can_view_ordered(U, M) :- User(U), Message(M), has_inbox(U, M), has_timestamp(M, T), ordered_by_timestamp_desc(M, T).",has_inbox
+"""The HCP provides the dosage in milligrams, the start and end date for the prescription, and any special instructions.""",HCP(H).,"Prescription(PR), Dosage(D), StartDate(SD), EndDate(ED), SpecialInstructions(SI).","provides_dosage(H, PR, D) :- HCP(H), Prescription(PR), Dosage(D). provides_start_date(H, PR, SD) :- HCP(H), Prescription(PR), StartDate(SD). provides_end_date(H, PR, ED) :- HCP(H), Prescription(PR), EndDate(ED). provides_special_instructions(H, PR, SI) :- HCP(H), Prescription(PR), SpecialInstructions(SI).","can_provide_prescription_details(H, PR, D, SD, ED, SI) :- HCP(H), Prescription(PR), Dosage(D), StartDate(SD), EndDate(ED), SpecialInstructions(SI), provides_dosage(H, PR, D), provides_start_date(H, PR, SD), provides_end_date(H, PR, ED), provides_special_instructions(H, PR, SI).",provides_special_instructions
+A user views physician satisfaction survey results.,User(U).,SurveyResult(SR).,"has_access_to(U, SR) :- User(U), SurveyResult(SR).","can_view(U, SR) :- User(U), SurveyResult(SR), has_access_to(U, SR).",has_access_to
+An LHCP or UAP can delete patients from his monitoring list.,"LHCP(L), UAP(U).",Patient(P).,"monitors(S, P) :- (LHCP(S) ; UAP(S)), Patient(P).","can_delete(S, P) :- (LHCP(S) ; UAP(S)), Patient(P), monitors(S, P).",monitors
+The representative clicks the send button.,Representative(R).,Button(B).,"has_access(R, B) :- Representative(R), Button(B).","can_click(R, B) :- Representative(R), Button(B), has_access(R, B).",has_access
+A user can request to change their password.,User(U).,Password(PW).,"has_password(U, PW) :- User(U), Password(PW).","can_request_password_change(U, PW) :- User(U), Password(PW), has_password(U, PW).",has_password
+The information is edited.,Editor(E).,Information(I).,"can_edit(E, I) :- Editor(E), Information(I).","edit_action(E, I) :- can_edit(E, I).",can_edit
+"""The patient views the list sorted by the role of the accessor relative to the patient (personal health representative, DLHCP, LHCP, UAP, Emergency Responder; any order is fine as long as the list is sorted by role) as well as by date for each role type.""","Patient(P), Accessor(A).","List(L), Role(R), Date(D).","has_role(A, R) :- Accessor(A), Role(R).
+relative_to(A, P, R) :- Accessor(A), Patient(P), Role(R).
+access_date(A, P, D) :- Accessor(A), Patient(P), Date(D).","can_view_sorted(P, L) :- Patient(P), List(L), sorted_by_role_and_date(P, L).",sorted_by_role_and_date
+The representative types the subject and the text of a message.,Representative(R).,Message(M).,"types_subject(R, M) :- Representative(R), Message(M). types_text(R, M) :- Representative(R), Message(M).","can_type_message(R, M) :- Representative(R), Message(M), types_subject(R, M), types_text(R, M).",types_subject
+"""The user selects an appointment from the calendar to read its details by clicking the """"Read Details"""" link beside or below the appointment type name.""",User(U).,Appointment(A).,"has_appointment(U, A) :- User(U), Appointment(A).","can_read_details(U, A) :- User(U), Appointment(A), has_appointment(U, A).",has_appointment
+"""On the LHCP homepage, the LHCP views a notification center with a list of his upcoming appointments for the current date, number of physiologic data monitoring reports of his patients for the current date, number of weight or pedometer data monitoring reports of his patients for the current date, number of unread messages from his message inbox.""",LHCP(L).,"NotificationCenter(NC), Appointment(A), PhysiologicReport(PR), WeightPedometerReport(WPR), Message(M).","has_appointment(L, A) :- LHCP(L), Appointment(A).
+has_patient(L, P) :- LHCP(L), Patient(P).
+has_physiologic_report(P, PR) :- Patient(P), PhysiologicReport(PR).
+has_weight_pedometer_report(P, WPR) :- Patient(P), WeightPedometerReport(WPR).
+has_message(L, M) :- LHCP(L), Message(M).","can_view_appointments(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
+"""On the LHCP homepage, the LHCP views a notification center with a list of his upcoming appointments for the current date, number of physiologic data monitoring reports of his patients for the current date, number of weight or pedometer data monitoring reports of his patients for the current date, number of unread messages from his message inbox.""",LHCP(L).,"NotificationCenter(NC), Appointment(A), PhysiologicReport(PR), WeightPedometerReport(WPR), Message(M).","has_appointment(L, A) :- LHCP(L), Appointment(A).
+has_patient(L, P) :- LHCP(L), Patient(P).
+has_physiologic_report(P, PR) :- Patient(P), PhysiologicReport(PR).
+has_weight_pedometer_report(P, WPR) :- Patient(P), WeightPedometerReport(WPR).
+has_message(L, M) :- LHCP(L), Message(M).","can_view_physiologic_reports(L, PR) :- LHCP(L), PhysiologicReport(PR), has_patient(L, P), has_physiologic_report(P, PR).",has_patient.has_physiologic_report
+"""On the LHCP homepage, the LHCP views a notification center with a list of his upcoming appointments for the current date, number of physiologic data monitoring reports of his patients for the current date, number of weight or pedometer data monitoring reports of his patients for the current date, number of unread messages from his message inbox.""",LHCP(L).,"NotificationCenter(NC), Appointment(A), PhysiologicReport(PR), WeightPedometerReport(WPR), Message(M).","has_appointment(L, A) :- LHCP(L), Appointment(A).
+has_patient(L, P) :- LHCP(L), Patient(P).
+has_physiologic_report(P, PR) :- Patient(P), PhysiologicReport(PR).
+has_weight_pedometer_report(P, WPR) :- Patient(P), WeightPedometerReport(WPR).
+has_message(L, M) :- LHCP(L), Message(M).","can_view_weight_pedometer_reports(L, WPR) :- LHCP(L), WeightPedometerReport(WPR), has_patient(L, P), has_weight_pedometer_report(P, WPR).",has_patient.has_weight_pedometer_report
+"""On the LHCP homepage, the LHCP views a notification center with a list of his upcoming appointments for the current date, number of physiologic data monitoring reports of his patients for the current date, number of weight or pedometer data monitoring reports of his patients for the current date, number of unread messages from his message inbox.""",LHCP(L).,"NotificationCenter(NC), Appointment(A), PhysiologicReport(PR), WeightPedometerReport(WPR), Message(M).","has_appointment(L, A) :- LHCP(L), Appointment(A).
+has_patient(L, P) :- LHCP(L), Patient(P).
+has_physiologic_report(P, PR) :- Patient(P), PhysiologicReport(PR).
+has_weight_pedometer_report(P, WPR) :- Patient(P), WeightPedometerReport(WPR).
+has_message(L, M) :- LHCP(L), Message(M).","can_view_messages(L, M) :- LHCP(L), Message(M), has_message(L, M).",has_message
+"""The LHCP name, specialty, and  address are provided.""",LHCP(L).,"Name(N), Specialty(S), Address(A).","has_name(L, N) :- LHCP(L), Name(N). has_specialty(L, S) :- LHCP(L), Specialty(S). has_address(L, A) :- LHCP(L), Address(A).","can_access(L, N, S, A) :- LHCP(L), Name(N), Specialty(S), Address(A), has_name(L, N), has_specialty(L, S), has_address(L, A).",has_address
+An LHCP views the number of submitted weight data monitoring reports of his patients for the current date.,"LHCP(L), Patient(P).",WeightReport(WR).,"has_patient(L, P) :- LHCP(L), Patient(P).
+submitted_report(P, WR, current_date) :- Patient(P), WeightReport(WR).","can_view_report_count(L, P, current_date) :- LHCP(L), Patient(P), has_patient(L, P), submitted_report(P, WR, current_date).",has_patient.submitted_report
+The public health agent can see the detail of a specific report.,PublicHealthAgent(A).,Report(R).,"assigned_to(A, R) :- PublicHealthAgent(A), Report(R).","can_see(A, R) :- PublicHealthAgent(A), Report(R), assigned_to(A, R).",assigned_to
+System presents an approvel screen.,User(U).,Screen(S).,"can_access(U, S) :- User(U), Screen(S).","present_screen(U, S) :- User(U), Screen(S), can_access(U, S).",can_access
+An LHCP views his iTrust homepage.,LHCP(L).,Homepage(H).,"has_homepage(L, H) :- LHCP(L), Homepage(H).","can_view(L, H) :- LHCP(L), Homepage(H), has_homepage(L, H).",has_homepage
+System presents a listing of patients for whom they are a DLHCP who need care because of satisfying the one of preceding conditions.,DLHCP(D).,Patient(P).,"needs_care(P) :- Patient(P), condition_satisfied(P).","can_view_patient_listing(D, P) :- DLHCP(D), Patient(P), needs_care(P), assigned_to(D, P).",assigned_to
+The LHCP opens the message to which he or she wishes to reply.,LHCP(L).,Message(M).,"can_reply_to(L, M) :- LHCP(L), Message(M).","can_open(L, M) :- LHCP(L), Message(M), can_reply_to(L, M).",can_reply_to
+An HCP edits an office visit.,HCP(H).,OfficeVisit(V).,"has_access(H, V) :- HCP(H), OfficeVisit(V).","can_edit(H, V) :- HCP(H), OfficeVisit(V), has_access(H, V).",has_access
+Demographic information is edited.,User(U).,DemographicInfo(DI).,"has_access_to(U, DI) :- User(U), DemographicInfo(DI).","can_edit(U, DI) :- User(U), DemographicInfo(DI), has_access_to(U, DI).",has_access_to
+The patient chooses the immunization for which to report the adverse event.,Patient(P).,Immunization(I).,"has_immunization(P, I) :- Patient(P), Immunization(I).","can_report_adverse_event(P, I) :- Patient(P), Immunization(I), has_immunization(P, I).",has_immunization
+System presents two lists of NDC codes or names.,System(S).,"NDC_List(L1), NDC_List(L2).","presents(S, L1) :- System(S), NDC_List(L1). presents(S, L2) :- System(S), NDC_List(L2).","can_view(L1, L2) :- System(S), NDC_List(L1), NDC_List(L2), presents(S, L1), presents(S, L2).",presents^{-1}.presents
+The patient can add also a LHCP to their provider list by searching for the name possibly and possibly specialty of a LHCP.,Patient(P).,"LHCP(L), ProviderList(PL).","has_provider_list(P, PL) :- Patient(P), ProviderList(PL).","can_add_lhcp(P, L, PL) :- Patient(P), LHCP(L), ProviderList(PL), has_provider_list(P, PL).",has_provider_list
+A patient views a list of his upcoming appointments.,Patient(P).,Appointment(A).,"has_appointment(P, A) :- Patient(P), Appointment(A).","can_view(P, A) :- Patient(P), Appointment(A), has_appointment(P, A).",has_appointment
+A HCP edits a laboratory procedure.,HCP(H).,LaboratoryProcedure(LP).,"has_access(H, LP) :- HCP(H), LaboratoryProcedure(LP).","can_edit(H, LP) :- HCP(H), LaboratoryProcedure(LP), has_access(H, LP).",has_access
+"""A patient, patient representative, or LHCP views the number of unread messages from his message inbox.""","Patient(P), PatientRepresentative(PR), LHCP(L).","Message(M), Inbox(I).","has_inbox(P, I) :- Patient(P), Inbox(I).
+has_inbox(PR, I) :- PatientRepresentative(PR), Inbox(I).
+has_inbox(L, I) :- LHCP(L), Inbox(I).
+unread_message(M, I) :- Message(M), Inbox(I).","can_view_unread_count(P, I) :- Patient(P), Inbox(I), has_inbox(P, I).",has_inbox
+"""A patient, patient representative, or LHCP views the number of unread messages from his message inbox.""","Patient(P), PatientRepresentative(PR), LHCP(L).","Message(M), Inbox(I).","has_inbox(P, I) :- Patient(P), Inbox(I).
+has_inbox(PR, I) :- PatientRepresentative(PR), Inbox(I).
+has_inbox(L, I) :- LHCP(L), Inbox(I).
+unread_message(M, I) :- Message(M), Inbox(I).","can_view_unread_count(PR, I) :- PatientRepresentative(PR), Inbox(I), has_inbox(PR, I).",has_inbox
+"""A patient, patient representative, or LHCP views the number of unread messages from his message inbox.""","Patient(P), PatientRepresentative(PR), LHCP(L).","Message(M), Inbox(I).","has_inbox(P, I) :- Patient(P), Inbox(I).
+has_inbox(PR, I) :- PatientRepresentative(PR), Inbox(I).
+has_inbox(L, I) :- LHCP(L), Inbox(I).
+unread_message(M, I) :- Message(M), Inbox(I).","can_view_unread_count(L, I) :- LHCP(L), Inbox(I), has_inbox(L, I).",has_inbox
+"""System displays the details for the appointment in a new page, including the appointment type, the appointment date and start time, comment, and the name of either the patient (only for the user being an LHCP) or the LHCP (only for the user being a patient).""","User(U), LHCP(L), Patient(P).",Appointment(A).,"has_appointment(U, A) :- User(U), Appointment(A). is_lhcp(U, L) :- User(U), LHCP(L). is_patient(U, P) :- User(U), Patient(P).","can_view_appointment_details(U, A) :- User(U), Appointment(A), has_appointment(U, A), (is_lhcp(U, L) ; is_patient(U, P)).",has_appointment
+An email notification is sent.,User(U).,Notification(N).,"receives_notification(U, N) :- User(U), Notification(N).","send_notification(U, N) :- User(U), Notification(N), receives_notification(U, N).",receives_notification
+An LHCP views the number of submitted physiologic data monitoring reports of his patients for the current date.,"LHCP(L), Patient(P).",PhysiologicDataReport(R).,"has_patient(L, P) :- LHCP(L), Patient(P).
+submitted_report(P, R, current_date) :- Patient(P), PhysiologicDataReport(R).","can_view_report_count(L, P, current_date) :- LHCP(L), Patient(P), has_patient(L, P), submitted_report(P, R, current_date).",has_patient.submitted_report
+System presents a menu of DLHCP.,User(U).,DLHCP(DLH).,"presents_menu(U, DLH) :- User(U), DLHCP(DLH).","can_access_menu(U, DLH) :- User(U), DLHCP(DLH), presents_menu(U, DLH).",presents_menu
+"""The LHCP, the patient or the representative clicks the """"Save"""" button to save the modified filter.""","LHCP(L), Patient(P), Representative(R).",Filter(F).,"has_modified_filter(L, F) :- LHCP(L), Filter(F).
+has_modified_filter(P, F) :- Patient(P), Filter(F).
+has_modified_filter(R, F) :- Representative(R), Filter(F).","can_save(L, F) :- LHCP(L), Filter(F), has_modified_filter(L, F).",has_modified_filter
+"""The LHCP, the patient or the representative clicks the """"Save"""" button to save the modified filter.""","LHCP(L), Patient(P), Representative(R).",Filter(F).,"has_modified_filter(L, F) :- LHCP(L), Filter(F).
+has_modified_filter(P, F) :- Patient(P), Filter(F).
+has_modified_filter(R, F) :- Representative(R), Filter(F).","can_save(P, F) :- Patient(P), Filter(F), has_modified_filter(P, F).",has_modified_filter
+"""The LHCP, the patient or the representative clicks the """"Save"""" button to save the modified filter.""","LHCP(L), Patient(P), Representative(R).",Filter(F).,"has_modified_filter(L, F) :- LHCP(L), Filter(F).
+has_modified_filter(P, F) :- Patient(P), Filter(F).
+has_modified_filter(R, F) :- Representative(R), Filter(F).","can_save(R, F) :- Representative(R), Filter(F), has_modified_filter(R, F).",has_modified_filter
+An LHCP views his appointments in the current month.,LHCP(L).,Appointment(A).,"has_appointment(L, A) :- LHCP(L), Appointment(A).","can_view(L, A) :- LHCP(L), Appointment(A), has_appointment(L, A).",has_appointment
+An LHCP views his message inbox.,LHCP(L).,MessageInbox(I).,"has_inbox(L, I) :- LHCP(L), MessageInbox(I).","can_view(L, I) :- LHCP(L), MessageInbox(I), has_inbox(L, I).",has_inbox
+A LHCP reviews the consultation.,LHCP(L).,Consultation(C).,"can_review(L, C) :- LHCP(L), Consultation(C).","review(L, C) :- LHCP(L), Consultation(C), can_review(L, C).",can_review
+System presents a list of the patients for which he is allowed to report measurements.,User(U).,Patient(P).,"can_report(U, P) :- User(U), Patient(P).","present_patients(U, P) :- User(U), Patient(P), can_report(U, P).",can_report
+System presents a listing of all prescription drugs for which he has been prescribed and has taken in the last 12 months.,User(U).,Drug(DR).,"prescribed_to(U, DR) :- User(U), Drug(DR).
+taken_by(U, DR) :- User(U), Drug(DR).","can_view_listing(U, DR) :- User(U), Drug(DR), prescribed_to(U, DR), taken_by(U, DR).",prescribed_to
+The LHCP then selects a referral to view details.,LHCP(L).,Referral(R).,"has_access(L, R) :- LHCP(L), Referral(R).","can_view(L, R) :- LHCP(L), Referral(R), has_access(L, R).",has_access
+The user can select an appointment from the calendar to read the appointment's details.,User(U).,Appointment(A).,"has_appointment(U, A) :- User(U), Appointment(A).","can_read_appointment(U, A) :- User(U), Appointment(A), has_appointment(U, A).",has_appointment
+"""A patient views his appointments in the current month together with his office visit dates, prescription dates, and lab procedure dates of the current month on a calendar for the current month.""",Patient(P).,"Appointment(A), OfficeVisit(O), Prescription(PR), LabProcedure(L), Calendar(C).","has_appointment(P, A) :- Patient(P), Appointment(A), date_in_current_month(A). has_office_visit(P, O) :- Patient(P), OfficeVisit(O), date_in_current_month(O). has_prescription(P, PR) :- Patient(P), Prescription(PR), date_in_current_month(PR). has_lab_procedure(P, L) :- Patient(P), LabProcedure(L), date_in_current_month(L). on_calendar(P, C) :- Patient(P), Calendar(C).","can_view_calendar(P, C, A, O, PR, L) :- Patient(P), Calendar(C), Appointment(A), OfficeVisit(O), Prescription(PR), LabProcedure(L), on_calendar(P, C), has_appointment(P, A), has_office_visit(P, O), has_prescription(P, PR), has_lab_procedure(P, L).",has_lab_procedure
+System presents an automatically-calculated value of BMI calculated based on the formula.,System(S).,BMI(B).,"calculates_bmi(S, B) :- System(S), BMI(B).","can_present(S, B) :- System(S), BMI(B), calculates_bmi(S, B).",calculates_bmi
+The user opens his upcoming appointment list.,User(U).,AppointmentList(AL).,"has_upcoming_appointment_list(U, AL) :- User(U), AppointmentList(AL).","can_open(U, AL) :- User(U), AppointmentList(AL), has_upcoming_appointment_list(U, AL).",has_upcoming_appointment_list
+The patient is then able to write a textual description.,Patient(P).,TextualDescription(TD).,"can_write(P, TD) :- Patient(P), TextualDescription(TD).","write(P, TD) :- Patient(P), TextualDescription(TD), can_write(P, TD).",can_write
+The event is logged  to verify his changes.,User(U).,"Event(E), Change(C).","made_change(U, C) :- User(U), Change(C).","can_log_event(U, E, C) :- User(U), Event(E), Change(C), made_change(U, C).",made_change
+the HCP is returned in the specific office visit record to verify his changes.,HCP(H).,OfficeVisitRecord(V).,"has_record(H, V) :- HCP(H), OfficeVisitRecord(V).","can_verify(H, V) :- HCP(H), OfficeVisitRecord(V), has_record(H, V).",has_record
+System presents a text box to enter the details of the consultation.,User(U).,Consultation(C).,"can_access_consultation(U, C) :- User(U), Consultation(C).","can_enter_details(U, C) :- User(U), Consultation(C), can_access_consultation(U, C).",can_access_consultation
+then The representative clicks the send button.,Representative(R).,Button(B).,"can_click(R, B) :- Representative(R), Button(B).","click(R, B) :- Representative(R), Button(B), can_click(R, B).",can_click
+"The patient opens the message to which he or she wishes to reply,",Patient(P).,Message(M).,"has_access_to(P, M) :- Patient(P), Message(M).","can_open(P, M) :- Patient(P), Message(M), has_access_to(P, M).",has_access_to
+and The patient clicks the reply link above the message text.,Patient(P).,"Message(M), ReplyLink(L).","has_message(P, M) :- Patient(P), Message(M). has_reply_link(M, L) :- Message(M), ReplyLink(L).","can_click(P, L) :- Patient(P), ReplyLink(L), has_message(P, M), has_reply_link(M, L).",has_message.has_reply_link
+"A patient renews the patient's expired prescriptions (i.e., prescriptions' end dates are earlier than the current date)",Patient(P).,Prescription(PR).,"has_prescription(P, PR) :- Patient(P), Prescription(PR).","can_renew(P, PR) :- Patient(P), Prescription(PR), has_prescription(P, PR), end_date(PR, ED), current_date(CD), ED < CD.",has_prescription
+and therefore A patient finds the LHCPs who earlier wrote the patient's expired prescriptions (it is assumed that the doctors who wrote prescriptions are all LHCPs so no LHCP checks on the prescription-writing doctors are needed).,"Patient(P), LHCP(L).",Prescription(PR).,"wrote_prescription(L, P, PR) :- LHCP(L), Patient(P), Prescription(PR). expired(PR) :- Prescription(PR).","can_find(P, L) :- Patient(P), LHCP(L), wrote_prescription(L, P, PR), expired(PR).",wrote_prescription^{-1}
+The HCP confirms their selection.,HCP(H).,Selection(S).,"has_selection(H, S) :- HCP(H), Selection(S).","can_confirm(H, S) :- HCP(H), Selection(S), has_selection(H, S).",has_selection
+The LHCP confirms his input.,LHCP(L).,Input(I).,"has_input(L, I) :- LHCP(L), Input(I).","can_confirm(L, I) :- LHCP(L), Input(I), has_input(L, I).",has_input
+The patient may type a last name or partial last name,Patient(P).,LastName(L).,"can_type(P, L) :- Patient(P), LastName(L).","may_type(P, L) :- Patient(P), LastName(L), can_type(P, L).",can_type
+The patient optionally reduces the list of choices by providing the specialty.,Patient(P).,Specialty(S).,"has_specialty_choice(P, S) :- Patient(P), Specialty(S).","reduce_choices(P, S) :- Patient(P), Specialty(S), has_specialty_choice(P, S).",has_specialty_choice
+"The representative opens the message to which he or she wishes to reply,",Representative(R).,Message(M).,"wants_to_reply(R, M) :- Representative(R), Message(M).","can_open(R, M) :- Representative(R), Message(M), wants_to_reply(R, M).",wants_to_reply
+The administrator modify the hospital name in an existing entry.,Administrator(A).,Hospital(H).,"has_entry(A, H) :- Administrator(A), Hospital(H).","can_modify_hospital_name(A, H) :- Administrator(A), Hospital(H), has_entry(A, H).",has_entry
+The patient clicks the send button.,Patient(P).,Button(B).,"can_click(P, B) :- Patient(P), Button(B).","click(P, B) :- Patient(P), Button(B), can_click(P, B).",can_click
+The HCP confirms their input.,HCP(H).,Input(I).,"has_input(H, I) :- HCP(H), Input(I).","can_confirm(H, I) :- HCP(H), Input(I), has_input(H, I).",has_input
+The LHCP clicks the send button.,LHCP(L).,Button(B).,"can_click(L, B) :- LHCP(L), Button(B).","click(L, B) :- LHCP(L), Button(B), can_click(L, B).",can_click
+The editor may correct the form,Editor(E).,Form(F).,"has_permission(E, F) :- Editor(E), Form(F).","can_correct(E, F) :- Editor(E), Form(F), has_permission(E, F).",has_permission
+The editor add more information.,Editor(E).,Information(I).,"can_edit(E, I) :- Editor(E), Information(I).","add_information(E, I) :- Editor(E), Information(I), can_edit(E, I).",can_edit
+The health care personnel confirms their selection.,HealthCarePersonnel(H).,Selection(S).,"has_selection(H, S) :- HealthCarePersonnel(H), Selection(S).","can_confirm(H, S) :- HealthCarePersonnel(H), Selection(S), has_selection(H, S).",has_selection
+The LHCP clicks the send button.,LHCP(L).,Button(B).,"has_access(L, B) :- LHCP(L), Button(B).","can_click(L, B) :- LHCP(L), Button(B), has_access(L, B).",has_access
+"The user selects a message from the list to read by clicking the ""Read"" link beside the row for the message,",User(U).,Message(M).,"has_access_to(U, M) :- User(U), Message(M), row_for_message(M).","can_read(U, M) :- User(U), Message(M), has_access_to(U, M).",has_access_to

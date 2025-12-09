@@ -262,24 +262,16 @@ if __name__ == "__main__":
             
     # XACML files
     xacml_files = [
-        "xacml3-mli-interface.csv",
-        "upperlicl/PPS-PIP-Role.csv",
-        "upperlicl/PPS-VIO-N-Role.csv",
-        "upperlicl/PPS-VIO-Role.csv",
-        "upperlicl/RPS-PIP-Role.csv",
-        "upperlicl/RPS-VIO-N-Role.csv",
-        "upperlicl/RPS-VIO-Role.csv",
-        "upperlicl/permission-cci-operations.csv",
-        "upperlicl/permission-mli-replanning-vlink-operations.csv",
-        "upperlicl/permission-mli-replanning-vr-it-operations.csv",
-        "upperlicl/permission-mli-vi-operations.csv",
-        "upperlicl/permission-mli-vi-request-operations.csv",
-        "upperlicl/permission-ros-notifications.csv",
-        "upperlicl/permission-sli-operations.csv"
+        "xacml2_1.csv",
+        "xacml2_2.csv",
+        "xacml2_3.csv",
+        "xacml3_1.csv",
+        "xacml3_2.csv",
+        "xacml3_3.csv",
     ]
     
     for fname in xacml_files:
-        in_p = Path(f"policy_generation/output/xacml/{fname}")
+        in_p = Path(f"policy_generation/output/xacml/xacBench/{fname}")
         out_p = Path(f"policy_translation/output/fong/{fname}")
         out_p.parent.mkdir(parents=True, exist_ok=True)
         if in_p.exists():
