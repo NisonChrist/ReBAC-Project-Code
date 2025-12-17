@@ -1,3 +1,3 @@
 # ReBAC Project Code
 
-> Not all code is available yet, but we are working on it!
+> The refactored code for the ReBAC project will be made available soon at another repository: https://github.com/NisonChrist/ReBAC-Project-Code-Python
